@@ -7,18 +7,11 @@ export const metadata: Metadata = {
   description: 'Discover legal events, CLE programs, and professional development opportunities in New York City.',
 };
 
-export default async function EventsPage() {
-  const [events, locations] = await Promise.all([
-    getAllEvents(),
-    getAllLocations()
-  ]);
-
-  // Format dates on the server side
-  const eventsWithFormattedDates = await Promise.all(events.map(async event => ({
-    ...event,
-    formattedStartDate: await formatDate(event.startDate),
-    formattedEndDate: event.endDate ? await formatDate(event.endDate) : null
-  })));
-
-  return <EventsList events={eventsWithFormattedDates} locations={locations} />;
+export default function Events() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold mb-4">Events</h1>
+      <p className="text-lg mb-4">Coming soon: A calendar of legal events in New York City.</p>
+    </div>
+  )
 } 

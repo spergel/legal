@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/generate_data.js && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -23,8 +23,6 @@
     "typescript": "^5",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
-    "style-loader": "^3.3.4",
-    "css-loader": "^6.10.0",
     "postcss-loader": "^8.1.0"
   }
 }
