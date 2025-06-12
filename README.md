@@ -1,0 +1,78 @@
+# Legal Events Calendar
+
+A web application that aggregates legal events from various sources including law schools, bar associations, and legal organizations in New York City.
+
+## Features
+
+- Aggregates events from multiple sources:
+  - NYC Bar Association
+  - NYIAC (New York International Arbitration Center)
+  - Fordham Law School
+  - Columbia Law School
+  - CUNY Law School
+  - Lawyers Alliance
+  - Google Calendar feeds
+  - ICS Calendar feeds
+
+- Automated scraping and data collection
+- Modern web interface
+- Event categorization and filtering
+- Location-based event discovery
+
+## Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/legal.git
+cd legal
+```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up environment variables:
+Create a `.env.local` file in the root directory with:
+```
+GOOGLE_API_KEY=your_google_api_key
+```
+
+5. Run the scrapers:
+```bash
+python scrapers/cron_handler.py
+```
+
+## Development
+
+- Scrapers are located in the `scrapers/` directory
+- Each scraper inherits from `BaseScraper` in `base_scraper.py`
+- Configuration for calendars is in `calendar_configs.py`
+- Event data is stored in `public/data/`
+
+## Deployment
+
+This project is deployed on Vercel. The deployment process is automated through GitHub Actions.
+
+### Environment Variables for Vercel
+
+Set these in your Vercel project settings:
+- `GOOGLE_API_KEY`: Your Google Calendar API key
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+MIT License - see LICENSE file for details

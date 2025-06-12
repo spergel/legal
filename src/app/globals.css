@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FFFBEB;
+  --foreground: #78350F;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #78350F;
+    --foreground: #FFFBEB;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.scroll-hide {
+  transform: translateY(-100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+header {
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+@layer base {
+  h1 {
+    @apply text-4xl font-bold text-legal-900;
+  }
+  h2 {
+    @apply text-3xl font-semibold text-legal-800;
+  }
+  h3 {
+    @apply text-2xl font-semibold text-legal-700;
+  }
+  a {
+    @apply text-legal-600 hover:text-legal-700;
+  }
+}
