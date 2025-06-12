@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
+  --foreground-rgb: 15, 23, 42;
+  --background-rgb: 248, 250, 252;
 }
 
 body {
@@ -30,7 +30,10 @@ header {
     @apply text-3xl font-semibold text-legal-800;
   }
   h3 {
-    @apply text-2xl font-semibold text-legal-700;
+    @apply text-2xl font-medium text-legal-700;
+  }
+  p {
+    @apply text-legal-600;
   }
   a {
     @apply text-legal-600 hover:text-legal-700;
