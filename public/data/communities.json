@@ -1,0 +1,172 @@
+{
+  "communities": [
+    {
+      "id": "com_nycbar",
+      "name": "New York City Bar Association",
+      "url": "https://www.nycbar.org/",
+      "description": "The New York City Bar Association is a voluntary association of lawyers and law students.",
+      "category": ["Bar Association", "Professional Organization"],
+      "location": {
+        "address": "42 West 44th Street",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10036"
+      }
+    },
+    {
+      "id": "com_nysba",
+      "name": "New York State Bar Association",
+      "url": "https://nysba.org/",
+      "description": "The New York State Bar Association is the largest voluntary state bar association in the nation.",
+      "category": ["Bar Association", "Professional Organization"],
+      "location": {
+        "address": "1 Elk Street",
+        "city": "Albany",
+        "state": "NY",
+        "country": "USA",
+        "zip": "12207"
+      }
+    },
+    {
+      "id": "com_nycla",
+      "name": "New York County Lawyers Association",
+      "url": "https://www.nycla.org/",
+      "description": "The New York County Lawyers Association is one of the oldest and largest bar associations in the country.",
+      "category": ["Bar Association", "Professional Organization"],
+      "location": {
+        "address": "14 Vesey Street",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10007"
+      }
+    },
+    {
+      "id": "com_fordham_law",
+      "name": "Fordham University School of Law",
+      "url": "https://law.fordham.edu/",
+      "description": "Fordham Law School is a leading law school in New York City, known for its strong programs in corporate law and international law.",
+      "category": ["University", "Law School"],
+      "location": {
+        "address": "150 West 62nd Street",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10023"
+      }
+    },
+    {
+      "id": "com_cuny_law",
+      "name": "CUNY School of Law",
+      "url": "https://www.law.cuny.edu/",
+      "description": "CUNY School of Law is a public law school in New York City, known for its public interest focus.",
+      "category": ["University", "Law School"],
+      "location": {
+        "address": "2 Court Square",
+        "city": "Long Island City",
+        "state": "NY",
+        "country": "USA",
+        "zip": "11101"
+      }
+    },
+    {
+      "id": "com_nyu_law",
+      "name": "NYU School of Law",
+      "url": "https://www.law.nyu.edu/",
+      "description": "NYU School of Law is one of the nation's premier law schools, known for its innovative programs and global perspective.",
+      "category": ["University", "Law School"],
+      "location": {
+        "address": "40 Washington Square South",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10012"
+      }
+    },
+    {
+      "id": "com_nlg_nyc",
+      "name": "National Lawyers Guild - NYC Chapter",
+      "url": "https://nlgnyc.org/",
+      "description": "The NLG-NYC is a progressive bar association dedicated to using law for the people, uniting lawyers, law students, legal workers, and jailhouse lawyers.",
+      "category": ["Non-Profit", "Professional Organization"],
+      "location": {
+        "address": "14 East 4th Street, Suite 601",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10012"
+      }
+    },
+    {
+      "id": "com_legalservices_nyc",
+      "name": "Legal Services NYC",
+      "url": "https://www.legalservicesnyc.org/",
+      "description": "Legal Services NYC is the largest provider of civil legal services for low-income New Yorkers.",
+      "category": ["Non-Profit", "Legal Services"],
+      "location": {
+        "address": "40 Worth Street, Suite 606",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10013"
+      }
+    },
+    {
+      "id": "com_lawyers_alliance",
+      "name": "Lawyers Alliance",
+      "url": "https://lawyersalliance.org/",
+      "description": "Lawyers Alliance provides business and transactional legal services to nonprofits and social enterprises.",
+      "category": ["Non-Profit", "Legal Services"],
+      "location": {
+        "address": "1700 Broadway, 41st Floor",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10019"
+      }
+    },
+    {
+      "id": "com_aabany",
+      "name": "Asian American Bar Association of New York",
+      "url": "https://www.aabany.org/",
+      "description": "AABANY is a professional membership organization of attorneys concerned with issues affecting the Asian Pacific American community.",
+      "category": ["Bar Association", "Professional Organization"],
+      "location": {
+        "address": "31 West 32nd Street, Suite 201",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10001"
+      }
+    },
+    {
+      "id": "com_nyctla",
+      "name": "New York City Trial Lawyers Association",
+      "url": "https://nyctla.com/",
+      "description": "NYCTLA is a professional organization dedicated to protecting the rights of injured victims and their families.",
+      "category": ["Bar Association", "Professional Organization"],
+      "location": {
+        "address": "132 Nassau Street",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10038"
+      }
+    },
+    {
+      "id": "com_mbbanyc",
+      "name": "Metropolitan Black Bar Association",
+      "url": "https://mbbanyc.org/",
+      "description": "The Metropolitan Black Bar Association is a professional organization of Black attorneys in the New York City metropolitan area.",
+      "category": ["Bar Association", "Professional Organization"],
+      "location": {
+        "address": "31 West 32nd Street, Suite 201",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10001"
+      }
+    }
+  ]
+} 

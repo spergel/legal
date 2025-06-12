@@ -55,8 +55,12 @@ export default function CommunitiesList({ communities: initialCommunities }: Com
                 <p className="text-sm text-amber-800 mb-3">
                   <span className="font-semibold">Location:</span> {displayLocation}
                 </p>
-                <p className="text-amber-900 text-sm mb-4 h-16 overflow-hidden">
-                  {getDescriptionSnippet(community.description)}
+                <p className="text-amber-900 text-sm mb-4 h-24 overflow-y-auto prose prose-amber max-w-none">
+                  {community.description ? (
+                    <span dangerouslySetInnerHTML={{ __html: community.description }} />
+                  ) : (
+                    'No description available.'
+                  )}
                 </p>
                 <div className="mb-3">
                   {community.category?.slice(0, 3).map(cat => (

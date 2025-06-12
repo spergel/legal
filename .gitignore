@@ -82,7 +82,6 @@ Thumbs.db
 
 # Project specific
 scrapers/data/
-public/data/
 *.log
 
 package-lock.json
