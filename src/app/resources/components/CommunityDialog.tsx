@@ -111,7 +111,7 @@ export default function CommunityDialog({ communityId, onClose }: CommunityDialo
                     >
                       <h4 className="text-purple-300 font-semibold mb-1">{event.name}</h4>
                       <p className="text-sm text-gray-300">
-                        {formatDate(event.startDate)}
+                        {formatDate(event.startDate.toISOString())}
                       </p>
                     </Link>
                   ))}

@@ -3,8 +3,8 @@ import { Metadata } from 'next';
 import CommunitiesList from './components/CommunitiesList';
 
 export const metadata: Metadata = {
-  title: 'Legal Resources & Organizations | NYC Legal Calendar',
-  description: 'Find legal resources, bar associations, law schools, and organizations for the public and legal professionals in NYC.',
+  title: 'Resources & Organizations | Event Calendar',
+  description: 'Find resources, organizations, and helpful links for your community.',
 };
 
 export default async function Resources() {

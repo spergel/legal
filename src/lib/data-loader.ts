@@ -1,36 +1,9 @@
 'use server';
 
-import fs from 'fs';
-import path from 'path';
-import { AllEventsCombinedData, Event, LocationsData, Location, CommunitiesData, Community } from '@/types';
+import { PrismaClient } from '@prisma/client';
+import { Event, Location, Community, EventStatus } from '@/types';
 
-const dataDir = path.join(process.cwd(), 'public', 'data');
-
-// Cache loaded data to avoid reading files multiple times during a single build/request
-let eventsCache: AllEventsCombinedData | null = null;
-let locationsCache: LocationsData | null = null;
-let communitiesCache: CommunitiesData | null = null;
-
-async function loadAllEvents(): Promise<AllEventsCombinedData> {
-  if (eventsCache) {
-    return eventsCache;
-  }
-  try {
-    const filePath = path.join(dataDir, 'all_events_combined.json');
-    const fileContents = await fs.promises.readFile(filePath, 'utf8');
-    eventsCache = JSON.parse(fileContents) as AllEventsCombinedData;
-    // Basic validation (optional but good practice)
-    if (!eventsCache || typeof eventsCache.total_events_combined !== 'number' || !Array.isArray(eventsCache.events)) {
-        console.error('Invalid structure in all_events_combined.json');
-        throw new Error('Invalid event data structure');
-    }
-    return eventsCache;
-  } catch (error) {
-    console.error('Failed to load or parse all_events_combined.json:', error);
-    // Return a default structure or re-throw, depending on desired error handling
-    return { last_updated_utc: '', total_events_combined: 0, events: [] };
-  }
-}
+const prisma = new PrismaClient();
 
 // Helper function to check if an event is upcoming
 function isUpcomingEvent(event: Event): boolean {
@@ -40,76 +13,109 @@ function isUpcomingEvent(event: Event): boolean {
 }
 
 export async function getAllEvents(): Promise<Event[]> {
-  const events = await loadAllEvents();
-  return events.events.filter(isUpcomingEvent).sort((a, b) => 
-    new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-  );
-}
-
-export async function getEventById(id: string): Promise<Event | undefined> {
-  const events = await getAllEvents();
-  return events.find(event => event.id === id);
-}
-
-async function loadAllLocations(): Promise<LocationsData> {
-  if (locationsCache) {
-    return locationsCache;
-  }
-  try {
-    const filePath = path.join(dataDir, 'locations.json');
-    const fileContents = await fs.promises.readFile(filePath, 'utf8');
-    locationsCache = JSON.parse(fileContents) as LocationsData;
-    if (!locationsCache || !Array.isArray(locationsCache.locations)) {
-        console.error('Invalid structure in locations.json');
-        throw new Error('Invalid location data structure');
+  const events = await prisma.event.findMany({
+    where: {
+      status: {
+        in: ['APPROVED', 'FEATURED']
+      }
+    },
+    orderBy: {
+      startDate: 'asc'
+    },
+    include: {
+      location: true,
+      community: true
     }
-    return locationsCache;
-  } catch (error) {
-    console.error('Failed to load or parse locations.json:', error);
-    return { locations: [] };
-  }
+  });
+  
+  return events.filter(isUpcomingEvent);
+}
+
+export async function getAllEventsForAdmin(): Promise<Event[]> {
+  const events = await prisma.event.findMany({
+    orderBy: {
+      startDate: 'asc'
+    },
+    include: {
+      location: true,
+      community: true
+    }
+  });
+  
+  return events;
+}
+
+export async function getEventById(id: string): Promise<Event | null> {
+  return prisma.event.findUnique({
+    where: { id },
+    include: {
+      location: true,
+      community: true
+    }
+  });
+}
+
+export async function getPendingEvents(): Promise<Event[]> {
+  return prisma.event.findMany({
+    where: {
+      status: 'PENDING'
+    },
+    orderBy: {
+      submittedAt: 'desc'
+    },
+    include: {
+      location: true,
+      community: true
+    }
+  });
+}
+
+export async function updateEventStatus(
+  eventId: string, 
+  status: EventStatus, 
+  updatedBy: string,
+  notes?: string
+): Promise<Event> {
+  return prisma.event.update({
+    where: { id: eventId },
+    data: {
+      status: { set: status },
+      updatedBy,
+      notes,
+      updatedAt: new Date()
+    }
+  });
 }
 
 export async function getAllLocations(): Promise<Location[]> {
-  const data = await loadAllLocations();
-  return data.locations;
-}
-
-export async function getLocationById(id: string): Promise<Location | undefined> {
-  const locations = await getAllLocations();
-  return locations.find(loc => loc.id === id);
-}
-
-async function loadAllCommunities(): Promise<CommunitiesData> {
-  if (communitiesCache) {
-    return communitiesCache;
-  }
-  try {
-    const filePath = path.join(dataDir, 'communities.json');
-    const fileContents = await fs.promises.readFile(filePath, 'utf8');
-    communitiesCache = JSON.parse(fileContents) as CommunitiesData;
-    if (!communitiesCache || !Array.isArray(communitiesCache.communities)) {
-        console.error('Invalid structure in communities.json');
-        throw new Error('Invalid community data structure');
+  return prisma.location.findMany({
+    orderBy: {
+      name: 'asc'
     }
-    return communitiesCache;
-  } catch (error) {
-    console.error('Failed to load or parse communities.json:', error);
-    return { communities: [] };
-  }
+  });
+}
+
+export async function getLocationById(id: string): Promise<Location | null> {
+  return prisma.location.findUnique({
+    where: { id }
+  });
 }
 
 export async function getAllCommunities(): Promise<Community[]> {
-  const data = await loadAllCommunities();
-  return data.communities;
+  return prisma.community.findMany({
+    orderBy: {
+      name: 'asc'
+    }
+  });
 }
 
-export async function getCommunityById(id: string): Promise<Community | undefined> {
-  const communities = await getAllCommunities();
-  return communities.find(com => com.id === id);
+export async function getCommunityById(id: string): Promise<Community | null> {
+  return prisma.community.findUnique({
+    where: { id }
+  });
 }
 
-// Helper function to format date strings (example)
+// Helper function to format date strings
 export async function formatDate(dateString: string): Promise<string> {
   try {
     return new Date(dateString).toLocaleDateString('en-US', {

@@ -28,7 +28,7 @@ export default function CommunitiesList({ communities: initialCommunities }: Com
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-amber-800">Legal Resources & Organizations</h1>
+        <h1 className="text-4xl font-bold text-amber-800">Resources & Organizations</h1>
         <Link href="/" className="text-amber-800 hover:text-amber-700 font-medium">
           &larr; Back to Home
         </Link>
@@ -45,9 +45,15 @@ export default function CommunitiesList({ communities: initialCommunities }: Com
           const displayLocation = community.location 
             ? `${community.location.city || ''}${community.location.state ? `, ${community.location.state}` : ''}`
             : 'Online';
-          
+          const communityLink = community.url || null;
           return (
-            <div key={community.id} className="block bg-amber-50 rounded-lg shadow-lg hover:shadow-amber-200/30 transition-shadow duration-300 overflow-hidden border border-amber-200">
+            <div
+              key={community.id}
+              className={`block bg-amber-50 rounded-lg shadow-lg hover:shadow-amber-200/30 transition-shadow duration-300 overflow-hidden border border-amber-200 ${communityLink ? 'cursor-pointer' : 'opacity-50'}`}
+              onClick={() => {
+                if (communityLink) window.open(communityLink, '_blank');
+              }}
+            >
               <div className="p-6">
                 <h2 className="text-2xl font-semibold text-amber-900 mb-2 truncate" title={community.name}>
                   {community.name}
@@ -69,16 +75,15 @@ export default function CommunitiesList({ communities: initialCommunities }: Com
                     </span>
                   ))}
                 </div>
-                {community.url && (
-                  <a 
-                    href={community.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-right text-amber-800 hover:text-amber-700 font-medium block"
-                  >
-                    Visit Website &rarr;
-                  </a>
-                )}
+                <a 
+                  href={communityLink || undefined}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-right text-amber-800 hover:text-amber-700 font-medium block ${communityLink ? '' : 'pointer-events-none opacity-50'}`}
+                  onClick={e => e.stopPropagation()}
+                >
+                  Go to Link &rarr;
+                </a>
               </div>
             </div>
           );

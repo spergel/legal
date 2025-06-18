@@ -37,24 +37,29 @@ export interface EventMetadata {
 
 export interface Event {
   id: string;
+  externalId?: string | null;
   name: string;
-  type: string | null;
-  status: string | null;
-  communityId: string | null;
-  locationId: string | null;
-  description: string | null;
-  startDate: string; // ISO date string
-  endDate: string;   // ISO date string
-  image: string | null;
-  tags: string[];
-  category: string[];
-  price: Price | null;
-  capacity: number | null;
-  registrationRequired: boolean | null;
-  metadata: EventMetadata | null;
-  // Optional: Add fields from linked data if you plan to merge them
-  // location?: Location;
-  // community?: Community;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  locationName: string;
+  url?: string | null;
+  cleCredits?: number | null;
+  status: string;
+  submittedBy: string;
+  submittedAt: Date;
+  updatedAt: Date;
+  updatedBy?: string | null;
+  notes?: string | null;
+  locationId?: string | null;
+  location?: Location | null;
+  communityId?: string | null;
+  community?: Community | null;
+  tags?: string[] | null;
+  image?: string | null;
+  metadata?: EventMetadata | null;
+  price?: Record<string, any> | null;
+  category?: string[] | null;
 }
 
 export interface Location {
@@ -62,11 +67,11 @@ export interface Location {
   name: string;
   address: string | null;
   city: string | null;
-  state: string | null;
-  country: string | null;
-  zip?: string | null; // Optional as not all locations have it
-  type: string; // e.g., "Online", "Offline"
-  communityId: string | null;
+  state?: string | null;
+  zip?: string | null;
+  country?: string | null; // Optional: not always present from DB
+  type?: string; // Optional: not always present from DB
+  communityId?: string | null; // Optional: not always present from DB
 }
 
 export interface CommunityLocation { // Used within Community object
@@ -80,10 +85,10 @@ export interface CommunityLocation { // Used within Community object
 export interface Community {
   id: string;
   name: string;
-  url: string | null;
+  url?: string | null;
   description: string | null;
-  category: string[];
-  location: CommunityLocation | null;
+  category?: string[];
+  location?: CommunityLocation | null;
   // Optional: Add fields for events if you plan to list them here
   // events?: Event[];
 }
@@ -101,4 +106,6 @@ export interface LocationsData {
 
 export interface CommunitiesData {
   communities: Community[];
-} 
+}
+
+export type EventStatus = 'PENDING' | 'APPROVED' | 'DENIED' | 'FEATURED' | 'CANCELLED' | 'ARCHIVED'; 

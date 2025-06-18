@@ -85,3 +85,4 @@ scrapers/data/
 *.log
 
 package-lock.json
+/src/generated/prisma

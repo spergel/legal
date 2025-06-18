@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Events | NYC Legal Calendar',
-  description: 'Browse and discover legal events, CLE programs, and professional development opportunities for legal professionals in New York City.',
+  title: 'Events | Event Calendar',
+  description: 'Browse and discover events, programs, and opportunities.',
 };
 
 export default function EventsLayout({
@@ -12,6 +12,7 @@ export default function EventsLayout({
 }) {
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Main events layout. Customize styles and structure as needed. */}
       {children}
     </div>
   );
