@@ -13,6 +13,8 @@ export default function EventSubmitForm({ user }: EventSubmitFormProps) {
     startDate: '',
     endDate: '',
     location: '',
+    url: '',
+    cleCredits: '',
     tags: '',
     organization: '',
     image: '',
@@ -49,9 +51,12 @@ export default function EventSubmitForm({ user }: EventSubmitFormProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, image: imageUrl }),
       });
-      if (!res.ok) throw new Error('Event submission failed');
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Event submission failed');
+      }
       setSuccess(true);
-      setForm({ name: '', description: '', startDate: '', endDate: '', location: '', tags: '', organization: '', image: '' });
+      setForm({ name: '', description: '', startDate: '', endDate: '', location: '', url: '', cleCredits: '', tags: '', organization: '', image: '' });
       setImageFile(null);
     } catch (err: any) {
       setError(err.message || 'Submission failed');
@@ -63,7 +68,7 @@ export default function EventSubmitForm({ user }: EventSubmitFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block font-semibold mb-1">Event Name</label>
+        <label className="block font-semibold mb-1">Event Name *</label>
         <input
           type="text"
           value={form.name}
@@ -73,17 +78,18 @@ export default function EventSubmitForm({ user }: EventSubmitFormProps) {
         />
       </div>
       <div>
-        <label className="block font-semibold mb-1">Description</label>
+        <label className="block font-semibold mb-1">Description *</label>
         <textarea
           value={form.description}
           onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
           required
+          rows={4}
           className="w-full px-3 py-2 border border-[#c8b08a] rounded"
         />
       </div>
       <div className="flex gap-4">
         <div className="flex-1">
-          <label className="block font-semibold mb-1">Start Date & Time</label>
+          <label className="block font-semibold mb-1">Start Date & Time *</label>
           <input
             type="datetime-local"
             value={form.startDate}
@@ -108,6 +114,28 @@ export default function EventSubmitForm({ user }: EventSubmitFormProps) {
           type="text"
           value={form.location}
           onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
+          placeholder="Online/TBD"
+          className="w-full px-3 py-2 border border-[#c8b08a] rounded"
+        />
+      </div>
+      <div>
+        <label className="block font-semibold mb-1">Event Website URL</label>
+        <input
+          type="url"
+          value={form.url}
+          onChange={e => setForm(f => ({ ...f, url: e.target.value }))}
+          placeholder="https://example.com/event"
+          className="w-full px-3 py-2 border border-[#c8b08a] rounded"
+        />
+      </div>
+      <div>
+        <label className="block font-semibold mb-1">CLE Credits</label>
+        <input
+          type="number"
+          value={form.cleCredits}
+          onChange={e => setForm(f => ({ ...f, cleCredits: e.target.value }))}
+          placeholder="0"
+          min="0"
           className="w-full px-3 py-2 border border-[#c8b08a] rounded"
         />
       </div>
@@ -117,6 +145,7 @@ export default function EventSubmitForm({ user }: EventSubmitFormProps) {
           type="text"
           value={form.tags}
           onChange={e => setForm(f => ({ ...f, tags: e.target.value }))}
+          placeholder="legal, ethics, cle"
           className="w-full px-3 py-2 border border-[#c8b08a] rounded"
         />
       </div>
@@ -126,6 +155,7 @@ export default function EventSubmitForm({ user }: EventSubmitFormProps) {
           type="text"
           value={form.organization}
           onChange={e => setForm(f => ({ ...f, organization: e.target.value }))}
+          placeholder="Organization name"
           className="w-full px-3 py-2 border border-[#c8b08a] rounded"
         />
       </div>
