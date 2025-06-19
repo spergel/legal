@@ -32,9 +32,14 @@ export default function EventsFilter({ events, onFilteredEvents, className = '' 
     { id: 'this-month', label: 'This Month', value: 'this-month' },
   ];
 
+  // Safely extract categories from events
+  const categories = events
+    .flatMap(event => event.category || [])
+    .filter(Boolean);
+  
   const categoryOptions: FilterOption[] = [
     { id: 'all', label: 'All Categories', value: 'all' },
-    ...Array.from(new Set(events.flatMap(event => event.category || [])))
+    ...Array.from(new Set(categories))
       .map(category => ({
         id: category,
         label: category,
@@ -116,17 +121,25 @@ export default function EventsFilter({ events, onFilteredEvents, className = '' 
     // Apply category filter
     if (filters.category !== 'all') {
       filteredEvents = filteredEvents.filter(event => 
-        event.category?.includes(filters.category)
+        event.category && Array.isArray(event.category) && event.category.includes(filters.category)
       );
     }
 
     // Apply price filter
     if (filters.price !== 'all') {
       filteredEvents = filteredEvents.filter(event => {
+        if (!event.price) {
+          return filters.price === 'free';
+        }
+        
+        // Handle price as Record<string, any>
+        const priceType = event.price.type || event.price.priceType || '';
+        const priceAmount = event.price.amount || event.price.priceAmount || 0;
+        
         if (filters.price === 'free') {
-          return !event.price || event.price.type?.toLowerCase() === 'free' || event.price.amount === 0;
+          return !priceType || priceType.toLowerCase() === 'free' || priceAmount === 0;
         } else if (filters.price === 'paid') {
-          return event.price && event.price.type?.toLowerCase() !== 'free' && event.price.amount > 0;
+          return priceType && priceType.toLowerCase() !== 'free' && priceAmount > 0;
         }
         return true;
       });
@@ -135,7 +148,7 @@ export default function EventsFilter({ events, onFilteredEvents, className = '' 
     // Apply CLE filter
     if (filters.cle === 'cle') {
       filteredEvents = filteredEvents.filter(event => 
-        event.metadata?.cle_credits != null
+        event.metadata && event.metadata.cle_credits != null
       );
     }
 
