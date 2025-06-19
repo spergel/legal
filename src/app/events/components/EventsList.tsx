@@ -26,9 +26,14 @@ function getDescriptionSnippet(htmlDescription: string | null | undefined, maxLe
 
 export default function EventsList({ events: initialEvents, showStarredOnly = false }: EventsListProps) {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
-  const [filteredEvents, setFilteredEvents] = useState(initialEvents);
+  const [filteredEvents, setFilteredEvents] = useState(initialEvents || []);
   const [starredEventIds, setStarredEventIds] = useState<string[]>([]);
   const [isLoadingStarred, setIsLoadingStarred] = useState(false);
+
+  // Update filtered events when initialEvents changes
+  useEffect(() => {
+    setFilteredEvents(initialEvents || []);
+  }, [initialEvents]);
 
   // Load starred events for filtering
   useEffect(() => {
@@ -37,7 +42,11 @@ export default function EventsList({ events: initialEvents, showStarredOnly = fa
       fetch('/api/user/starred-events')
         .then(res => res.json())
         .then(data => {
-          setStarredEventIds(data.events.map((event: Event) => event.id));
+          if (data.events && Array.isArray(data.events)) {
+            setStarredEventIds(data.events.map((event: Event) => event.id));
+          } else {
+            setStarredEventIds([]);
+          }
         })
         .catch(() => setStarredEventIds([]))
         .finally(() => setIsLoadingStarred(false));

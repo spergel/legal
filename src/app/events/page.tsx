@@ -8,14 +8,20 @@ export const metadata: Metadata = {
 };
 
 export default async function Events() {
-  const events = await getAllEvents();
+  try {
+    const events = await getAllEvents();
 
-  // Format dates for display
-  const formattedEvents = await Promise.all(events.map(async event => ({
-    ...event,
-    formattedStartDate: await formatDate(event.startDate.toISOString()),
-    formattedEndDate: event.endDate ? await formatDate(event.endDate.toISOString()) : null,
-  })));
+    // Format dates for display
+    const formattedEvents = await Promise.all(events.map(async event => ({
+      ...event,
+      formattedStartDate: await formatDate(event.startDate.toISOString()),
+      formattedEndDate: event.endDate ? await formatDate(event.endDate.toISOString()) : null,
+    })));
 
-  return <EventsClientPage events={formattedEvents} />;
+    return <EventsClientPage events={formattedEvents} />;
+  } catch (error) {
+    console.error('Error loading events:', error);
+    // Return empty array if there's an error
+    return <EventsClientPage events={[]} />;
+  }
 } 
