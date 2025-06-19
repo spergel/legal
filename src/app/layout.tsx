@@ -35,6 +35,11 @@ export default async function RootLayout({
               <Link href="/events" className="text-lg font-semibold hover:underline underline-offset-4 decoration-[#e2c799] transition-colors duration-200">
                 Events
               </Link>
+              {session?.user && (
+                <Link href="/starred" className="text-lg font-semibold hover:underline underline-offset-4 decoration-[#e2c799] transition-colors duration-200">
+                  Starred Events
+                </Link>
+              )}
               <Link href="/resources" className="text-lg font-semibold hover:underline underline-offset-4 decoration-[#e2c799] transition-colors duration-200">
                 Resources
               </Link>

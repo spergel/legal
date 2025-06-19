@@ -5,13 +5,14 @@ import { Event } from '@/types';
 import { useState, useEffect } from 'react';
 import EventDialog from '@/components/EventDialog';
 import EventsFilter from '@/components/EventsFilter';
+import StarButton from '@/components/StarButton';
 
 interface EventsListProps {
   events: (Event & {
     formattedStartDate: string;
     formattedEndDate: string | null;
   })[];
-  showBookmarkedOnly?: boolean;
+  showStarredOnly?: boolean;
 }
 
 // Helper to get a snippet of the description
@@ -23,45 +24,55 @@ function getDescriptionSnippet(htmlDescription: string | null | undefined, maxLe
   return text.substring(0, maxLength) + '...';
 }
 
-export default function EventsList({ events: initialEvents, showBookmarkedOnly = false }: EventsListProps) {
+export default function EventsList({ events: initialEvents, showStarredOnly = false }: EventsListProps) {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [filteredEvents, setFilteredEvents] = useState(initialEvents);
-  const [bookmarked, setBookmarked] = useState<string[]>([]);
+  const [starredEventIds, setStarredEventIds] = useState<string[]>([]);
+  const [isLoadingStarred, setIsLoadingStarred] = useState(false);
 
+  // Load starred events for filtering
   useEffect(() => {
-    const saved = localStorage.getItem('bookmarkedEvents');
-    setBookmarked(saved ? JSON.parse(saved) : []);
-  }, []);
+    if (showStarredOnly) {
+      setIsLoadingStarred(true);
+      fetch('/api/user/starred-events')
+        .then(res => res.json())
+        .then(data => {
+          setStarredEventIds(data.events.map((event: Event) => event.id));
+        })
+        .catch(() => setStarredEventIds([]))
+        .finally(() => setIsLoadingStarred(false));
+    }
+  }, [showStarredOnly]);
 
-  function toggleBookmark(eventId: string) {
-    setBookmarked(prev => {
-      const updated = prev.includes(eventId)
-        ? prev.filter(id => id !== eventId)
-        : [...prev, eventId];
-      localStorage.setItem('bookmarkedEvents', JSON.stringify(updated));
-      return updated;
-    });
-  }
-
-  // Filter events if showBookmarkedOnly is enabled
-  const eventsToShow = showBookmarkedOnly
-    ? filteredEvents.filter(event => bookmarked.includes(event.id))
+  // Filter events if showStarredOnly is enabled
+  const eventsToShow = showStarredOnly
+    ? filteredEvents.filter(event => starredEventIds.includes(event.id))
     : filteredEvents;
 
-  // Export URLs for bookmarked events
+  // Export URLs for starred events
   const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-  const bookmarkedParam = bookmarked.length ? `id=${bookmarked.join(',')}` : '';
-  const icsUrl = `${baseUrl}/api/events/ics${bookmarkedParam ? '?' + bookmarkedParam : ''}`;
-  const rssUrl = `${baseUrl}/api/rss${bookmarkedParam ? '?' + bookmarkedParam : ''}`;
+  const starredParam = starredEventIds.length ? `id=${starredEventIds.join(',')}` : '';
+  const icsUrl = `${baseUrl}/api/events/ics${starredParam ? '?' + starredParam : ''}`;
+  const rssUrl = `${baseUrl}/api/rss${starredParam ? '?' + starredParam : ''}`;
+
+  if (showStarredOnly && isLoadingStarred) {
+    return <p className="text-gray-400">Loading starred events...</p>;
+  }
 
   if (!initialEvents || initialEvents.length === 0) {
     return <p className="text-gray-400">No events found at the moment. Check back soon!</p>;
   }
 
+  if (showStarredOnly && eventsToShow.length === 0) {
+    return <p className="text-gray-400">No starred events found. Star some events to see them here!</p>;
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-amber-800">Events</h1>
+        <h1 className="text-4xl font-bold text-amber-800">
+          {showStarredOnly ? 'Starred Events' : 'Events'}
+        </h1>
         <div className="flex items-center gap-4">
           <Link href="/" className="text-amber-800 hover:text-amber-700 font-medium">
             &larr; Back to Home
@@ -83,18 +94,11 @@ export default function EventsList({ events: initialEvents, showBookmarkedOnly =
             onClick={() => setSelectedEventId(event.id)}
           >
             <div className="p-6 relative">
-              {/* Bookmark button */}
-              <button
-                onClick={e => { e.stopPropagation(); toggleBookmark(event.id); }}
-                className="absolute top-4 right-4 text-2xl focus:outline-none"
-                title={bookmarked.includes(event.id) ? 'Remove Bookmark' : 'Bookmark Event'}
-                aria-label={bookmarked.includes(event.id) ? 'Remove Bookmark' : 'Bookmark Event'}
-              >
-                {bookmarked.includes(event.id)
-                  ? <span className="text-yellow-500">★</span>
-                  : <span className="text-gray-400">☆</span>
-                }
-              </button>
+              {/* Star button */}
+              <div className="absolute top-4 right-4">
+                <StarButton eventId={event.id} />
+              </div>
+              
               <h2 className="text-2xl font-semibold text-amber-900 mb-2 truncate" title={event.name}>{event.name}</h2>
               <p className="text-sm text-amber-800 mb-1">
                 <span className="font-semibold">Date:</span> {event.formattedStartDate}
