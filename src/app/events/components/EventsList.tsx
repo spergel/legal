@@ -30,9 +30,24 @@ export default function EventsList({ events: initialEvents, showStarredOnly = fa
   const [starredEventIds, setStarredEventIds] = useState<string[]>([]);
   const [isLoadingStarred, setIsLoadingStarred] = useState(false);
 
+  // Add logging to debug the events data
+  useEffect(() => {
+    console.log('EventsList received initialEvents:', initialEvents);
+    console.log('Initial events array length:', initialEvents?.length || 0);
+    if (initialEvents && initialEvents.length > 0) {
+      console.log('First event sample:', initialEvents[0]);
+    }
+  }, [initialEvents]);
+
   // Update filtered events when initialEvents changes
   useEffect(() => {
-    setFilteredEvents(initialEvents || []);
+    try {
+      console.log('Updating filtered events from initialEvents:', initialEvents?.length || 0);
+      setFilteredEvents(initialEvents || []);
+    } catch (error) {
+      console.error('Error updating filtered events:', error);
+      setFilteredEvents([]);
+    }
   }, [initialEvents]);
 
   // Load starred events for filtering
@@ -42,20 +57,35 @@ export default function EventsList({ events: initialEvents, showStarredOnly = fa
       fetch('/api/user/starred-events')
         .then(res => res.json())
         .then(data => {
-          if (data.events && Array.isArray(data.events)) {
-            setStarredEventIds(data.events.map((event: Event) => event.id));
-          } else {
+          try {
+            if (data.events && Array.isArray(data.events)) {
+              setStarredEventIds(data.events.map((event: Event) => event.id));
+            } else {
+              setStarredEventIds([]);
+            }
+          } catch (error) {
+            console.error('Error processing starred events:', error);
             setStarredEventIds([]);
           }
         })
-        .catch(() => setStarredEventIds([]))
+        .catch((error) => {
+          console.error('Error fetching starred events:', error);
+          setStarredEventIds([]);
+        })
         .finally(() => setIsLoadingStarred(false));
     }
   }, [showStarredOnly]);
 
   // Filter events if showStarredOnly is enabled
   const eventsToShow = showStarredOnly
-    ? filteredEvents.filter(event => starredEventIds.includes(event.id))
+    ? filteredEvents.filter(event => {
+        try {
+          return event && event.id && starredEventIds.includes(event.id);
+        } catch (error) {
+          console.error('Error filtering starred event:', error, event);
+          return false;
+        }
+      })
     : filteredEvents;
 
   // Export URLs for starred events
@@ -96,52 +126,65 @@ export default function EventsList({ events: initialEvents, showStarredOnly = fa
       />
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {eventsToShow.map((event) => (
-          <div
-            key={event.id}
-            className="block bg-amber-50 rounded-lg shadow-lg hover:shadow-amber-200/30 transition-shadow duration-300 overflow-hidden border border-amber-200 cursor-pointer"
-            onClick={() => setSelectedEventId(event.id)}
-          >
-            <div className="p-6 relative">
-              {/* Star button */}
-              <div className="absolute top-4 right-4">
-                <StarButton eventId={event.id} />
-              </div>
-              
-              <h2 className="text-2xl font-semibold text-amber-900 mb-2 truncate" title={event.name}>{event.name}</h2>
-              <p className="text-sm text-amber-800 mb-1">
-                <span className="font-semibold">Date:</span> {event.formattedStartDate}
-              </p>
-              <p className="text-sm text-amber-800 mb-3">
-                <span className="font-semibold">Location:</span> {event.locationName || 'Online/TBD'}
-              </p>
-              {event.cleCredits && (
-                <p className="text-sm text-amber-700 mb-3">
-                  <span className="font-semibold">CLE Credits:</span> {event.cleCredits}
-                </p>
-              )}
-              <p className="text-amber-900 text-sm mb-4 h-16 overflow-hidden">
-                {getDescriptionSnippet(event.description)}
-              </p>
-              {event.community && (
-                <div className="mb-3">
-                  <span className="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
-                    {event.community.name}
-                  </span>
-                </div>
-              )}
-              <a
-                href={event.url || undefined}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`text-right text-amber-800 hover:text-amber-700 font-medium w-full block ${event.url ? '' : 'opacity-50 pointer-events-none'}`}
-                onClick={e => e.stopPropagation()}
+        {eventsToShow.map((event) => {
+          try {
+            // Ensure event has required properties
+            if (!event || !event.id || !event.name) {
+              console.warn('Skipping invalid event:', event);
+              return null;
+            }
+
+            return (
+              <div
+                key={event.id}
+                className="block bg-amber-50 rounded-lg shadow-lg hover:shadow-amber-200/30 transition-shadow duration-300 overflow-hidden border border-amber-200 cursor-pointer"
+                onClick={() => setSelectedEventId(event.id)}
               >
-                Go to Link &rarr;
-              </a>
-            </div>
-          </div>
-        ))}
+                <div className="p-6 relative">
+                  {/* Star button */}
+                  <div className="absolute top-4 right-4">
+                    <StarButton eventId={event.id} />
+                  </div>
+                  
+                  <h2 className="text-2xl font-semibold text-amber-900 mb-2 truncate" title={event.name}>{event.name}</h2>
+                  <p className="text-sm text-amber-800 mb-1">
+                    <span className="font-semibold">Date:</span> {event.formattedStartDate || 'Date not available'}
+                  </p>
+                  <p className="text-sm text-amber-800 mb-3">
+                    <span className="font-semibold">Location:</span> {event.locationName || 'Online/TBD'}
+                  </p>
+                  {event.cleCredits && (
+                    <p className="text-sm text-amber-700 mb-3">
+                      <span className="font-semibold">CLE Credits:</span> {event.cleCredits}
+                    </p>
+                  )}
+                  <p className="text-amber-900 text-sm mb-4 h-16 overflow-hidden">
+                    {getDescriptionSnippet(event.description)}
+                  </p>
+                  {event.community && (
+                    <div className="mb-3">
+                      <span className="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
+                        {event.community.name}
+                      </span>
+                    </div>
+                  )}
+                  <a
+                    href={event.url || undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-right text-amber-800 hover:text-amber-700 font-medium w-full block ${event.url ? '' : 'opacity-50 pointer-events-none'}`}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    Go to Link &rarr;
+                  </a>
+                </div>
+              </div>
+            );
+          } catch (error) {
+            console.error('Error rendering event:', error, event);
+            return null;
+          }
+        })}
       </div>
 
       {selectedEventId && (

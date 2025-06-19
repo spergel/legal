@@ -9,20 +9,49 @@ export const metadata: Metadata = {
 
 export default async function Events() {
   try {
+    console.log('Fetching events...');
     const events = await getAllEvents();
+    console.log('Raw events data:', events);
+    console.log('Number of events:', events?.length || 0);
+
+    // Ensure events is an array
+    if (!Array.isArray(events)) {
+      console.error('Events is not an array:', events);
+      return <EventsClientPage events={[]} />;
+    }
 
     // Format dates for display and serialize Date objects
-    const formattedEvents = await Promise.all(events.map(async event => ({
-      ...event,
-      startDate: event.startDate.toISOString(),
-      endDate: event.endDate ? event.endDate.toISOString() : null,
-      submittedAt: event.submittedAt.toISOString(),
-      updatedAt: event.updatedAt.toISOString(),
-      formattedStartDate: await formatDate(event.startDate.toISOString()),
-      formattedEndDate: event.endDate ? await formatDate(event.endDate.toISOString()) : null,
-    })));
+    const formattedEvents = await Promise.all(events.map(async (event, index) => {
+      try {
+        console.log(`Processing event ${index}:`, event);
+        
+        // Ensure all required fields exist
+        if (!event || !event.id || !event.startDate) {
+          console.warn(`Skipping invalid event at index ${index}:`, event);
+          return null;
+        }
 
-    return <EventsClientPage events={formattedEvents} />;
+        return {
+          ...event,
+          startDate: event.startDate.toISOString(),
+          endDate: event.endDate ? event.endDate.toISOString() : null,
+          submittedAt: event.submittedAt.toISOString(),
+          updatedAt: event.updatedAt.toISOString(),
+          formattedStartDate: await formatDate(event.startDate.toISOString()),
+          formattedEndDate: event.endDate ? await formatDate(event.endDate.toISOString()) : null,
+        };
+      } catch (error) {
+        console.error(`Error processing event ${index}:`, error, event);
+        return null;
+      }
+    }));
+
+    // Filter out null events
+    const validEvents = formattedEvents.filter(event => event !== null);
+    console.log('Formatted events:', validEvents);
+    console.log('Number of valid events:', validEvents.length);
+
+    return <EventsClientPage events={validEvents} />;
   } catch (error) {
     console.error('Error loading events:', error);
     // Return empty array if there's an error

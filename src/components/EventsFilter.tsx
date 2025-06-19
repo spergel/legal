@@ -23,6 +23,15 @@ export default function EventsFilter({ events, onFilteredEvents, className = '' 
     cle: 'all',
   });
 
+  // Add logging to debug the events data
+  useEffect(() => {
+    console.log('EventsFilter received events:', events);
+    console.log('Events array length:', events?.length || 0);
+    if (events && events.length > 0) {
+      console.log('First event sample:', events[0]);
+    }
+  }, [events]);
+
   // Generate filter options from events data
   const dateOptions: FilterOption[] = [
     { id: 'all', label: 'All Dates', value: 'all' },
@@ -33,8 +42,17 @@ export default function EventsFilter({ events, onFilteredEvents, className = '' 
   ];
 
   // Safely extract categories from events
-  const categories = events
-    .flatMap(event => event.category || [])
+  const categories = (events || [])
+    .flatMap(event => {
+      try {
+        // Ensure event and category exist before accessing
+        if (!event || !event.category) return [];
+        return Array.isArray(event.category) ? event.category : [];
+      } catch (error) {
+        console.error('Error extracting category from event:', error, event);
+        return [];
+      }
+    })
     .filter(Boolean);
   
   const categoryOptions: FilterOption[] = [
@@ -89,70 +107,110 @@ export default function EventsFilter({ events, onFilteredEvents, className = '' 
   };
 
   useEffect(() => {
-    let filteredEvents = [...events];
+    try {
+      console.log('Applying filters to events:', events?.length || 0);
+      
+      // Ensure events is an array
+      if (!Array.isArray(events)) {
+        console.warn('Events is not an array, using empty array');
+        onFilteredEvents([]);
+        return;
+      }
 
-    // Apply date filter
-    if (filters.date !== 'all') {
-      const now = new Date();
-      const tomorrow = new Date(now);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      const nextWeek = new Date(now);
-      nextWeek.setDate(nextWeek.getDate() + 7);
-      const nextMonth = new Date(now);
-      nextMonth.setMonth(nextMonth.getMonth() + 1);
+      let filteredEvents = [...events];
 
-      filteredEvents = filteredEvents.filter(event => {
-        const eventDate = new Date(event.startDate);
-        switch (filters.date) {
-          case 'today':
-            return eventDate.toDateString() === now.toDateString();
-          case 'tomorrow':
-            return eventDate.toDateString() === tomorrow.toDateString();
-          case 'this-week':
-            return eventDate >= now && eventDate <= nextWeek;
-          case 'this-month':
-            return eventDate >= now && eventDate <= nextMonth;
-          default:
+      // Apply date filter
+      if (filters.date !== 'all') {
+        const now = new Date();
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const nextWeek = new Date(now);
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        const nextMonth = new Date(now);
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+        filteredEvents = filteredEvents.filter(event => {
+          try {
+            if (!event || !event.startDate) {
+              console.warn('Event missing startDate:', event);
+              return false;
+            }
+            
+            const eventDate = new Date(event.startDate);
+            switch (filters.date) {
+              case 'today':
+                return eventDate.toDateString() === now.toDateString();
+              case 'tomorrow':
+                return eventDate.toDateString() === tomorrow.toDateString();
+              case 'this-week':
+                return eventDate >= now && eventDate <= nextWeek;
+              case 'this-month':
+                return eventDate >= now && eventDate <= nextMonth;
+              default:
+                return true;
+            }
+          } catch (error) {
+            console.error('Error filtering event by date:', error, event);
+            return false;
+          }
+        });
+      }
+
+      // Apply category filter
+      if (filters.category !== 'all') {
+        filteredEvents = filteredEvents.filter(event => {
+          try {
+            return event && event.category && Array.isArray(event.category) && event.category.includes(filters.category);
+          } catch (error) {
+            console.error('Error filtering event by category:', error, event);
+            return false;
+          }
+        });
+      }
+
+      // Apply price filter
+      if (filters.price !== 'all') {
+        filteredEvents = filteredEvents.filter(event => {
+          try {
+            if (!event || !event.price) {
+              return filters.price === 'free';
+            }
+            
+            // Handle price as Record<string, any>
+            const priceType = event.price.type || event.price.priceType || '';
+            const priceAmount = event.price.amount || event.price.priceAmount || 0;
+            
+            if (filters.price === 'free') {
+              return !priceType || priceType.toLowerCase() === 'free' || priceAmount === 0;
+            } else if (filters.price === 'paid') {
+              return priceType && priceType.toLowerCase() !== 'free' && priceAmount > 0;
+            }
             return true;
-        }
-      });
-    }
+          } catch (error) {
+            console.error('Error filtering event by price:', error, event);
+            return false;
+          }
+        });
+      }
 
-    // Apply category filter
-    if (filters.category !== 'all') {
-      filteredEvents = filteredEvents.filter(event => 
-        event.category && Array.isArray(event.category) && event.category.includes(filters.category)
-      );
-    }
+      // Apply CLE filter
+      if (filters.cle === 'cle') {
+        filteredEvents = filteredEvents.filter(event => {
+          try {
+            return event && event.metadata && event.metadata.cle_credits != null;
+          } catch (error) {
+            console.error('Error filtering event by CLE:', error, event);
+            return false;
+          }
+        });
+      }
 
-    // Apply price filter
-    if (filters.price !== 'all') {
-      filteredEvents = filteredEvents.filter(event => {
-        if (!event.price) {
-          return filters.price === 'free';
-        }
-        
-        // Handle price as Record<string, any>
-        const priceType = event.price.type || event.price.priceType || '';
-        const priceAmount = event.price.amount || event.price.priceAmount || 0;
-        
-        if (filters.price === 'free') {
-          return !priceType || priceType.toLowerCase() === 'free' || priceAmount === 0;
-        } else if (filters.price === 'paid') {
-          return priceType && priceType.toLowerCase() !== 'free' && priceAmount > 0;
-        }
-        return true;
-      });
+      console.log('Filtered events count:', filteredEvents.length);
+      onFilteredEvents(filteredEvents);
+    } catch (error) {
+      console.error('Error in EventsFilter useEffect:', error);
+      onFilteredEvents([]);
     }
-
-    // Apply CLE filter
-    if (filters.cle === 'cle') {
-      filteredEvents = filteredEvents.filter(event => 
-        event.metadata && event.metadata.cle_credits != null
-      );
-    }
-
-    onFilteredEvents(filteredEvents);
   }, [events, filters, onFilteredEvents]);
 
   return (
