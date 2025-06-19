@@ -26,9 +26,9 @@ export default function EventDialog({ eventId, onClose }: EventDialogProps) {
         const data = await response.json();
         setEventData(data);
 
-        // Format dates
-        const startDate = await formatDate(data.startDate.toISOString());
-        const endDate = data.endDate ? await formatDate(data.endDate.toISOString()) : null;
+        // Format dates - data.startDate and data.endDate are already ISO strings from the API
+        const startDate = await formatDate(data.startDate);
+        const endDate = data.endDate ? await formatDate(data.endDate) : null;
         setFormattedStartDate(startDate);
         setFormattedEndDate(endDate);
       } catch (err) {
