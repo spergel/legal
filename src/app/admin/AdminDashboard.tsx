@@ -127,38 +127,38 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
                       </div>
                     )}
                     <div className="flex-1">
-                      <div className="mb-2">
-                        <Link 
-                          href={`/admin?tab=pending&viewEvent=${event.id}`}
-                          className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
-                        >
-                          {event.name}
-                        </Link>
-                      </div>
-                      <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
-                      <div className="mb-2">
-                        <span className="font-semibold">Submitted by:</span>{' '}
-                        <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
-                          {event.submittedBy}
-                        </a>
-                      </div>
-                      <div className="flex gap-4">
-                        <form method="GET" action="/admin">
-                          <input type="hidden" name="tab" value="pending" />
-                          <input type="hidden" name="approve" value={idx} />
-                          <button type="submit" className="px-3 py-1 rounded bg-green-200 text-green-900 font-semibold">Approve</button>
-                        </form>
-                        <form method="GET" action="/admin">
-                          <input type="hidden" name="tab" value="pending" />
-                          <input type="hidden" name="deny" value={idx} />
-                          <button type="submit" className="px-3 py-1 rounded bg-red-200 text-red-900 font-semibold">Deny</button>
-                        </form>
-                        <button 
-                          onClick={() => handleEditEvent(event)}
-                          className="px-3 py-1 rounded bg-blue-200 text-blue-900 font-semibold"
-                        >
-                          Edit
-                        </button>
+                  <div className="mb-2">
+                    <Link 
+                      href={`/admin?tab=pending&viewEvent=${event.id}`}
+                      className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
+                    >
+                      {event.name}
+                    </Link>
+                  </div>
+                  <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
+                  <div className="mb-2">
+                    <span className="font-semibold">Submitted by:</span>{' '}
+                    <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
+                      {event.submittedBy}
+                    </a>
+                  </div>
+                  <div className="flex gap-4">
+                    <form method="GET" action="/admin">
+                      <input type="hidden" name="tab" value="pending" />
+                      <input type="hidden" name="approve" value={idx} />
+                      <button type="submit" className="px-3 py-1 rounded bg-green-200 text-green-900 font-semibold">Approve</button>
+                    </form>
+                    <form method="GET" action="/admin">
+                      <input type="hidden" name="tab" value="pending" />
+                      <input type="hidden" name="deny" value={idx} />
+                      <button type="submit" className="px-3 py-1 rounded bg-red-200 text-red-900 font-semibold">Deny</button>
+                    </form>
+                    <button 
+                      onClick={() => handleEditEvent(event)}
+                      className="px-3 py-1 rounded bg-blue-200 text-blue-900 font-semibold"
+                    >
+                      Edit
+                    </button>
                       </div>
                     </div>
                   </div>
@@ -195,39 +195,39 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
                     </div>
                   )}
                   <div className="flex-1">
-                    <div className="mb-2">
-                      <Link 
-                        href={`/admin?tab=all&viewEvent=${event.id}`}
-                        className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
-                      >
-                        {event.name}
-                      </Link>
-                      <span className={`ml-2 px-2 py-1 rounded text-sm ${
-                        event.status === 'approved' ? 'bg-green-100 text-green-800' :
-                        event.status === 'denied' ? 'bg-red-100 text-red-800' :
-                        event.status === 'featured' ? 'bg-blue-100 text-blue-800' :
-                        event.status === 'cancelled' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {event.status}
-                      </span>
-                    </div>
-                    <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
-                    <div className="mb-2">
-                      <span className="font-semibold">Submitted by:</span>{' '}
-                      <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
-                        {event.submittedBy}
-                      </a>
-                    </div>
+                <div className="mb-2">
+                  <Link 
+                    href={`/admin?tab=all&viewEvent=${event.id}`}
+                    className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
+                  >
+                    {event.name}
+                  </Link>
+                  <span className={`ml-2 px-2 py-1 rounded text-sm ${
+                    event.status === 'approved' ? 'bg-green-100 text-green-800' :
+                    event.status === 'denied' ? 'bg-red-100 text-red-800' :
+                    event.status === 'featured' ? 'bg-blue-100 text-blue-800' :
+                    event.status === 'cancelled' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {event.status}
+                  </span>
+                </div>
+                <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
+                <div className="mb-2">
+                  <span className="font-semibold">Submitted by:</span>{' '}
+                  <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
+                    {event.submittedBy}
+                  </a>
+                </div>
                     <div className="flex gap-4 flex-wrap">
                       {event.status !== 'featured' ? (
-                        <form method="GET" action="/admin">
-                          <input type="hidden" name="tab" value="all" />
-                          <input type="hidden" name="eventId" value={event.id} />
-                          <input type="hidden" name="status" value="featured" />
-                          <input type="hidden" name="updateStatus" value="true" />
-                          <button type="submit" className="px-3 py-1 rounded bg-blue-200 text-blue-900 font-semibold">Feature</button>
-                        </form>
+                  <form method="GET" action="/admin">
+                    <input type="hidden" name="tab" value="all" />
+                    <input type="hidden" name="eventId" value={event.id} />
+                    <input type="hidden" name="status" value="featured" />
+                    <input type="hidden" name="updateStatus" value="true" />
+                    <button type="submit" className="px-3 py-1 rounded bg-blue-200 text-blue-900 font-semibold">Feature</button>
+                  </form>
                       ) : (
                         <form method="GET" action="/admin">
                           <input type="hidden" name="tab" value="all" />
@@ -238,13 +238,13 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
                         </form>
                       )}
                       {event.status !== 'cancelled' ? (
-                        <form method="GET" action="/admin">
-                          <input type="hidden" name="tab" value="all" />
-                          <input type="hidden" name="eventId" value={event.id} />
-                          <input type="hidden" name="status" value="cancelled" />
-                          <input type="hidden" name="updateStatus" value="true" />
-                          <button type="submit" className="px-3 py-1 rounded bg-yellow-200 text-yellow-900 font-semibold">Cancel</button>
-                        </form>
+                  <form method="GET" action="/admin">
+                    <input type="hidden" name="tab" value="all" />
+                    <input type="hidden" name="eventId" value={event.id} />
+                    <input type="hidden" name="status" value="cancelled" />
+                    <input type="hidden" name="updateStatus" value="true" />
+                    <button type="submit" className="px-3 py-1 rounded bg-yellow-200 text-yellow-900 font-semibold">Cancel</button>
+                  </form>
                       ) : (
                         <form method="GET" action="/admin">
                           <input type="hidden" name="tab" value="all" />
@@ -254,19 +254,19 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
                           <button type="submit" className="px-3 py-1 rounded bg-green-200 text-green-900 font-semibold">Uncancel</button>
                         </form>
                       )}
-                      <form method="GET" action="/admin">
-                        <input type="hidden" name="tab" value="all" />
-                        <input type="hidden" name="eventId" value={event.id} />
-                        <input type="hidden" name="status" value="archived" />
-                        <input type="hidden" name="updateStatus" value="true" />
-                        <button type="submit" className="px-3 py-1 rounded bg-gray-200 text-gray-900 font-semibold">Archive</button>
-                      </form>
-                      <button 
-                        onClick={() => handleEditEvent(event)}
-                        className="px-3 py-1 rounded bg-purple-200 text-purple-900 font-semibold"
-                      >
-                        Edit
-                      </button>
+                  <form method="GET" action="/admin">
+                    <input type="hidden" name="tab" value="all" />
+                    <input type="hidden" name="eventId" value={event.id} />
+                    <input type="hidden" name="status" value="archived" />
+                    <input type="hidden" name="updateStatus" value="true" />
+                    <button type="submit" className="px-3 py-1 rounded bg-gray-200 text-gray-900 font-semibold">Archive</button>
+                  </form>
+                  <button 
+                    onClick={() => handleEditEvent(event)}
+                    className="px-3 py-1 rounded bg-purple-200 text-purple-900 font-semibold"
+                  >
+                    Edit
+                  </button>
                     </div>
                   </div>
                 </div>

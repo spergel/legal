@@ -28,7 +28,7 @@ export default async function AdminPage({ searchParams }: any) {
     const event = pending[Number(searchParams.approve)];
     if (event) {
       await updateEventStatus(event.id, 'APPROVED', session.user?.email as string, 'Approved via admin dashboard');
-    }
+  }
   }
   
   if (searchParams?.deny) {
@@ -36,7 +36,7 @@ export default async function AdminPage({ searchParams }: any) {
     const event = pending[Number(searchParams.deny)];
     if (event) {
       await updateEventStatus(event.id, 'DENIED', session.user?.email as string, 'Denied via admin dashboard');
-    }
+  }
   }
   
   if (searchParams?.updateStatus) {
