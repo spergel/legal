@@ -11,9 +11,13 @@ export default async function Events() {
   try {
     const events = await getAllEvents();
 
-    // Format dates for display
+    // Format dates for display and serialize Date objects
     const formattedEvents = await Promise.all(events.map(async event => ({
       ...event,
+      startDate: event.startDate.toISOString(),
+      endDate: event.endDate ? event.endDate.toISOString() : null,
+      submittedAt: event.submittedAt.toISOString(),
+      updatedAt: event.updatedAt.toISOString(),
       formattedStartDate: await formatDate(event.startDate.toISOString()),
       formattedEndDate: event.endDate ? await formatDate(event.endDate.toISOString()) : null,
     })));
