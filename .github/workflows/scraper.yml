@@ -48,5 +48,8 @@ jobs:
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
       run: |
+        echo "Running database cleanup script..."
         cd scrapers
+        pip install --upgrade prisma
+        prisma generate
         python cleanup_events.py 

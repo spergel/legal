@@ -11,7 +11,12 @@ class ScraperManagerDB:
     
     def __init__(self):
         self.scrapers = {}
-        self.api_url = os.getenv('VERCEL_URL', 'http://localhost:3000')
+        # Get the base URL, default to localhost for local dev
+        base_url = os.getenv('VERCEL_URL')
+        if base_url and not base_url.startswith('http'):
+            base_url = f'https://{base_url}'
+        
+        self.api_url = base_url or 'http://localhost:3000'
         self.scraper_secret = os.getenv('SCRAPER_SECRET')
         
         if not self.scraper_secret:
@@ -42,7 +47,7 @@ class ScraperManagerDB:
             print(f"No events to send for {scraper_name}")
             return True
             
-        api_endpoint = f"https://{self.api_url}/api/admin/upsert-events"
+        api_endpoint = f"{self.api_url}/api/admin/upsert-events"
         
         # Convert events to the format expected by the API
         events_data = []
@@ -112,7 +117,7 @@ class ScraperManagerDB:
         total_events = 0
         
         print(f"Starting scraper run at {datetime.now(timezone.utc).isoformat()}")
-        print(f"API URL: https://{self.api_url}")
+        print(f"API URL: {self.api_url}")
         
         for name, scraper in self.scrapers.items():
             try:

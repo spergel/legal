@@ -355,97 +355,70 @@ def extract_speakers(desc):
         return [s.strip() for s in desc.split("Hosted by")[-1].split("\n")[0].split("&")]
     return []
 
-def convert_ics_event(ics_event, community_id):
-    """Convert ICS event to our standardized format with improved parsing"""
-    # Debug: log the event dict and required fields
-    logging.debug(f"Converting ICS event: {ics_event}")
-    if not isinstance(ics_event, dict):
-        logging.error(f"ics_event is not a dict: {ics_event}")
+def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
+    """Converts a raw ICS event dictionary into our Event model."""
+    try:
+        # Get event name
+        summary = ics_event.get('summary', '').strip()
+        if not summary:
+            return None
+
+        # Get description
+        description = ics_event.get('description', '')
+        if isinstance(description, str):
+            description = description.strip()
+
+        # Get location
+        location = ics_event.get('location', '')
+        if isinstance(location, str):
+            location = location.strip()
+
+        # Extract URL
+        url = ics_event.get('url', '')
+        if not url and isinstance(description, str):
+            urls = re.findall(r'https?://[^\s<>"\'`]+', description)
+            if urls:
+                url = urls[0]
+        
+        # Normalize and clean location
+        location_details = parse_location(location or "")
+
+        # Categorize event
+        categorizer = EventCategorizer(summary, description or "")
+        categories = categorizer.get_categories()
+        tags = categorizer.get_tags()
+        event_type = categorizer.get_event_type()
+
+        # Generate external ID
+        uid = ics_event.get('uid') or f"{summary}-{ics_event.get('start')}"
+        external_id = f"ics-{hashlib.md5(uid.encode('utf-8')).hexdigest()}"
+        
+        # Check if the event is likely a placeholder or private event
+        summary_lower = summary.lower() if summary else ''
+        description_lower = description.lower() if isinstance(description, str) else ''
+        
+        private_keywords = ['private event', 'invite only', 'invitation only', 'members only']
+        if any(keyword in summary_lower or keyword in description_lower for keyword in private_keywords):
+            logging.info(f"Skipping potentially private event: {summary}")
+            return None
+
+        return Event(
+            externalId=external_id,
+            name=summary,
+            description=clean_description(description),
+            startDate=ics_event.get('start'),
+            endDate=ics_event.get('end'),
+            locationName=location_details['name'],
+            url=url,
+            communityId=community_id,
+            status='PENDING',
+            category=categories,
+            tags=tags,
+            eventType=event_type
+        )
+    except Exception as e:
+        logging.error(f"Error converting ICS event: {e}")
         return None
-    summary = ics_event.get('summary')
-    start = ics_event.get('start')
-    end = ics_event.get('end')
-    if summary is None or start is None or end is None:
-        logging.error(f"Skipping event with missing required fields: summary={summary}, start={start}, end={end}")
-        return None
-    eastern = pytz.timezone('America/New_York')
-    
-    # Generate unique ID
-    unique_id = f"{summary}{start}".encode()
-    event_id = hashlib.md5(unique_id).hexdigest()[:8]
-    
-    # Handle datetime conversion
-    start_date = start.astimezone(eastern)
-    end_date = end.astimezone(eastern)
-    
-    # Get additional details, ensure it's a dict
-    additional_details = ics_event.get('additional_details') or {}
-    
-    # Parse location data
-    raw_location = ics_event.get('location', '')
-    venue = parse_location(raw_location)
-    
-    # Update venue with detailed location if available
-    if additional_details and 'location_details' in additional_details:
-        loc_details = additional_details['location_details']
-        venue.update({
-            'name': loc_details.get('venue_name', venue['name']),
-            'address': loc_details.get('address', venue['address']),
-            'room': loc_details.get('room', ''),
-            'additional_info': loc_details.get('additional_info', ''),
-            'type': loc_details.get('type', venue['type'])
-        })
-    
-    # Extract price from description or additional details
-    price_info = additional_details.get('price_info', parse_price(ics_event.get('description', '')))
-    
-    # Clean description
-    description = clean_description(ics_event.get('description', ''))
-    
-    # Use full description if available from Luma
-    if additional_details and 'full_description' in additional_details:
-        description = additional_details['full_description']
-    
-    # Get categories
-    categories = ["Legal Events"]  # Default category
-    if additional_details and 'categories' in additional_details and additional_details['categories']:
-        categories = additional_details['categories']
-    
-    # Set location ID based on community
-    location_id = "loc_tbd"
-    if community_id == "com_fractal":
-        location_id = "loc_fractal"
-    elif community_id == "com_telos":
-        location_id = "loc_telos"
-    
-    # Set source URL based on community
-    source_url = ics_event.get('url')
-    if community_id == "com_nyc_resistor":
-        source_url = "https://www.nycresistor.com/participate/"
-    
-    # Create Event object
-    return Event(
-        id=f"evt_{community_id}_{event_id}",
-        name=additional_details.get('title', summary),
-        description=description,
-        startDate=start_date.isoformat(),
-        endDate=end_date.isoformat(),
-        locationId=location_id,
-        communityId=community_id,
-        image=None,  # Default image
-        price=price_info,
-        metadata={
-            "source_url": source_url,
-            "speakers": additional_details.get('speakers', []) if additional_details else extract_speakers(description),
-            "venue": venue,
-            "featured": False,
-            "social_links": additional_details.get('social_links', []) if additional_details else []
-        },
-        category=categories,
-        tags=[],
-        event_type=categories[0] if categories else "Event",
-        cle_credits=None
-    )
 
 def is_future_event(event: Dict) -> bool:
     """Check if event hasn't ended yet"""
