@@ -1,5 +1,13 @@
 # Event Calendar Template - TODO List
 
+## Recent Accomplishments
+- [x] Implemented new SVG logo and set as favicon.
+- [x] Renamed site from "Event Calendar" to "Legal Events NYC" in header.
+- [x] Changed "Add to Calendar" button to "Export Calendar".
+- [x] Fixed community filter dropdown functionality.
+- [x] Resolved various build errors (Prisma schema, component props).
+- [x] Fixed GitHub Actions workflow for scrapers by adding `prisma generate`.
+
 ## Core Features (Current)
 - [x] User authentication (NextAuth.js, Google sign-in)
 - [x] Database-backed user and admin roles (Prisma, PlanetScale/MySQL)
@@ -21,6 +29,7 @@
 - [x] User event submission (form + API)
 - [x] Image upload for events
 - [x] Admin dashboard for event approval/denial
+- [ ] Filter out non-public/invite-only events from main views
 - [ ] Email notifications for event status (optional)
 - [ ] Event editing/deletion by submitter or admin
 - [ ] Event status management:
@@ -159,6 +168,7 @@
   - [x] Registration link extraction (implemented in scrapers)
   - [ ] Handle image-based events (some organizations store events as images/PDFs making scraping impossible)
   - [ ] NAWL events may be image-based - need special handling for calendar view and detail pages
+  - [ ] Centralize scraping logic for easier maintenance
 
 ## Design & UI/UX
 - [ ] Visual Design

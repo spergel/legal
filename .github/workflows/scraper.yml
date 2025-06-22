@@ -18,11 +18,22 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install root npm dependencies
+      run: npm install
         
     - name: Install Python dependencies
       run: |
         cd scrapers
         pip install -r requirements.txt
+
+    - name: Generate Prisma Client
+      run: npx prisma generate
         
     - name: Run scrapers
       env:
