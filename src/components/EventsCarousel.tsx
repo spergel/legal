@@ -23,6 +23,7 @@ function getEndOfWeek(date: Date) {
 export default function EventsCarousel() {
   const [thisWeekEvents, setThisWeekEvents] = useState<Event[]>([]);
   const [nextWeekEvents, setNextWeekEvents] = useState<Event[]>([]);
+  const [featuredEvents, setFeaturedEvents] = useState<Event[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,6 +42,9 @@ export default function EventsCarousel() {
         const endOfNextWeek = new Date(endOfThisWeek);
         endOfNextWeek.setDate(endOfThisWeek.getDate() + 7);
 
+        // Featured events (status === 'FEATURED')
+        const featured = events.filter(event => event.status === 'FEATURED');
+
         // This week
         const thisWeek = events.filter(event => {
           const eventDate = new Date(event.startDate);
@@ -51,6 +55,8 @@ export default function EventsCarousel() {
           const eventDate = new Date(event.startDate);
           return eventDate >= startOfNextWeek && eventDate <= endOfNextWeek;
         });
+        
+        setFeaturedEvents(featured);
         setThisWeekEvents(thisWeek);
         setNextWeekEvents(nextWeek);
       } catch (err) {
@@ -63,10 +69,14 @@ export default function EventsCarousel() {
     loadEvents();
   }, []);
 
-  const renderEventCard = (event: Event) => (
+  const renderEventCard = (event: Event, isFeatured: boolean = false) => (
     <div 
       key={event.id}
-      className="bg-amber-50 rounded-lg shadow-lg p-4 cursor-pointer hover:bg-amber-100 transition-colors border border-amber-200"
+      className={`rounded-lg shadow-lg p-4 cursor-pointer hover:bg-amber-100 transition-colors border ${
+        isFeatured 
+          ? 'bg-gradient-to-br from-amber-100 to-orange-100 border-orange-300 shadow-xl' 
+          : 'bg-amber-50 border-amber-200'
+      }`}
       onClick={() => setSelectedEventId(event.id)}
     >
       {event.image && (
@@ -76,19 +86,36 @@ export default function EventsCarousel() {
           className="w-full h-48 object-cover rounded-lg mb-4"
         />
       )}
-      <h3 className="text-xl font-semibold text-amber-900 mb-2">{event.name}</h3>
-      <p className="text-amber-800 text-sm mb-2">
+      {isFeatured && (
+        <div className="mb-2">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+            ⭐ Featured Event
+          </span>
+        </div>
+      )}
+      <h3 className={`text-xl font-semibold mb-2 ${
+        isFeatured ? 'text-orange-900' : 'text-amber-900'
+      }`}>
+        {event.name}
+      </h3>
+      <p className={`text-sm mb-2 ${
+        isFeatured ? 'text-orange-800' : 'text-amber-800'
+      }`}>
         {new Date(event.startDate).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
       </p>
       {event.metadata?.cle_credits && (
-        <p className="text-amber-700 text-sm mb-2">
+        <p className={`text-sm mb-2 ${
+          isFeatured ? 'text-orange-700' : 'text-amber-700'
+        }`}>
           CLE Credits: {event.metadata.cle_credits}
         </p>
       )}
       {event.price && (event.price.type?.toLowerCase() === 'free' || event.price.amount === 0) ? (
         <span className="text-green-700 font-semibold">FREE</span>
       ) : event.price && (
-        <span className="text-amber-800 font-semibold">
+        <span className={`font-semibold ${
+          isFeatured ? 'text-orange-800' : 'text-amber-800'
+        }`}>
           {event.price.currency}{event.price.amount.toFixed(2)}
         </span>
       )}
@@ -130,6 +157,26 @@ export default function EventsCarousel() {
         </div>
       </div>
 
+      {/* Featured Events */}
+      {featuredEvents.length > 0 && (
+        <div>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-orange-900 flex items-center">
+              ⭐ Featured Events
+            </h2>
+            <Link 
+              href="/events" 
+              className="text-orange-800 hover:text-orange-700 font-medium"
+            >
+              See all events →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredEvents.map(event => renderEventCard(event, true))}
+          </div>
+        </div>
+      )}
+
       {/* This Week's Events */}
       <div>
         <div className="flex justify-between items-center mb-4">
@@ -143,7 +190,7 @@ export default function EventsCarousel() {
         </div>
         {thisWeekEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {thisWeekEvents.map(renderEventCard)}
+            {thisWeekEvents.map(event => renderEventCard(event, false))}
           </div>
         ) : (
           <div className="bg-amber-50 rounded-lg p-6 text-center border border-amber-200">
@@ -165,7 +212,7 @@ export default function EventsCarousel() {
         </div>
         {nextWeekEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {nextWeekEvents.map(renderEventCard)}
+            {nextWeekEvents.map(event => renderEventCard(event, false))}
           </div>
         ) : (
           <div className="bg-amber-50 rounded-lg p-6 text-center border border-amber-200">

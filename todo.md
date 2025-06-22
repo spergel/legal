@@ -121,21 +121,30 @@
 
 ## Scraping Enhancements
 - [ ] Additional Sources
-  - [ ] NYSBA (New York State Bar Association)
-  - [ ] Brooklyn Bar Association
-  - [ ] Queens County Bar Association
-  - [ ] Bronx County Bar Association
-  - [ ] Staten Island Bar Association
-  - [ ] CUNY School of Law
-  - [ ] NYU School of Law
+  - [x] NYSBA (New York State Bar Association) - https://nysba.org/live-programs/all-programs/
+  - [x] Brooklyn Bar Association - https://brooklynbar.org/?pg=events&evAction=viewMonth
+  - [x] Queens County Bar Association - https://members.qcba.org/qcba-events-and-education-calendar
+  - [x] Metropolitan Black Bar Association - https://mbbanyc.org/events/upcoming-events/#cid=1754&wid=1201
+  - [x] Asian American Bar Association of New York - https://www.aabany.org/events/event_list.asp
+  - [x] Hispanic National Bar Association - https://hnba.com/events/
+  - [x] LGBT Bar Association of Greater New York - https://www.lgbtbarny.org/upcoming-events
+  - [x] Women's Bar Association of the State of New York - https://www.wbasny.org/events/
+  - [x] National Association of Women Lawyers - https://nawl.app.neoncrm.com/np/clients/nawl/publicaccess/eventCalendarBig.jsp?year=2025&month=5
+  - [x] Federal Bar Association - https://www.fedbar.org/events/
+  - [ ] Seramount - https://seramount.com/events-conferences/
+  - [ ] New York Law School - https://www.nyls.edu/events/
+  - [ ] Cardozo Law - https://cardozo.yu.edu/events?field_end_date_value=1&field_event_audience_tag_value=2&tid=All&select_type_option=All
+  - [x] Lawline - https://www.lawline.com/cle/courses/webcast?format=Webcast (✅ Created, ⚠️ API endpoint returning 404 - needs investigation)
+  - [ ] Practicing Law Institute - https://www.pli.edu/search?ContentTabs=Programs
+  - [ ] NYU Law Institute for Corporate Governance - https://www.law.nyu.edu/centers/icgf/events NO recent
+  - [x] ChIPs - https://network.chipsnetwork.org/events
+  - [ ] Brooklyn Law School - https://www.brooklaw.edu/news-and-events/events/
+  - [x] CUNY School of Law - https://www.law.cuny.edu/events/ 
   - [ ] Columbia Law School
-  - [ ] Cardozo School of Law
   - [ ] St. John's School of Law
   - [ ] Legal Aid Society
   - [ ] Legal Services NYC
   - [ ] National Lawyers Guild - NYC Chapter
-  - [ ] Asian American Bar Association of New York
-  - [ ] Metropolitan Black Bar Association
 
 - [ ] Scraper Improvements
   - [ ] Error handling and retry logic
@@ -146,8 +155,10 @@
   - [ ] Data validation and cleaning
   - [ ] Duplicate detection
   - [ ] Geocoding for locations
-  - [ ] CLE credit extraction
-  - [ ] Registration link extraction
+  - [x] CLE credit extraction (implemented in scrapers)
+  - [x] Registration link extraction (implemented in scrapers)
+  - [ ] Handle image-based events (some organizations store events as images/PDFs making scraping impossible)
+  - [ ] NAWL events may be image-based - need special handling for calendar view and detail pages
 
 ## Design & UI/UX
 - [ ] Visual Design

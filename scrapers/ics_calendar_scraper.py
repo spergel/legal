@@ -12,6 +12,7 @@ from ics import Calendar, Event as ICSEvent
 from base_scraper import BaseScraper
 from models import Event
 from calendar_configs import ICS_CALENDARS
+from categorization_helper import EventCategorizer
 
 # Setup paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -208,9 +209,15 @@ def get_luma_events(ics_url):
         for event in cal.events:
             try:
                 # Skip past events (end time in past)
-                if event.end < now:
+                if not hasattr(event, 'end') or event.end is None or event.end < now:
                     continue
-                
+                # Get event name/summary
+                event_name = getattr(event, 'name', None) or getattr(event, 'summary', None)
+                if not event_name:
+                    continue
+                # Skip if missing start
+                if not hasattr(event, 'begin') or event.begin is None:
+                    continue
                 # Get event URL from:
                 # 1. URL property
                 # 2. Location field if it contains a Luma URL
@@ -218,23 +225,19 @@ def get_luma_events(ics_url):
                 event_url = getattr(event, 'url', '')
                 location = getattr(event, 'location', '')
                 description = getattr(event, 'description', '')
-                
                 # Check if location is a Luma URL
                 if not event_url and location and 'lu.ma' in location:
                     event_url = location
-                    
                 # Alternative: Extract URL from description if needed
                 if not event_url and description:
                     urls = re.findall(r'https?://lu\.ma/\S+', description)
                     if urls:
                         event_url = urls[0]
-                
                 # Get detailed event information if we have a URL
                 event_details = get_luma_event_details(event_url) if event_url else None
-                    
                 events.append({
                     "uid": getattr(event, 'uid', ''),
-                    "summary": getattr(event, 'name', ''),
+                    "summary": event_name,
                     "start": event.begin.datetime,
                     "end": event.end.datetime,
                     "location": location,
@@ -247,7 +250,6 @@ def get_luma_events(ics_url):
             except Exception as e:
                 logging.error(f"Error processing event: {e}")
                 continue
-        
         logging.info(f"Found {len(events)} upcoming events")
         return events
     except requests.exceptions.RequestException as e:
@@ -355,18 +357,29 @@ def extract_speakers(desc):
 
 def convert_ics_event(ics_event, community_id):
     """Convert ICS event to our standardized format with improved parsing"""
+    # Debug: log the event dict and required fields
+    logging.debug(f"Converting ICS event: {ics_event}")
+    if not isinstance(ics_event, dict):
+        logging.error(f"ics_event is not a dict: {ics_event}")
+        return None
+    summary = ics_event.get('summary')
+    start = ics_event.get('start')
+    end = ics_event.get('end')
+    if summary is None or start is None or end is None:
+        logging.error(f"Skipping event with missing required fields: summary={summary}, start={start}, end={end}")
+        return None
     eastern = pytz.timezone('America/New_York')
     
     # Generate unique ID
-    unique_id = f"{ics_event['summary']}{ics_event['start']}".encode()
+    unique_id = f"{summary}{start}".encode()
     event_id = hashlib.md5(unique_id).hexdigest()[:8]
     
     # Handle datetime conversion
-    start_date = ics_event['start'].astimezone(eastern)
-    end_date = ics_event['end'].astimezone(eastern)
+    start_date = start.astimezone(eastern)
+    end_date = end.astimezone(eastern)
     
-    # Get additional details
-    additional_details = ics_event.get('additional_details', {})
+    # Get additional details, ensure it's a dict
+    additional_details = ics_event.get('additional_details') or {}
     
     # Parse location data
     raw_location = ics_event.get('location', '')
@@ -393,31 +406,8 @@ def convert_ics_event(ics_event, community_id):
     if additional_details and 'full_description' in additional_details:
         description = additional_details['full_description']
     
-    # Get actual capacity if available
-    capacity = additional_details.get('actual_capacity', 100) if additional_details else 100
-    
-    # Get image URL if available
-    image = "fractal-community.jpg"  # Default image
-    if additional_details and 'image_url' in additional_details:
-        # Extract just the filename part for local storage
-        image_url = additional_details['image_url']
-        if image_url:
-            # Generate a filename from the URL
-            image_hash = hashlib.md5(image_url.encode()).hexdigest()[:8]
-            image = f"luma-event-{image_hash}.jpg"
-            
-            # Optionally download the image (uncomment if needed)
-            # try:
-            #     img_response = requests.get(image_url)
-            #     if img_response.status_code == 200:
-            #         os.makedirs('../../public/images/events', exist_ok=True)
-            #         with open(f'../../public/images/events/{image}', 'wb') as img_file:
-            #             img_file.write(img_response.content)
-            # except Exception as e:
-            #     logging.error(f"Failed to download image: {e}")
-    
     # Get categories
-    categories = ["Tech"]  # Default category
+    categories = ["Legal Events"]  # Default category
     if additional_details and 'categories' in additional_details and additional_details['categories']:
         categories = additional_details['categories']
     
@@ -433,30 +423,29 @@ def convert_ics_event(ics_event, community_id):
     if community_id == "com_nyc_resistor":
         source_url = "https://www.nycresistor.com/participate/"
     
-    return {
-        "id": f"evt_{community_id}_{event_id}",
-        "name": additional_details.get('title', ics_event['summary']),
-        "type": categories[0] if categories else "Tech",
-        "locationId": location_id,
-        "communityId": community_id,
-        "description": description,
-        "startDate": start_date.isoformat(),
-        "endDate": end_date.isoformat(),
-        "category": categories,
-        "price": price_info,
-        "capacity": capacity,
-        "registrationRequired": True,
-        "tags": [],
-        "image": image,
-        "status": "upcoming",
-        "metadata": {
+    # Create Event object
+    return Event(
+        id=f"evt_{community_id}_{event_id}",
+        name=additional_details.get('title', summary),
+        description=description,
+        startDate=start_date.isoformat(),
+        endDate=end_date.isoformat(),
+        locationId=location_id,
+        communityId=community_id,
+        image=None,  # Default image
+        price=price_info,
+        metadata={
             "source_url": source_url,
             "speakers": additional_details.get('speakers', []) if additional_details else extract_speakers(description),
             "venue": venue,
             "featured": False,
             "social_links": additional_details.get('social_links', []) if additional_details else []
-        }
-    }
+        },
+        category=categories,
+        tags=[],
+        event_type=categories[0] if categories else "Event",
+        cle_credits=None
+    )
 
 def is_future_event(event: Dict) -> bool:
     """Check if event hasn't ended yet"""
@@ -520,19 +509,34 @@ class ICSCalendarScraper(BaseScraper):
     """Scraper for ICS calendar feeds (e.g., Luma)."""
     def __init__(self, community_id: str):
         super().__init__(community_id)
-        self.ics_urls = ICS_CALENDARS.get(community_id, [])
 
     def get_events(self) -> List[Event]:
         events = []
-        for ics_url in self.ics_urls:
+        # Iterate through all configured ICS calendars
+        for calendar_name, calendar_config in ICS_CALENDARS.items():
             try:
-                ics_events = get_luma_events(ics_url)
+                logging.info(f"Fetching events for {calendar_name} from {calendar_config['id']}")
+                ics_events = get_luma_events(calendar_config["id"])
+                # Filter out None values
+                ics_events = [e for e in ics_events if e is not None]
+                logging.info(f"Processing {len(ics_events)} events (type: {[type(e) for e in ics_events]}) from {calendar_name}")
                 for ics_event in ics_events:
-                    event = convert_ics_event(ics_event, self.community_id)
-                    if event:
-                        events.append(event)
+                    if not isinstance(ics_event, dict):
+                        logging.warning(f"Skipping non-dict event from {calendar_name}: {ics_event}")
+                        continue
+                    if not ics_event.get('summary') or not ics_event.get('start') or not ics_event.get('end'):
+                        logging.warning(f"Skipping event missing required fields from {calendar_name}: {ics_event}")
+                        continue
+                    try:
+                        event = convert_ics_event(ics_event, calendar_config["community_id"])
+                        if event is not None:
+                            events.append(event)
+                    except Exception as e:
+                        logging.error(f"Error converting ICS event: {e}")
+                        continue
+                logging.info(f"Fetched {len(events)} events from {calendar_name}")
             except Exception as e:
-                logging.error(f"Error processing ICS feed {ics_url}: {e}")
+                logging.error(f"Error processing ICS feed {calendar_config['id']}: {e}")
                 continue
         return events
 

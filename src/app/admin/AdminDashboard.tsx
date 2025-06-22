@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import EventDialog from '@/components/EventDialog';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -12,6 +12,12 @@ interface AdminDashboardProps {
   searchParams: any;
 }
 
+interface CleanupStats {
+  pastEvents: number;
+  oldCancelledEvents: number;
+  oldDeniedEvents: number;
+}
+
 export default function AdminDashboard({ pending, allEvents, currentTab, searchParams }: AdminDashboardProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -19,6 +25,9 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
   const [searchTerm, setSearchTerm] = useState('');
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [cleanupStats, setCleanupStats] = useState<CleanupStats | null>(null);
+  const [isCleanupLoading, setIsCleanupLoading] = useState(false);
+  const [cleanupResult, setCleanupResult] = useState<string | null>(null);
   const selectedEventId = searchParams.viewEvent;
 
   const handleCloseDialog = () => {
@@ -56,6 +65,56 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
   const handleRemovePhoto = () => {
     setPhotoFile(null);
     setPhotoPreview(null);
+  };
+
+  // Load cleanup stats
+  useEffect(() => {
+    if (currentTab === 'cleanup' || currentTab === 'stats') {
+      fetchCleanupStats();
+    }
+  }, [currentTab]);
+
+  const fetchCleanupStats = async () => {
+    try {
+      const response = await fetch('/api/admin/cleanup');
+      if (response.ok) {
+        const stats = await response.json();
+        setCleanupStats(stats);
+      }
+    } catch (error) {
+      console.error('Error fetching cleanup stats:', error);
+    }
+  };
+
+  const handleCleanup = async () => {
+    if (!confirm('Are you sure you want to delete old events? This action cannot be undone.')) {
+      return;
+    }
+
+    setIsCleanupLoading(true);
+    setCleanupResult(null);
+
+    try {
+      const response = await fetch('/api/admin/cleanup', {
+        method: 'POST',
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        setCleanupResult(`✅ ${result.message}`);
+        // Refresh stats and events
+        await fetchCleanupStats();
+        // Refresh the page to update event counts
+        window.location.reload();
+      } else {
+        setCleanupResult(`❌ Cleanup failed: ${result.errors?.join(', ') || 'Unknown error'}`);
+      }
+    } catch (error) {
+      setCleanupResult(`❌ Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsCleanupLoading(false);
+    }
   };
 
   // Filter events based on search term
@@ -97,6 +156,12 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
           className={`pb-2 px-4 ${currentTab === 'featured' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
         >
           Featured Events ({featuredEvents.length})
+        </Link>
+        <Link 
+          href="/admin?tab=cleanup" 
+          className={`pb-2 px-4 ${currentTab === 'cleanup' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
+        >
+          Cleanup
         </Link>
         <Link 
           href="/admin?tab=stats" 
@@ -411,6 +476,80 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
               ))}
             </ul>
           )}
+        </div>
+      )}
+
+      {currentTab === 'cleanup' && (
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Database Cleanup</h2>
+          
+          {/* Cleanup Statistics */}
+          {cleanupStats && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-white border border-[#c8b08a] rounded p-4">
+                <h3 className="font-semibold mb-2 text-red-700">Past Events</h3>
+                <p className="text-2xl font-bold text-red-600">{cleanupStats.pastEvents}</p>
+                <p className="text-sm text-gray-600">Events that ended more than 1 day ago</p>
+              </div>
+              <div className="bg-white border border-[#c8b08a] rounded p-4">
+                <h3 className="font-semibold mb-2 text-orange-700">Old Cancelled Events</h3>
+                <p className="text-2xl font-bold text-orange-600">{cleanupStats.oldCancelledEvents}</p>
+                <p className="text-sm text-gray-600">Cancelled events older than 1 day</p>
+              </div>
+              <div className="bg-white border border-[#c8b08a] rounded p-4">
+                <h3 className="font-semibold mb-2 text-yellow-700">Old Denied Events</h3>
+                <p className="text-2xl font-bold text-yellow-600">{cleanupStats.oldDeniedEvents}</p>
+                <p className="text-sm text-gray-600">Denied events older than 1 week (will be archived)</p>
+              </div>
+            </div>
+          )}
+
+          {/* Cleanup Actions */}
+          <div className="bg-white border border-[#c8b08a] rounded p-6">
+            <h3 className="font-semibold mb-4">Cleanup Actions</h3>
+            
+            <div className="space-y-4">
+              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
+                <h4 className="font-semibold text-yellow-800 mb-2">⚠️ What will be cleaned up:</h4>
+                <ul className="text-sm text-yellow-700 space-y-1">
+                  <li>• Events that ended more than 1 day ago (APPROVED, FEATURED, PENDING)</li>
+                  <li>• Cancelled events that were cancelled more than 1 day ago</li>
+                  <li>• Denied events older than 1 week (will be archived instead of deleted)</li>
+                </ul>
+              </div>
+
+              {cleanupResult && (
+                <div className={`p-4 rounded ${
+                  cleanupResult.startsWith('✅') 
+                    ? 'bg-green-50 border border-green-200 text-green-800' 
+                    : 'bg-red-50 border border-red-200 text-red-800'
+                }`}>
+                  {cleanupResult}
+                </div>
+              )}
+
+              <div className="flex gap-4">
+                <button 
+                  onClick={handleCleanup}
+                  disabled={isCleanupLoading}
+                  className={`px-6 py-3 rounded font-semibold transition-colors ${
+                    isCleanupLoading
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-red-600 text-white hover:bg-red-700'
+                  }`}
+                >
+                  {isCleanupLoading ? 'Cleaning up...' : '🚮 Run Cleanup'}
+                </button>
+                
+                <button 
+                  onClick={fetchCleanupStats}
+                  className="px-6 py-3 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  🔄 Refresh Stats
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

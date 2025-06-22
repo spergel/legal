@@ -83,7 +83,7 @@ model Event {
   endDate     DateTime
   locationName String
   url         String?     @unique
-  cleCredits  Int?
+  cleCredits  Float?      // Changed from Int? to Float? to match our scrapers
   status      EventStatus @default(PENDING)
   submittedBy String      // Email of the submitter
   submittedAt DateTime    @default(now())
@@ -95,6 +95,14 @@ model Event {
   communityId String?     // Optional reference to a Community
   community   Community?  @relation(fields: [communityId], references: [id])
   starredBy   UserEvent[] // Many-to-many relationship with users
+  
+  // New fields for categorization system
+  category    String[]    // Array of categories (e.g., ['CLE', 'Intellectual Property', 'Networking'])
+  tags        String[]    // Array of tags for additional metadata
+  eventType   String?     // Type of event (e.g., 'CLE', 'Networking', 'Annual Dinner', 'Pro Bono')
+  image       String?     // URL to event image
+  price       Json?       // Price information as JSON (for complex pricing structures)
+  metadata    Json?       // Additional metadata as JSON
 }
 
 model Location {
@@ -124,6 +132,14 @@ model Community {
 model UserEvent {
   id        String   @id @default(cuid())
   userId    String
+  eventId   String
+  starredAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId]) // Prevent duplicate starrings
+}
+
   eventId   String
   starredAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -4,6 +4,7 @@
       "id": "com_nycbar",
       "name": "New York City Bar Association",
       "url": "https://www.nycbar.org/",
+      "eventsUrl": "https://www.nycbar.org/events/?event_types=event",
       "description": "The New York City Bar Association is a voluntary association of lawyers and law students.",
       "category": ["Bar Association", "Professional Organization"],
       "location": {
@@ -18,6 +19,7 @@
       "id": "com_nysba",
       "name": "New York State Bar Association",
       "url": "https://nysba.org/",
+      "eventsUrl": "https://nysba.org/live-programs/all-programs/",
       "description": "The New York State Bar Association is the largest voluntary state bar association in the nation.",
       "category": ["Bar Association", "Professional Organization"],
       "location": {
@@ -32,6 +34,7 @@
       "id": "com_nycla",
       "name": "New York County Lawyers Association",
       "url": "https://www.nycla.org/",
+      "eventsUrl": "https://www.nycla.org/calendar-events/",
       "description": "The New York County Lawyers Association is one of the oldest and largest bar associations in the country.",
       "category": ["Bar Association", "Professional Organization"],
       "location": {
@@ -43,9 +46,159 @@
       }
     },
     {
+      "id": "com_brooklyn_bar",
+      "name": "Brooklyn Bar Association",
+      "url": "https://brooklynbar.org/",
+      "eventsUrl": "https://brooklynbar.org/?pg=events&evAction=viewMonth",
+      "description": "The Brooklyn Bar Association serves the legal community in Brooklyn.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_queens_bar",
+      "name": "Queens County Bar Association",
+      "url": "https://members.qcba.org/",
+      "eventsUrl": "https://members.qcba.org/qcba-events-and-education-calendar",
+      "description": "The Queens County Bar Association serves the legal community in Queens.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_bronx_bar",
+      "name": "Bronx Bar Association",
+      "url": "https://www.bronxbar.com/",
+      "description": "The Bronx Bar Association serves the legal community in the Bronx.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_mbbanyc",
+      "name": "Metropolitan Black Bar Association",
+      "url": "https://mbbanyc.org/",
+      "eventsUrl": "https://mbbanyc.org/events/upcoming-events/#cid=1754&wid=1201",
+      "description": "The Metropolitan Black Bar Association is a professional organization of Black attorneys in the New York City metropolitan area.",
+      "category": ["Bar Association", "Professional Organization"],
+      "location": {
+        "address": "31 West 32nd Street, Suite 201",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10001"
+      }
+    },
+    {
+      "id": "com_aabany",
+      "name": "Asian American Bar Association of New York",
+      "url": "https://www.aabany.org/",
+      "eventsUrl": "https://www.aabany.org/events/event_list.asp",
+      "description": "AABANY is a professional membership organization of attorneys concerned with issues affecting the Asian Pacific American community.",
+      "category": ["Bar Association", "Professional Organization"],
+      "location": {
+        "address": "31 West 32nd Street, Suite 201",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10001"
+      }
+    },
+    {
+      "id": "com_hnba",
+      "name": "Hispanic National Bar Association",
+      "url": "https://hnba.com/",
+      "eventsUrl": "https://hnba.com/events/",
+      "description": "The Hispanic National Bar Association is a nonprofit, nonpartisan, national membership organization that represents the interests of Hispanic legal professionals.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_lgbt_bar_ny",
+      "name": "LGBT Bar Association of Greater New York",
+      "url": "https://www.lgbtbarny.org/",
+      "eventsUrl": "https://www.lgbtbarny.org/upcoming-events",
+      "description": "The LGBT Bar Association of Greater New York serves the LGBT legal community.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_wbasny",
+      "name": "Women's Bar Association of the State of New York",
+      "url": "https://www.wbasny.org/",
+      "eventsUrl": "https://www.wbasny.org/events/",
+      "description": "The Women's Bar Association of the State of New York promotes the advancement of women in the legal profession.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_pli",
+      "name": "Practicing Law Institute",
+      "url": "https://www.pli.edu/",
+      "eventsUrl": "https://www.pli.edu/search?ContentTabs=Programs",
+      "description": "Practicing Law Institute is a nonprofit learning organization dedicated to keeping attorneys and other professionals at the forefront of knowledge and expertise.",
+      "category": ["CLE Provider", "Professional Organization"]
+    },
+    {
+      "id": "com_lawline",
+      "name": "Lawline",
+      "url": "https://www.lawline.com/",
+      "eventsUrl": "https://www.lawline.com/cle/courses/webcast?format=Webcast",
+      "description": "Lawline provides online CLE courses for attorneys.",
+      "category": ["CLE Provider", "Education"]
+    },
+    {
+      "id": "com_cardozo_law",
+      "name": "Cardozo Law",
+      "url": "https://cardozo.yu.edu/",
+      "eventsUrl": "https://cardozo.yu.edu/events?field_end_date_value=1&field_event_audience_tag_value=2&tid=All&select_type_option=All",
+      "description": "Benjamin N. Cardozo School of Law is a law school at Yeshiva University.",
+      "category": ["Law School", "University"]
+    },
+    {
+      "id": "com_nyls",
+      "name": "New York Law School",
+      "url": "https://www.nyls.edu/",
+      "eventsUrl": "https://www.nyls.edu/events/",
+      "description": "New York Law School is a private law school in New York City.",
+      "category": ["Law School", "University"]
+    },
+    {
+      "id": "com_nawl",
+      "name": "National Association of Women Lawyers",
+      "url": "https://nawl.org/",
+      "eventsUrl": "https://nawl.app.neoncrm.com/np/clients/nawl/publicaccess/eventCalendarBig.jsp",
+      "description": "The National Association of Women Lawyers is a national organization devoted to promoting the interests and progress of women lawyers and women's legal rights.",
+      "category": ["Association", "Professional Organization"]
+    },
+    {
+      "id": "com_fedbar",
+      "name": "Federal Bar Association",
+      "url": "https://www.fedbar.org/",
+      "eventsUrl": "https://www.fedbar.org/events/",
+      "description": "The Federal Bar Association is dedicated to the advancement of the science of jurisprudence and to promoting the welfare, interests, education, and professional development of all attorneys involved in federal law.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_seramount",
+      "name": "Seramount",
+      "url": "https://seramount.com/",
+      "eventsUrl": "https://seramount.com/events-conferences/",
+      "description": "Seramount is a strategic professional services and research firm dedicated to advancing diversity, equity, and inclusion in the workplace.",
+      "category": ["Service Provider", "Professional Organization"]
+    },
+    {
+      "id": "com_columbia_law",
+      "name": "Columbia Law",
+      "url": "https://www.law.columbia.edu/",
+      "eventsUrl": "https://www.law.columbia.edu/events",
+      "description": "Columbia Law School is one of the world's leading law schools.",
+      "category": ["Law School", "University"]
+    },
+    {
+      "id": "com_nyu_icgf",
+      "name": "NYU Law Institute for Corporate Governance",
+      "url": "https://www.law.nyu.edu/centers/icgf/",
+      "eventsUrl": "https://www.law.nyu.edu/centers/icgf/events",
+      "description": "The Institute for Corporate Governance & Finance at NYU Law School.",
+      "category": ["Law School", "Research Institute"]
+    },
+    {
       "id": "com_fordham_law",
       "name": "Fordham University School of Law",
       "url": "https://law.fordham.edu/",
+      "eventsUrl": "https://go.activecalendar.com/fordhamuniversity/site/law",
       "description": "Fordham Law School is a leading law school in New York City, known for its strong programs in corporate law and international law.",
       "category": ["University", "Law School"],
       "location": {
@@ -57,9 +210,18 @@
       }
     },
     {
+      "id": "com_brooklyn_law",
+      "name": "Brooklyn Law School",
+      "url": "https://www.brooklaw.edu/",
+      "eventsUrl": "https://www.brooklaw.edu/news-and-events/events/",
+      "description": "Brooklyn Law School is a law school in Brooklyn, New York.",
+      "category": ["Law School", "University"]
+    },
+    {
       "id": "com_cuny_law",
       "name": "CUNY School of Law",
       "url": "https://www.law.cuny.edu/",
+      "eventsUrl": "https://www.law.cuny.edu/events",
       "description": "CUNY School of Law is a public law school in New York City, known for its public interest focus.",
       "category": ["University", "Law School"],
       "location": {
@@ -71,17 +233,113 @@
       }
     },
     {
-      "id": "com_nyu_law",
-      "name": "NYU School of Law",
-      "url": "https://www.law.nyu.edu/",
-      "description": "NYU School of Law is one of the nation's premier law schools, known for its innovative programs and global perspective.",
-      "category": ["University", "Law School"],
+      "id": "com_stjohns_law",
+      "name": "St. John's University School of Law",
+      "url": "https://www.stjohns.edu/",
+      "eventsUrl": "https://www.stjohns.edu/events",
+      "description": "St. John's University School of Law is a law school in New York.",
+      "category": ["Law School", "University"]
+    },
+    {
+      "id": "com_barker_gilmore",
+      "name": "Barker Gilmore",
+      "url": "https://barkergilmore.com/",
+      "eventsUrl": "https://barkergilmore.com/gc-advantage-webinars/",
+      "description": "Barker Gilmore is a legal search firm specializing in in-house counsel recruitment.",
+      "category": ["Recruiter", "Professional Services"]
+    },
+    {
+      "id": "com_lsuite",
+      "name": "The L Suite",
+      "url": "https://www.lsuite.co/",
+      "eventsUrl": "https://www.lsuite.co/events",
+      "description": "The L Suite is a legal recruitment and consulting firm.",
+      "category": ["Recruiter", "Professional Services"]
+    },
+    {
+      "id": "com_mla",
+      "name": "Major, Lindsey & Africa",
+      "url": "https://www.mlaglobal.com/",
+      "eventsUrl": "https://www.mlaglobal.com/en/insights#94c43f95-2882-4674-904e-3546d67aa716facet=Content%20Type:Webinars",
+      "description": "Major, Lindsey & Africa is a legal search firm.",
+      "category": ["Recruiter", "Professional Services"]
+    },
+    {
+      "id": "com_law_com",
+      "name": "Law.com",
+      "url": "https://www.law.com/",
+      "eventsUrl": "https://www.law.com/events/",
+      "description": "Law.com is a leading legal news and information platform.",
+      "category": ["Publication", "Media"]
+    },
+    {
+      "id": "com_morgan_lewis",
+      "name": "Morgan Lewis",
+      "url": "https://www.morganlewis.com/",
+      "eventsUrl": "https://www.morganlewis.com/events/global-public-company-academy",
+      "description": "Morgan Lewis is a global law firm.",
+      "category": ["Law Firm", "Professional Services"]
+    },
+    {
+      "id": "com_kilpatrick",
+      "name": "Kilpatrick",
+      "url": "https://www.kilpatricktownsend.com/",
+      "eventsUrl": "https://events.zoom.us/eo/Av2cDH_dxJcMRgGd_RUApCT3LYo24WXLsVl4PQ4dKB9OnZ9g9zki~AggLXsr32QYFjq8BlYLZ5I06Dg",
+      "description": "Kilpatrick Townsend is a law firm.",
+      "category": ["Law Firm", "Professional Services"]
+    },
+    {
+      "id": "com_aba",
+      "name": "American Bar Association",
+      "url": "https://www.americanbar.org/",
+      "eventsUrl": "https://www.americanbar.org/events-cle/",
+      "description": "The American Bar Association is the largest voluntary association of lawyers in the world.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_acc",
+      "name": "Association of Corporate Counsel",
+      "url": "https://www.acc.com/",
+      "eventsUrl": "https://www.acc.com/education-events",
+      "description": "The Association of Corporate Counsel is a global bar association that promotes the common professional and business interests of in-house counsel.",
+      "category": ["Association", "Professional Organization"]
+    },
+    {
+      "id": "com_fedbar_council",
+      "name": "Federal Bar Council",
+      "url": "https://www.federalbarcouncil.org/",
+      "eventsUrl": "https://www.federalbarcouncil.org/calendar/events/",
+      "description": "The Federal Bar Council is a professional organization of lawyers practicing in the federal courts.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_nyipla",
+      "name": "NYIPLA",
+      "url": "https://www.nyipla.org/",
+      "eventsUrl": "https://www.nyipla.org/nyipla/Events.asp",
+      "description": "The New York Intellectual Property Law Association is a professional organization for IP attorneys.",
+      "category": ["Bar Association", "Professional Organization"]
+    },
+    {
+      "id": "com_chips",
+      "name": "ChIPs",
+      "url": "https://chipsnetwork.org/",
+      "eventsUrl": "https://network.chipsnetwork.org/events",
+      "description": "ChIPs is a nonprofit organization focused on advancing and connecting women in technology, law, and policy.",
+      "category": ["Association", "Professional Organization"]
+    },
+    {
+      "id": "com_nyctla",
+      "name": "New York City Trial Lawyers Association",
+      "url": "https://nyctla.com/",
+      "description": "NYCTLA is a professional organization dedicated to protecting the rights of injured victims and their families.",
+      "category": ["Bar Association", "Professional Organization"],
       "location": {
-        "address": "40 Washington Square South",
+        "address": "132 Nassau Street",
         "city": "New York",
         "state": "NY",
         "country": "USA",
-        "zip": "10012"
+        "zip": "10038"
       }
     },
     {
@@ -124,48 +382,6 @@
         "state": "NY",
         "country": "USA",
         "zip": "10019"
-      }
-    },
-    {
-      "id": "com_aabany",
-      "name": "Asian American Bar Association of New York",
-      "url": "https://www.aabany.org/",
-      "description": "AABANY is a professional membership organization of attorneys concerned with issues affecting the Asian Pacific American community.",
-      "category": ["Bar Association", "Professional Organization"],
-      "location": {
-        "address": "31 West 32nd Street, Suite 201",
-        "city": "New York",
-        "state": "NY",
-        "country": "USA",
-        "zip": "10001"
-      }
-    },
-    {
-      "id": "com_nyctla",
-      "name": "New York City Trial Lawyers Association",
-      "url": "https://nyctla.com/",
-      "description": "NYCTLA is a professional organization dedicated to protecting the rights of injured victims and their families.",
-      "category": ["Bar Association", "Professional Organization"],
-      "location": {
-        "address": "132 Nassau Street",
-        "city": "New York",
-        "state": "NY",
-        "country": "USA",
-        "zip": "10038"
-      }
-    },
-    {
-      "id": "com_mbbanyc",
-      "name": "Metropolitan Black Bar Association",
-      "url": "https://mbbanyc.org/",
-      "description": "The Metropolitan Black Bar Association is a professional organization of Black attorneys in the New York City metropolitan area.",
-      "category": ["Bar Association", "Professional Organization"],
-      "location": {
-        "address": "31 West 32nd Street, Suite 201",
-        "city": "New York",
-        "state": "NY",
-        "country": "USA",
-        "zip": "10001"
       }
     }
   ]

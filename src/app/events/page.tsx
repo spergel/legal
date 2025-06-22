@@ -1,4 +1,4 @@
-import { getAllEvents, formatDate } from '@/lib/data-loader';
+import { getAllEvents, formatDate, getAllCommunities } from '@/lib/data-loader';
 import EventsClientPage from './components/EventsClientPage';
 import { Metadata } from 'next';
 
@@ -9,15 +9,19 @@ export const metadata: Metadata = {
 
 export default async function Events() {
   try {
-    console.log('Fetching events...');
-    const events = await getAllEvents();
+    console.log('Fetching events and communities...');
+    const [events, communities] = await Promise.all([
+      getAllEvents(),
+      getAllCommunities(),
+    ]);
     console.log('Raw events data:', events);
     console.log('Number of events:', events?.length || 0);
+    console.log('Number of communities:', communities?.length || 0);
 
     // Ensure events is an array
     if (!Array.isArray(events)) {
       console.error('Events is not an array:', events);
-      return <EventsClientPage events={[]} />;
+      return <EventsClientPage events={[]} communities={communities || []} />;
     }
 
     // Format dates for display and serialize Date objects
@@ -51,10 +55,10 @@ export default async function Events() {
     console.log('Formatted events:', validEvents);
     console.log('Number of valid events:', validEvents.length);
 
-    return <EventsClientPage events={validEvents} />;
+    return <EventsClientPage events={validEvents} communities={communities || []} />;
   } catch (error) {
     console.error('Error loading events:', error);
     // Return empty array if there's an error
-    return <EventsClientPage events={[]} />;
+    return <EventsClientPage events={[]} communities={[]} />;
   }
 } 

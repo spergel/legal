@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Event } from '@/types';
 import { formatDate } from '@/lib/data-loader';
+import EventCategories from './EventCategories';
 
 interface EventDialogProps {
   eventId: string;
@@ -91,6 +92,16 @@ export default function EventDialog({ eventId, onClose }: EventDialogProps) {
             </button>
           </div>
 
+          {/* Event Categories */}
+          <div className="mb-4">
+            <EventCategories 
+              event={eventData} 
+              showTags={true} 
+              maxCategories={8}
+              className="mb-3"
+            />
+          </div>
+
           <div className="space-y-4">
             <div>
               <p className="text-amber-800">
@@ -100,7 +111,7 @@ export default function EventDialog({ eventId, onClose }: EventDialogProps) {
               <p className="text-amber-800">
                 <span className="font-semibold">Location:</span> {eventData.locationName || 'Online/TBD'}
               </p>
-              {eventData.cleCredits && (
+              {eventData.cleCredits && eventData.cleCredits > 0 && (
                 <p className="text-amber-800">
                   <span className="font-semibold">CLE Credits:</span> {eventData.cleCredits}
                 </p>

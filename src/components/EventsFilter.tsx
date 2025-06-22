@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import FilterBar, { FilterOption } from './FilterBar';
-import { Event } from '@/types';
+import { Event, EventType, PracticeArea, OrganizationType, SpecialtyGroup, Community } from '@/types';
+import AdvancedFilterDialog from './AdvancedFilterDialog';
+import { Star } from 'lucide-react';
 
 interface EventWithFormattedDates extends Event {
   formattedStartDate: string;
@@ -10,18 +12,36 @@ interface EventWithFormattedDates extends Event {
 }
 
 interface EventsFilterProps {
-  events: EventWithFormattedDates[];
-  onFilteredEvents: (events: EventWithFormattedDates[]) => void;
+  events: (Event & { formattedStartDate: string; formattedEndDate: string | null; })[];
+  onFilteredEvents: (events: (Event & { formattedStartDate: string; formattedEndDate: string | null; })[]) => void;
   className?: string;
+  showStarredOnly?: boolean;
+  communities: Community[];
 }
 
-export default function EventsFilter({ events, onFilteredEvents, className = '' }: EventsFilterProps) {
+// Helper arrays from types
+const allEventTypes: EventType[] = ['CLE', 'Networking', 'Annual Dinner', 'Pro Bono', 'Board Meeting', 'Gala', 'Pride Event', 'Screening', 'Event', 'Dinner/Gala'];
+const allPracticeAreas: PracticeArea[] = ['Intellectual Property', 'Criminal Law', 'Immigration', 'Civil Rights', 'Employment Law', 'Family Law', 'Real Estate', 'Bankruptcy', 'Entertainment Law', 'International Law', 'Litigation', 'Mediation', 'Disability Law', 'Water', 'Environmental'];
+const allOrganizationTypes: OrganizationType[] = ['Bar Association', 'Legal Events', 'CLE Provider', 'Law School', 'Legal Organization'];
+const allSpecialtyGroups: SpecialtyGroup[] = ['Asian American', 'Hispanic', 'LGBTQ+', 'Women in Law', 'Young Lawyers', 'Solo/Small Firm'];
+
+export default function EventsFilter({ events, onFilteredEvents, className = '', showStarredOnly = false, communities }: EventsFilterProps) {
   const [filters, setFilters] = useState({
+    starred: 'all',
     date: 'all',
-    category: 'all',
-    price: 'all',
     cle: 'all',
+    communityId: 'all',
+    eventTypes: [] as string[],
+    practiceAreas: [] as string[],
+    organizationTypes: [] as string[],
+    specialtyGroups: [] as string[],
+    startDate: '',
+    endDate: '',
   });
+
+  const [isAdvancedDialogOpen, setAdvancedDialogOpen] = useState(false);
+  const [starredEventIds, setStarredEventIds] = useState<string[]>([]);
+  const [isLoadingStarred, setIsLoadingStarred] = useState(false);
 
   // Add logging to debug the events data
   useEffect(() => {
@@ -32,193 +52,215 @@ export default function EventsFilter({ events, onFilteredEvents, className = '' 
     }
   }, [events]);
 
-  // Generate filter options from events data
+  // Load starred events for filtering
+  useEffect(() => {
+    setIsLoadingStarred(true);
+    fetch('/api/user/starred-events')
+      .then(res => res.json())
+      .then(data => {
+        try {
+          if (data.events && Array.isArray(data.events)) {
+            setStarredEventIds(data.events.map((event: Event) => event.id));
+          } else {
+            setStarredEventIds([]);
+          }
+        } catch (error) {
+          console.error('Error processing starred events:', error);
+          setStarredEventIds([]);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching starred events:', error);
+        setStarredEventIds([]);
+      })
+      .finally(() => setIsLoadingStarred(false));
+  }, []);
+
+  // Define options for all filters
   const dateOptions: FilterOption[] = [
-    { id: 'all', label: 'All Dates', value: 'all' },
-    { id: 'today', label: 'Today', value: 'today' },
-    { id: 'tomorrow', label: 'Tomorrow', value: 'tomorrow' },
-    { id: 'this-week', label: 'This Week', value: 'this-week' },
-    { id: 'this-month', label: 'This Month', value: 'this-month' },
-  ];
-
-  // Safely extract categories from events
-  const categories = (events || [])
-    .flatMap(event => {
-      try {
-        // Ensure event and category exist before accessing
-        if (!event || !event.category) return [];
-        return Array.isArray(event.category) ? event.category : [];
-      } catch (error) {
-        console.error('Error extracting category from event:', error, event);
-        return [];
-      }
-    })
-    .filter(Boolean);
-  
-  const categoryOptions: FilterOption[] = [
-    { id: 'all', label: 'All Categories', value: 'all' },
-    ...Array.from(new Set(categories))
-      .map(category => ({
-        id: category,
-        label: category,
-        value: category,
-      })),
-  ];
-
-  const priceOptions: FilterOption[] = [
-    { id: 'all', label: 'All Prices', value: 'all' },
-    { id: 'free', label: 'Free', value: 'free' },
-    { id: 'paid', label: 'Paid', value: 'paid' },
+    { id: 'date-all', label: 'All Dates', value: 'all' },
+    { id: 'date-today', label: 'Today', value: 'today' },
+    { id: 'date-tomorrow', label: 'Tomorrow', value: 'tomorrow' },
+    { id: 'date-this-week', label: 'This Week', value: 'this-week' },
+    { id: 'date-this-month', label: 'This Month', value: 'this-month' },
   ];
 
   const cleOptions: FilterOption[] = [
-    { id: 'all', label: 'All Events', value: 'all' },
-    { id: 'cle', label: 'CLE Events Only', value: 'cle' },
+    { id: 'cle-all', label: 'All', value: 'all' },
+    { id: 'cle-only', label: 'CLE Events Only', value: 'cle' },
+    { id: 'cle-credits', label: 'CLE with Credits', value: 'cle-with-credits' },
+    { id: 'cle-not', label: 'Not CLE Events', value: 'not-cle' },
   ];
+
+  // Derive available options for advanced filters from events
+  const eventTypes = useMemo(() => allEventTypes.filter(type => (events || []).some(event => event.eventType === type || (event.category || []).includes(type))), [events]);
+  const practiceAreas = useMemo(() => allPracticeAreas.filter(area => (events || []).some(event => (event.category || []).includes(area))), [events]);
+  const organizationTypes = useMemo(() => allOrganizationTypes.filter(type => (events || []).some(event => (event.category || []).includes(type))), [events]);
+  const specialtyGroups = useMemo(() => allSpecialtyGroups.filter(group => (events || []).some(event => (event.category || []).includes(group))), [events]);
+
+  const starredOptions: FilterOption[] = [
+    { id: 'all-events', label: 'All Events', value: 'all' },
+    { id: 'starred-events', label: 'Starred Events Only', value: 'starred', icon: <Star className="w-4 h-4 text-amber-500" /> },
+  ];
+  
+  const communityOptions: FilterOption[] = useMemo(() => {
+    const options: FilterOption[] = [
+        { id: 'community-all', value: 'all', label: 'All Communities' },
+        { id: 'community-uni', value: 'cat-University', label: 'All University Events' },
+        { id: 'community-bar', value: 'cat-Bar Association', label: 'All Bar Association Events' },
+    ];
+    (communities || []).forEach(c => {
+        options.push({ id: c.id, value: c.id, label: c.name });
+    });
+    return options;
+  }, [communities]);
 
   const filterConfig = [
-    {
-      id: 'date',
-      label: 'Date',
-      options: dateOptions,
-    },
-    {
-      id: 'category',
-      label: 'Category',
-      options: categoryOptions,
-    },
-    {
-      id: 'price',
-      label: 'Price',
-      options: priceOptions,
-    },
-    {
-      id: 'cle',
-      label: 'CLE',
-      options: cleOptions,
-    },
+    { id: 'communityId', label: 'Community', options: communityOptions },
+    { id: 'date', label: 'Date', options: dateOptions },
+    { id: 'cle', label: 'CLE', options: cleOptions },
+    { id: 'starred', label: 'Starred', options: starredOptions },
   ];
 
-  const handleFilterChange = (filterId: string, value: string) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterId]: value,
-    }));
+  const handleFilterChange = (filterKey: string, value: any) => {
+    setFilters(prev => {
+      const newFilters = { ...prev, [filterKey]: value };
+      // If a preset date is chosen, clear custom dates
+      if (filterKey === 'date' && value !== 'all') {
+        newFilters.startDate = '';
+        newFilters.endDate = '';
+      }
+      // If a custom date is entered, clear the preset
+      if ((filterKey === 'startDate' || filterKey === 'endDate') && value !== '') {
+        newFilters.date = 'all';
+      }
+      return newFilters;
+    });
   };
 
   useEffect(() => {
-    try {
-      console.log('Applying filters to events:', events?.length || 0);
-      
-      // Ensure events is an array
-      if (!Array.isArray(events)) {
-        console.warn('Events is not an array, using empty array');
-        onFilteredEvents([]);
-        return;
-      }
+    let filteredEvents = [...events];
 
-      let filteredEvents = [...events];
+    // Apply date filters
+    if (filters.startDate && filters.endDate) {
+      const start = new Date(filters.startDate);
+      const end = new Date(filters.endDate);
+      end.setHours(23, 59, 59, 999);
 
-      // Apply date filter
-      if (filters.date !== 'all') {
-        const now = new Date();
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const nextWeek = new Date(now);
-        nextWeek.setDate(nextWeek.getDate() + 7);
-        const nextMonth = new Date(now);
-        nextMonth.setMonth(nextMonth.getMonth() + 1);
+      filteredEvents = filteredEvents.filter(event => {
+        if (!event.startDate) return false;
+        const eventDate = new Date(event.startDate);
+        return eventDate >= start && eventDate <= end;
+      });
+    } else if (filters.date !== 'all') {
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const nextWeek = new Date(now);
+      nextWeek.setDate(nextWeek.getDate() + 7);
+      const nextMonth = new Date(now);
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
 
-        filteredEvents = filteredEvents.filter(event => {
-          try {
-            if (!event || !event.startDate) {
-              console.warn('Event missing startDate:', event);
-              return false;
-            }
+      filteredEvents = filteredEvents.filter(event => {
+        if (!event || !event.startDate) return false;
             
-            const eventDate = new Date(event.startDate);
-            switch (filters.date) {
-              case 'today':
-                return eventDate.toDateString() === now.toDateString();
-              case 'tomorrow':
-                return eventDate.toDateString() === tomorrow.toDateString();
-              case 'this-week':
-                return eventDate >= now && eventDate <= nextWeek;
-              case 'this-month':
-                return eventDate >= now && eventDate <= nextMonth;
-              default:
-                return true;
-            }
-          } catch (error) {
-            console.error('Error filtering event by date:', error, event);
-            return false;
-          }
-        });
-      }
-
-      // Apply category filter
-      if (filters.category !== 'all') {
-        filteredEvents = filteredEvents.filter(event => {
-          try {
-            return event && event.category && Array.isArray(event.category) && event.category.includes(filters.category);
-          } catch (error) {
-            console.error('Error filtering event by category:', error, event);
-            return false;
-          }
-        });
-      }
-
-      // Apply price filter
-      if (filters.price !== 'all') {
-        filteredEvents = filteredEvents.filter(event => {
-          try {
-            if (!event || !event.price) {
-              return filters.price === 'free';
-            }
-            
-            // Handle price as Record<string, any>
-            const priceType = event.price.type || event.price.priceType || '';
-            const priceAmount = event.price.amount || event.price.priceAmount || 0;
-            
-            if (filters.price === 'free') {
-              return !priceType || priceType.toLowerCase() === 'free' || priceAmount === 0;
-            } else if (filters.price === 'paid') {
-              return priceType && priceType.toLowerCase() !== 'free' && priceAmount > 0;
-            }
+        const eventDate = new Date(event.startDate);
+        switch (filters.date) {
+          case 'today':
+            return eventDate.toDateString() === now.toDateString();
+          case 'tomorrow':
+            return eventDate.toDateString() === tomorrow.toDateString();
+          case 'this-week':
+            return eventDate >= now && eventDate <= nextWeek;
+          case 'this-month':
+            return eventDate >= now && eventDate <= nextMonth;
+          default:
             return true;
-          } catch (error) {
-            console.error('Error filtering event by price:', error, event);
-            return false;
-          }
-        });
-      }
-
-      // Apply CLE filter
-      if (filters.cle === 'cle') {
-        filteredEvents = filteredEvents.filter(event => {
-          try {
-            return event && event.metadata && event.metadata.cle_credits != null;
-          } catch (error) {
-            console.error('Error filtering event by CLE:', error, event);
-            return false;
-          }
-        });
-      }
-
-      console.log('Filtered events count:', filteredEvents.length);
-      onFilteredEvents(filteredEvents);
-    } catch (error) {
-      console.error('Error in EventsFilter useEffect:', error);
-      onFilteredEvents([]);
+        }
+      });
     }
-  }, [events, filters, onFilteredEvents]);
+
+    // Apply CLE filter
+    if (filters.cle !== 'all') {
+      filteredEvents = filteredEvents.filter(event => {
+        const isCle = event.eventType === 'CLE' || (event.category || []).includes('CLE');
+        if (filters.cle === 'cle') return isCle;
+        if (filters.cle === 'cle-with-credits') return event.cleCredits && event.cleCredits > 0;
+        if (filters.cle === 'not-cle') return !isCle;
+        return true;
+      });
+    }
+    
+    // Apply starred filter
+    if (showStarredOnly || filters.starred === 'starred') {
+      filteredEvents = filteredEvents.filter(event => event && event.id && starredEventIds.includes(event.id));
+    }
+    
+    // Apply community filter
+    if (filters.communityId && filters.communityId !== 'all') {
+      if (filters.communityId.startsWith('cat-')) {
+        const category = filters.communityId.replace('cat-', '');
+        const communityIds = (communities || []).filter(c => (c.category || []).includes(category)).map(c => c.id);
+        filteredEvents = filteredEvents.filter(event => event.communityId && communityIds.includes(event.communityId));
+      } else {
+        filteredEvents = filteredEvents.filter(event => event.communityId === filters.communityId);
+      }
+    }
+    
+    // Apply advanced multi-select filters
+    if (filters.eventTypes.length > 0) {
+      filteredEvents = filteredEvents.filter(event => 
+        filters.eventTypes.some(type => 
+          event.eventType === type || (event.category || []).includes(type)
+        )
+      );
+    }
+    if (filters.practiceAreas.length > 0) {
+      filteredEvents = filteredEvents.filter(event => 
+        filters.practiceAreas.some(area => (event.category || []).includes(area))
+      );
+    }
+    if (filters.organizationTypes.length > 0) {
+      filteredEvents = filteredEvents.filter(event => 
+        filters.organizationTypes.some(type => (event.category || []).includes(type))
+      );
+    }
+    if (filters.specialtyGroups.length > 0) {
+      filteredEvents = filteredEvents.filter(event => 
+        filters.specialtyGroups.some(group => (event.category || []).includes(group))
+      );
+    }
+
+    onFilteredEvents(filteredEvents);
+  }, [filters, events, onFilteredEvents, starredEventIds, showStarredOnly, communities]);
+
+  if (isLoadingStarred && (showStarredOnly || filters.starred === 'starred')) {
+    return <div className="text-center py-4">Loading starred events...</div>;
+  }
 
   return (
-    <FilterBar
-      title="Filter Events"
-      filters={filterConfig}
-      onFilterChange={handleFilterChange}
-      className={className}
-    />
+    <>
+      <FilterBar
+        title="Filter Events"
+        filters={filterConfig}
+        onFilterChange={handleFilterChange}
+        className={className}
+        currentFilters={filters}
+      >
+        <button
+          onClick={() => setAdvancedDialogOpen(true)}
+          className="ml-4 px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+        >
+          Advanced Filters
+        </button>
+      </FilterBar>
+      <AdvancedFilterDialog
+        isOpen={isAdvancedDialogOpen}
+        onClose={() => setAdvancedDialogOpen(false)}
+        availableFilters={{ dateOptions, cleOptions, eventTypes, practiceAreas, organizationTypes, specialtyGroups }}
+        appliedFilters={filters}
+        onFilterChange={handleFilterChange}
+      />
+    </>
   );
-} 
+}

@@ -1,17 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { Event } from '@/types';
-import { useState, useEffect } from 'react';
+import { Event, Community } from '@/types';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import EventDialog from '@/components/EventDialog';
 import EventsFilter from '@/components/EventsFilter';
 import StarButton from '@/components/StarButton';
+import AddToCalendarDialog from '@/components/AddToCalendarDialog';
+import EventCategories from '@/components/EventCategories';
+import { Button, Badge } from '@/components/ui';
+import { formatEventDate, formatEventTime, truncateText } from '@/lib/utils';
+import { Calendar, MapPin, Clock, Filter, Plus } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface EventsListProps {
   events: (Event & {
     formattedStartDate: string;
     formattedEndDate: string | null;
   })[];
+  communities: Community[];
   showStarredOnly?: boolean;
 }
 
@@ -24,11 +31,12 @@ function getDescriptionSnippet(htmlDescription: string | null | undefined, maxLe
   return text.substring(0, maxLength) + '...';
 }
 
-export default function EventsList({ events: initialEvents, showStarredOnly = false }: EventsListProps) {
+export default function EventsList({ events: initialEvents, communities, showStarredOnly = false }: EventsListProps) {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [filteredEvents, setFilteredEvents] = useState(initialEvents || []);
   const [starredEventIds, setStarredEventIds] = useState<string[]>([]);
   const [isLoadingStarred, setIsLoadingStarred] = useState(false);
+  const [isAddToCalendarOpen, setIsAddToCalendarOpen] = useState(false);
 
   // Add logging to debug the events data
   useEffect(() => {
@@ -76,46 +84,83 @@ export default function EventsList({ events: initialEvents, showStarredOnly = fa
     }
   }, [showStarredOnly]);
 
-  // Filter events if showStarredOnly is enabled
-  const eventsToShow = showStarredOnly
-    ? filteredEvents.filter(event => {
-        try {
-          return event && event.id && starredEventIds.includes(event.id);
-        } catch (error) {
-          console.error('Error filtering starred event:', error, event);
-          return false;
-        }
-      })
-    : filteredEvents;
+  // Apply all filters to get the final list of events
+  const eventsToShow = (filteredEvents || []).filter(event => {
+    // Starred filter
+    if (showStarredOnly && !(event && event.id && starredEventIds.includes(event.id))) {
+      return false;
+    }
+    return true; // If no source filters, show all
+  });
 
-  // Export URLs for starred events
+  // Export URLs for calendar
   const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-  const starredParam = starredEventIds.length ? `id=${starredEventIds.join(',')}` : '';
-  const icsUrl = `${baseUrl}/api/events/ics${starredParam ? '?' + starredParam : ''}`;
-  const rssUrl = `${baseUrl}/api/rss${starredParam ? '?' + starredParam : ''}`;
+  const icsUrl = `${baseUrl}/api/events/ics`;
+
+  const handleDownloadICS = () => {
+    window.open(icsUrl, '_blank');
+    toast.success('Calendar download started!');
+  };
+
+  const handleCopyICS = async () => {
+    try {
+      await navigator.clipboard.writeText(icsUrl);
+      toast.success('ICS link copied to clipboard!');
+    } catch (error) {
+      toast.error('Failed to copy link');
+    }
+  };
+
+  const handleOpenGoogleCalendar = () => {
+    const googleUrl = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(icsUrl)}`;
+    window.open(googleUrl, '_blank');
+    toast.success('Opening Google Calendar...');
+  };
 
   if (showStarredOnly && isLoadingStarred) {
-    return <p className="text-gray-400">Loading starred events...</p>;
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-800 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading starred events...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!initialEvents || initialEvents.length === 0) {
-    return <p className="text-gray-400">No events found at the moment. Check back soon!</p>;
+    return (
+      <div className="text-center py-12">
+        <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+        <p className="text-gray-600 text-lg">No events found at the moment. Check back soon!</p>
+      </div>
+    );
   }
 
   if (showStarredOnly && eventsToShow.length === 0) {
-    return <p className="text-gray-400">No starred events found. Star some events to see them here!</p>;
+    return (
+      <div className="text-center py-12">
+        <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+        <p className="text-gray-600 text-lg">No starred events found. Star some events to see them here!</p>
+      </div>
+    );
   }
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-amber-800">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold text-amber-800 flex items-center gap-2">
+          <Calendar className="w-8 h-8" />
           {showStarredOnly ? 'Starred Events' : 'Events'}
         </h1>
-        <div className="flex items-center gap-4">
-          <Link href="/" className="text-amber-800 hover:text-amber-700 font-medium">
-            &larr; Back to Home
-          </Link>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="primary"
+            onClick={() => setIsAddToCalendarOpen(true)}
+            icon={<Plus className="w-4 h-4" />}
+          >
+            Export Calendar
+          </Button>
         </div>
       </div>
       
@@ -123,6 +168,8 @@ export default function EventsList({ events: initialEvents, showStarredOnly = fa
         events={initialEvents}
         onFilteredEvents={setFilteredEvents}
         className="mb-8"
+        showStarredOnly={showStarredOnly}
+        communities={communities}
       />
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -137,46 +184,43 @@ export default function EventsList({ events: initialEvents, showStarredOnly = fa
             return (
               <div
                 key={event.id}
-                className="block bg-amber-50 rounded-lg shadow-lg hover:shadow-amber-200/30 transition-shadow duration-300 overflow-hidden border border-amber-200 cursor-pointer"
+                className="group bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 cursor-pointer hover:border-amber-300"
                 onClick={() => setSelectedEventId(event.id)}
               >
                 <div className="p-6 relative">
                   {/* Star button */}
-                  <div className="absolute top-4 right-4">
+                  <div className="absolute top-4 right-4 z-10">
                     <StarButton eventId={event.id} />
                   </div>
                   
-                  <h2 className="text-2xl font-semibold text-amber-900 mb-2 truncate" title={event.name}>{event.name}</h2>
-                  <p className="text-sm text-amber-800 mb-1">
-                    <span className="font-semibold">Date:</span> {event.formattedStartDate || 'Date not available'}
-                  </p>
-                  <p className="text-sm text-amber-800 mb-3">
-                    <span className="font-semibold">Location:</span> {event.locationName || 'Online/TBD'}
-                  </p>
-                  {event.cleCredits && (
-                    <p className="text-sm text-amber-700 mb-3">
-                      <span className="font-semibold">CLE Credits:</span> {event.cleCredits}
-                    </p>
-                  )}
-                  <p className="text-amber-900 text-sm mb-4 h-16 overflow-hidden">
-                    {getDescriptionSnippet(event.description)}
-                  </p>
-                  {event.community && (
-                    <div className="mb-3">
-                      <span className="inline-block bg-amber-100 text-amber-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
-                        {event.community.name}
-                      </span>
+                  {/* Event Categories */}
+                  <div className="mb-3">
+                    <EventCategories 
+                      event={event} 
+                      showTags={false} 
+                      maxCategories={3}
+                    />
+                  </div>
+                  
+                  <h2 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2" title={event.name}>
+                    {truncateText(event.name, 60)}
+                  </h2>
+                  
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-gray-400" />
+                      <span>{event.formattedStartDate || 'Date not available'}</span>
                     </div>
-                  )}
-                  <a
-                    href={event.url || undefined}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`text-right text-amber-800 hover:text-amber-700 font-medium w-full block ${event.url ? '' : 'opacity-50 pointer-events-none'}`}
-                    onClick={e => e.stopPropagation()}
-                  >
-                    Go to Link &rarr;
-                  </a>
+                    
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-gray-400" />
+                      <span>{event.locationName || 'Online/TBD'}</span>
+                    </div>
+                  </div>
+                  
+                  <p className="text-sm text-gray-500 mt-4 line-clamp-3">
+                    {getDescriptionSnippet(event.description, 120)}
+                  </p>
                 </div>
               </div>
             );
@@ -187,12 +231,19 @@ export default function EventsList({ events: initialEvents, showStarredOnly = fa
         })}
       </div>
 
+      {/* Dialogs */}
       {selectedEventId && (
-        <EventDialog 
-          eventId={selectedEventId} 
-          onClose={() => setSelectedEventId(null)} 
+        <EventDialog
+          eventId={selectedEventId}
+          onClose={() => setSelectedEventId(null)}
         />
       )}
+
+      <AddToCalendarDialog
+        isOpen={isAddToCalendarOpen}
+        onClose={() => setIsAddToCalendarOpen(false)}
+        communities={communities}
+      />
     </div>
   );
 } 

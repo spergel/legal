@@ -7,8 +7,23 @@ import {
   updateEventStatus,
   getAllEventsForAdmin 
 } from '@/lib/data-loader';
+import { EventStatus } from '@/types';
 
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean);
+
+// Helper function to convert lowercase status to proper enum value
+function normalizeStatus(status: string): EventStatus {
+  const statusMap: Record<string, EventStatus> = {
+    'pending': 'PENDING',
+    'approved': 'APPROVED',
+    'denied': 'DENIED',
+    'featured': 'FEATURED',
+    'cancelled': 'CANCELLED',
+    'archived': 'ARCHIVED'
+  };
+  
+  return statusMap[status.toLowerCase()] || 'PENDING';
+}
 
 export default async function AdminPage({ searchParams }: any) {
   const session = await getServerSession(authOptions);
@@ -40,11 +55,12 @@ export default async function AdminPage({ searchParams }: any) {
   }
   
   if (searchParams?.updateStatus) {
+    const normalizedStatus = normalizeStatus(searchParams.status);
     await updateEventStatus(
       searchParams.eventId, 
-      searchParams.status, 
+      normalizedStatus, 
       session.user?.email as string,
-      `Status updated to ${searchParams.status} via admin dashboard`
+      `Status updated to ${normalizedStatus} via admin dashboard`
     );
   }
 

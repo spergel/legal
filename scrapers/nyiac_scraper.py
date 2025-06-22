@@ -6,6 +6,7 @@ from typing import List, Optional
 from base_scraper import BaseScraper
 from models import Event
 import os
+from categorization_helper import EventCategorizer
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -15,110 +16,216 @@ class NYIACScraper(BaseScraper):
     def __init__(self, community_id: str):
         super().__init__(community_id)
         self.base_url = "https://www.nyiac.org"
-        self.events_url = f"{self.base_url}/events"
+        self.events_url = f"{self.base_url}/events/category/new-york/"
     
     def get_events(self) -> List[Event]:
         """Get events from the NYIAC website."""
-        response = self.session.get(self.events_url)
-        response.raise_for_status()
-        
-        soup = BeautifulSoup(response.text, 'html.parser')
-        events = []
-        
-        # Find all event containers
-        event_containers = soup.find_all('div', class_='event-item')
-        
-        for container in event_containers:
-            try:
-                # Extract event details
-                title_elem = container.find('h3', class_='event-title')
-                if not title_elem:
-                    continue
-                
-                title = title_elem.text.strip()
-                link = title_elem.find('a')['href']
-                if not link.startswith('http'):
-                    link = f"{self.base_url}{link}"
-                
-                # Get event details page
-                event_response = self.session.get(link)
-                event_response.raise_for_status()
-                event_soup = BeautifulSoup(event_response.text, 'html.parser')
-                
-                # Extract date and time
-                date_elem = event_soup.find('div', class_='event-date')
-                time_elem = event_soup.find('div', class_='event-time')
-                
-                if not date_elem or not time_elem:
-                    continue
-                
-                date_str = date_elem.text.strip()
-                time_str = time_elem.text.strip()
-                
-                # Parse date and time
+        try:
+            response = self.session.get(self.events_url)
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.text, 'html.parser')
+            events = []
+            seen_titles = set()  # Track seen titles to avoid duplicates
+            
+            # Look for events in the current structure
+            # The event appears to be in a list format
+            event_containers = soup.find_all(['article', 'div'], class_=lambda x: x and ('event' in x.lower() or 'post' in x.lower()))
+            
+            # If no specific event containers found, look for any content that might contain events
+            if not event_containers:
+                # Look for the specific event mentioned on the page
+                event_text = soup.find(text=re.compile(r'ICC New York Conference on International Arbitration', re.IGNORECASE))
+                if event_text:
+                    # Find the parent container
+                    event_container = event_text.find_parent(['div', 'article', 'section'])
+                    if event_container:
+                        event_containers = [event_container]
+            
+            # Also look for any date/time patterns that might indicate events
+            date_patterns = soup.find_all(text=re.compile(r'September \d+.*@.*\d+:\d+', re.IGNORECASE))
+            for date_text in date_patterns:
+                parent = date_text.find_parent(['div', 'article', 'section'])
+                if parent and parent not in event_containers:
+                    event_containers.append(parent)
+            
+            print(f"Found {len(event_containers)} potential event containers")
+            
+            for container in event_containers:
                 try:
-                    date_obj = datetime.strptime(date_str, '%B %d, %Y')
-                    time_obj = datetime.strptime(time_str, '%I:%M %p')
-                    start_date = datetime.combine(date_obj.date(), time_obj.time())
+                    # Extract event details from the container
+                    title = self._extract_title(container)
+                    if not title:
+                        continue
+                    
+                    # Only keep events with meaningful titles
+                    event_keywords = ['conference', 'arbitration', 'meeting', 'seminar', 'workshop', 'panel', 'forum', 'summit']
+                    if (
+                        len(title) < 10
+                        or all(kw not in title.lower() for kw in event_keywords)
+                    ):
+                        continue
+                    
+                    # Skip if we've already seen this title
+                    if title in seen_titles:
+                        continue
+                    
+                    # Extract date and time
+                    date_info = self._extract_date_time(container)
+                    if not date_info:
+                        continue
+                    
+                    start_date, end_date = date_info
+                    
+                    # Extract description
+                    description = self._extract_description(container)
+                    
+                    # Extract location
+                    location = self._extract_location(container)
+                    
+                    # Create event ID
+                    event_id = f"nyiac_{start_date.strftime('%Y%m%d_%H%M')}"
+                    
+                    # Use centralized categorization
+                    base_categories = ['Arbitration', 'Legal Events', 'International Law']
+                    categories = EventCategorizer.categorize_event(title, description, base_categories)
+                    
+                    # Create event object
+                    event = Event(
+                        id=event_id,
+                        name=title,
+                        description=description,
+                        startDate=start_date.isoformat(),
+                        endDate=end_date.isoformat() if end_date else None,
+                        communityId=self.community_id,
+                        image=None,
+                        price=None,
+                        metadata={
+                            "source_url": self.events_url,
+                            "venue": {
+                                "name": location,
+                                "type": "in-person" if location else "virtual"
+                            }
+                        },
+                        category=categories,
+                        tags=None,
+                        event_type="Conference"
+                    )
+                    
+                    events.append(event)
+                    seen_titles.add(title)  # Mark this title as seen
+                    print(f"Successfully created event: {title}")
+                    
+                except Exception as e:
+                    print(f"Error processing event container: {e}")
+                    continue
+            
+            return events
+            
+        except Exception as e:
+            print(f"Error fetching events from NYIAC: {e}")
+            return []
+    
+    def _extract_title(self, container) -> Optional[str]:
+        """Extract event title from container."""
+        # Look for various title patterns
+        title_selectors = [
+            'h1', 'h2', 'h3', 'h4',
+            '.event-title', '.post-title', '.title',
+            '[class*="title"]', '[class*="event"]'
+        ]
+        
+        for selector in title_selectors:
+            title_elem = container.find(selector)
+            if title_elem:
+                title = title_elem.get_text(strip=True)
+                if title and len(title) > 5:  # Basic validation
+                    return title
+        
+        # If no title found, look for any text that might be a title
+        text_content = container.get_text()
+        lines = [line.strip() for line in text_content.split('\n') if line.strip()]
+        for line in lines:
+            if len(line) > 10 and any(keyword in line.lower() for keyword in ['conference', 'arbitration', 'event', 'meeting']):
+                return line
+        
+        return None
+    
+    def _extract_date_time(self, container) -> Optional[tuple]:
+        """Extract date and time from container."""
+        text_content = container.get_text()
+        
+        # Look for date patterns like "September 18 @ 9:00 am - September 19 @ 6:00 pm"
+        date_patterns = [
+            r'(\w+ \d+)\s*@\s*(\d+:\d+\s*[ap]m)\s*-\s*(\w+ \d+)\s*@\s*(\d+:\d+\s*[ap]m)',
+            r'(\w+ \d+)\s*@\s*(\d+:\d+\s*[ap]m)',
+            r'(\w+ \d+,\s*\d{4})\s*@\s*(\d+:\d+\s*[ap]m)',
+        ]
+        
+        for pattern in date_patterns:
+            match = re.search(pattern, text_content, re.IGNORECASE)
+            if match:
+                try:
+                    if len(match.groups()) == 4:  # Two-day event
+                        start_date_str = f"{match.group(1)} {match.group(2)}"
+                        end_date_str = f"{match.group(3)} {match.group(4)}"
+                        
+                        start_date = datetime.strptime(start_date_str, '%B %d %I:%M %p')
+                        end_date = datetime.strptime(end_date_str, '%B %d %I:%M %p')
+                        
+                        # Set year to 2025 (current year)
+                        start_date = start_date.replace(year=2025)
+                        end_date = end_date.replace(year=2025)
+                        
+                        return start_date, end_date
+                    else:  # Single day event
+                        date_str = f"{match.group(1)} {match.group(2)}"
+                        start_date = datetime.strptime(date_str, '%B %d %I:%M %p')
+                        start_date = start_date.replace(year=2025)
+                        return start_date, None
                 except ValueError:
                     continue
-                
-                # Extract description
-                description_elem = event_soup.find('div', class_='event-description')
-                description = description_elem.text.strip() if description_elem else None
-                
-                # Extract location
-                location_elem = event_soup.find('div', class_='event-location')
-                location = location_elem.text.strip() if location_elem else None
-                
-                # Extract price
-                price_elem = event_soup.find('div', class_='event-price')
-                price = None
-                if price_elem:
-                    price_text = price_elem.text.strip()
-                    if 'free' in price_text.lower():
-                        price = {"type": "free", "amount": 0, "currency": "USD"}
-                    else:
-                        # Try to extract price amount
-                        match = re.search(r'\$(\d+)', price_text)
-                        if match:
-                            amount = int(match.group(1))
-                            price = {"type": "paid", "amount": amount, "currency": "USD"}
-                
-                # Create event object
-                event = Event(
-                    id=f"nyiac_{start_date.strftime('%Y%m%d_%H%M')}",
-                    name=title,
-                    description=description,
-                    startDate=start_date.isoformat(),
-                    endDate=None,  # End time not provided
-                    locationId=None,  # Location ID mapping needed
-                    communityId=self.community_id,
-                    image=None,  # Image URL not provided
-                    price=price,
-                    metadata={
-                        "source_url": link,
-                        "venue": {
-                            "name": location,
-                            "type": "in-person" if location else "virtual"
-                        }
-                    },
-                    category=["Arbitration"],  # Default category
-                    tags=None
-                )
-                
-                events.append(event)
-                
-            except Exception as e:
-                print(f"Error processing event: {e}")
-                continue
         
-        return events
+        return None
+    
+    def _extract_description(self, container) -> Optional[str]:
+        """Extract event description from container."""
+        # Look for description in various elements
+        desc_selectors = [
+            'p', '.description', '.event-description', '.content',
+            '[class*="description"]', '[class*="content"]'
+        ]
+        
+        for selector in desc_selectors:
+            desc_elem = container.find(selector)
+            if desc_elem:
+                desc = desc_elem.get_text(strip=True)
+                if desc and len(desc) > 20:
+                    return desc
+        
+        return None
+    
+    def _extract_location(self, container) -> Optional[str]:
+        """Extract event location from container."""
+        text_content = container.get_text()
+        
+        # Look for location patterns
+        location_patterns = [
+            r'(TBD|New York|NYC|Manhattan|Brooklyn|Queens|Bronx|Staten Island)',
+            r'([^,]+,\s*New York,\s*NY)',
+        ]
+        
+        for pattern in location_patterns:
+            match = re.search(pattern, text_content, re.IGNORECASE)
+            if match:
+                return match.group(1)
+        
+        return None
 
 def main():
     """Main function to run the scraper."""
     scraper = NYIACScraper(community_id='com_nyiac')
-    events = scraper.run()
+    events = scraper.get_events()
     print(f"Scraped {len(events)} events")
 
 if __name__ == "__main__":

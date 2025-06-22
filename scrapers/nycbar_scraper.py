@@ -10,6 +10,7 @@ import os
 from base_scraper import BaseScraper
 from models import Event
 from dotenv import load_dotenv
+from categorization_helper import EventCategorizer
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +96,12 @@ class NYCBarScraper(BaseScraper):
             except ValueError as e:
                 logger.error(f"Error parsing date/time: {e}")
                 return None
+            # Determine event type and categories using helper
+            event_type = self._determine_event_type(title, description)
+            
+            # Use centralized categorization
+            base_categories = ['Bar Association', 'Legal Events']
+            categories = EventCategorizer.categorize_event(title, description, base_categories)
             # Create standardized event
             return Event(
                 id=f"nycbar_{hash(registration_url)}",
@@ -112,7 +119,7 @@ class NYCBarScraper(BaseScraper):
                     }
                 },
                 price=price,
-                category=[event_type],
+                category=categories,
                 tags=['CLE'] if cle_credits else None
             )
         except Exception as e:
@@ -171,6 +178,8 @@ class NYCBarScraper(BaseScraper):
         except Exception as e:
             print(f"Error fetching events: {e}")
             return []
+
+
 
 def main():
     """Main function to run the scraper."""

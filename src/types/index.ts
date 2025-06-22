@@ -55,11 +55,12 @@ export interface Event {
   location?: Location | null;
   communityId?: string | null;
   community?: Community | null;
-  tags?: string[] | null;
+  category?: string[];
+  tags?: string[];
+  eventType?: string | null;
   image?: string | null;
-  metadata?: EventMetadata | null;
   price?: Record<string, any> | null;
-  category?: string[] | null;
+  metadata?: Record<string, any> | null;
 }
 
 export interface Location {
@@ -108,4 +109,49 @@ export interface CommunitiesData {
   communities: Community[];
 }
 
-export type EventStatus = 'PENDING' | 'APPROVED' | 'DENIED' | 'FEATURED' | 'CANCELLED' | 'ARCHIVED'; 
+export type EventStatus = 'PENDING' | 'APPROVED' | 'DENIED' | 'FEATURED' | 'CANCELLED' | 'ARCHIVED';
+
+// New types for enhanced categorization
+export type EventType = 
+  | 'CLE' 
+  | 'Networking' 
+  | 'Annual Dinner' 
+  | 'Pro Bono' 
+  | 'Board Meeting' 
+  | 'Gala' 
+  | 'Pride Event' 
+  | 'Screening' 
+  | 'Event' 
+  | 'Dinner/Gala';
+
+export type PracticeArea = 
+  | 'Intellectual Property'
+  | 'Criminal Law'
+  | 'Immigration'
+  | 'Civil Rights'
+  | 'Employment Law'
+  | 'Family Law'
+  | 'Real Estate'
+  | 'Bankruptcy'
+  | 'Entertainment Law'
+  | 'International Law'
+  | 'Litigation'
+  | 'Mediation'
+  | 'Disability Law'
+  | 'Water'
+  | 'Environmental';
+
+export type OrganizationType = 
+  | 'Bar Association'
+  | 'Legal Events'
+  | 'CLE Provider'
+  | 'Law School'
+  | 'Legal Organization';
+
+export type SpecialtyGroup = 
+  | 'Asian American'
+  | 'Hispanic'
+  | 'LGBTQ+'
+  | 'Women in Law'
+  | 'Young Lawyers'
+  | 'Solo/Small Firm';

@@ -32,3 +32,10 @@ jobs:
       run: |
         cd scrapers
         python cron_handler_db.py 
+        
+    - name: Run database cleanup
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      run: |
+        cd scrapers
+        python cleanup_events.py 

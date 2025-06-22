@@ -35,11 +35,14 @@ function sanitizeEvent(event: any): Event {
     location: event.location || null,
     communityId: event.communityId || null,
     community: event.community || null,
-    tags: event.tags || null,
+    
+    // Updated categorization fields with proper defaults
+    category: Array.isArray(event.category) ? event.category : [],
+    tags: Array.isArray(event.tags) ? event.tags : [],
+    eventType: event.eventType || null,
     image: event.image || null,
-    metadata: event.metadata || null,
     price: event.price || null,
-    category: event.category || null,
+    metadata: event.metadata || null,
   };
 }
 
@@ -227,5 +230,128 @@ export async function formatDate(dateString: string): Promise<string> {
   } catch (error) {
     console.warn(`Invalid date string for formatting: ${dateString}`);
     return 'Date not available';
+  }
+}
+
+// Cleanup function to delete old events
+export async function cleanupOldEvents(): Promise<{ deleted: number; errors: string[] }> {
+  const errors: string[] = [];
+  let deleted = 0;
+  
+  try {
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+    
+    // Delete events that ended more than a day ago
+    const pastEventsResult = await prisma.event.deleteMany({
+      where: {
+        endDate: {
+          lt: oneDayAgo
+        },
+        status: {
+          in: ['APPROVED', 'FEATURED', 'PENDING'] // Don't delete denied/archived events immediately
+        }
+      }
+    });
+    
+    deleted += pastEventsResult.count;
+    console.log(`Deleted ${pastEventsResult.count} past events`);
+    
+    // Delete cancelled events that were cancelled more than a day ago
+    const cancelledEventsResult = await prisma.event.deleteMany({
+      where: {
+        status: 'CANCELLED',
+        updatedAt: {
+          lt: oneDayAgo
+        }
+      }
+    });
+    
+    deleted += cancelledEventsResult.count;
+    console.log(`Deleted ${cancelledEventsResult.count} old cancelled events`);
+    
+    // Optionally, archive denied events that are more than a week old instead of deleting them
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    
+    const deniedEventsResult = await prisma.event.updateMany({
+      where: {
+        status: 'DENIED',
+        updatedAt: {
+          lt: oneWeekAgo
+        }
+      },
+      data: {
+        status: 'ARCHIVED',
+        updatedAt: new Date(),
+        updatedBy: 'system@cleanup',
+        notes: 'Auto-archived old denied event'
+      }
+    });
+    
+    console.log(`Archived ${deniedEventsResult.count} old denied events`);
+    
+  } catch (error) {
+    console.error('Error during cleanup:', error);
+    errors.push(`Cleanup failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+  
+  return { deleted, errors };
+}
+
+// Function to get cleanup statistics
+export async function getCleanupStats(): Promise<{
+  pastEvents: number;
+  oldCancelledEvents: number;
+  oldDeniedEvents: number;
+}> {
+  try {
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+    
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    
+    const [pastEvents, oldCancelledEvents, oldDeniedEvents] = await Promise.all([
+      prisma.event.count({
+        where: {
+          endDate: {
+            lt: oneDayAgo
+          },
+          status: {
+            in: ['APPROVED', 'FEATURED', 'PENDING']
+          }
+        }
+      }),
+      prisma.event.count({
+        where: {
+          status: 'CANCELLED',
+          updatedAt: {
+            lt: oneDayAgo
+          }
+        }
+      }),
+      prisma.event.count({
+        where: {
+          status: 'DENIED',
+          updatedAt: {
+            lt: oneWeekAgo
+          }
+        }
+      })
+    ]);
+    
+    return {
+      pastEvents,
+      oldCancelledEvents,
+      oldDeniedEvents
+    };
+  } catch (error) {
+    console.error('Error getting cleanup stats:', error);
+    return {
+      pastEvents: 0,
+      oldCancelledEvents: 0,
+      oldDeniedEvents: 0
+    };
   }
 } 

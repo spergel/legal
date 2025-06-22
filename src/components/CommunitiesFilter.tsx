@@ -84,6 +84,7 @@ export default function CommunitiesFilter({ communities, onFilteredCommunities, 
       filters={filterConfig}
       onFilterChange={handleFilterChange}
       className={className}
+      currentFilters={filters}
     />
   );
 } 
