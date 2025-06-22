@@ -139,11 +139,3 @@ model UserEvent {
 
   @@unique([userId, eventId]) // Prevent duplicate starrings
 }
-
-  eventId   String
-  starredAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, eventId]) // Prevent duplicate starrings
-}
