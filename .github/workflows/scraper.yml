@@ -32,7 +32,7 @@ jobs:
         cd scrapers
         pip install -r requirements.txt
 
-    - name: Generate Prisma Client
+    - name: Generate Prisma Clients
       run: npx prisma generate
         
     - name: Run scrapers
@@ -48,8 +48,5 @@ jobs:
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
       run: |
-        echo "Running database cleanup script..."
         cd scrapers
-        pip install --upgrade prisma
-        prisma generate --schema ../prisma/schema.prisma
         python cleanup_events.py 

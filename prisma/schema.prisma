@@ -13,6 +13,11 @@ generator client {
   // output   = "../src/generated/prisma" // removed for default output
 }
 
+generator py_client {
+  provider      = "prisma-client-py"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
