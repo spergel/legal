@@ -25,7 +25,9 @@ jobs:
         node-version: '18'
 
     - name: Install Python dependencies
-      run: pip install -r scrapers/requirements.txt
+      run: |
+        cd scrapers
+        pip install -r requirements.txt
         
     - name: Install root npm dependencies
       run: npm install

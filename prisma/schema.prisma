@@ -8,15 +8,14 @@
 // Docs: https://authjs.dev/reference/adapter/prisma#schema
 
 generator client {
-  provider      = "prisma-client-js"
+  provider = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
-  output        = "../src/generated/client"
+  // output   = "../src/generated/prisma" // removed for default output
 }
 
 generator py_client {
   provider      = "prisma-client-py"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
-  output        = "../scrapers/generated/client"
 }
 
 datasource db {
