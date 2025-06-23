@@ -47,6 +47,7 @@ class ScraperManagerDB:
             ("nyiac", "nyiac_scraper", "NYIACScraper", "com_nyiac"),
             ("google_calendar", "google_calendar_scraper", "GoogleCalendarScraper", "com_google_calendar"),
             ("ics_calendar", "ics_calendar_scraper", "ICSCalendarScraper", "com_ics_calendar"),
+            ("barkergilmore", "barkergilmore_scraper", "BarkerGilmoreScraper", "com_barkergilmore")
         ]
         
         for name, module_name, class_name, community_id in scraper_configs:

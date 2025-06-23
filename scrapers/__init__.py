@@ -9,6 +9,12 @@ from .ics_calendar_scraper import ICSCalendarScraper
 from .cuny_law_ics_scraper import CUNYLawICSScraper
 from .chips_network_scraper import ChIPsNetworkScraper
 from .lawline_scraper import LawlineScraper
+from .lgbtbarny_scraper import LgbtBarNyScraper
+from .nawl_scraper import NawlScraper
+from .nysba_scraper import NysbaScraper
+from .nyiac_scraper import NYIACScraper
+from .wbasny_scraper import WbasnyScraper
+from .barkergilmore_scraper import BarkerGilmoreScraper
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -23,4 +29,10 @@ __all__ = [
     'CUNYLawICSScraper',
     'ChIPsNetworkScraper',
     'LawlineScraper',
+    'LgbtBarNyScraper',
+    'NawlScraper',
+    'NysbaScraper',
+    'NYIACScraper',
+    'WbasnyScraper',
+    'BarkerGilmoreScraper'
 ] 

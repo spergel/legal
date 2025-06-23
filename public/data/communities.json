@@ -241,11 +241,11 @@
       "category": ["Law School", "University"]
     },
     {
-      "id": "com_barker_gilmore",
-      "name": "Barker Gilmore",
+      "id": "com_barkergilmore",
+      "name": "BarkerGilmore",
       "url": "https://barkergilmore.com/",
-      "eventsUrl": "https://barkergilmore.com/gc-advantage-webinars/",
-      "description": "Barker Gilmore is a legal search firm specializing in in-house counsel recruitment.",
+      "eventsUrl": "https://barkergilmore.com/content_type/webinar/",
+      "description": "GC Advantage Webinars to build skills as a strategic leader with live and on-demand complimentary professional development.",
       "category": ["Recruiter", "Professional Services"]
     },
     {
