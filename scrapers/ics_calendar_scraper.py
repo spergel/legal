@@ -327,8 +327,10 @@ def parse_location(raw_location):
         "type": "Offline"
     }
 
-def clean_description(desc):
+def clean_description(desc: Optional[str]) -> str:
     """Remove redundant boilerplate from descriptions"""
+    if not desc:
+        return ""
     return desc.replace("Find more information on https://lu.ma/nyc-tech", "").strip()
 
 def parse_price(desc):
@@ -408,7 +410,7 @@ def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
             "description": clean_description(description),
             "startDate": ics_event.get('start'),
             "endDate": ics_event.get('end'),
-            "locationName": location_details['name'],
+            "locationId": None, # Set to None for now
             "url": url,
             "communityId": community_id,
             "status": "PENDING",
@@ -421,6 +423,7 @@ def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
                 "geo": ics_event.get('geo'),
                 "speakers": extract_speakers(description),
                 "raw_location": location,
+                "locationName": location_details['name'], # Keep location name in metadata
                 "original_description": ics_event.get('description')
             }
         }
