@@ -11,6 +11,7 @@ class Event:
     description: Optional[str] = None
     startDate: str = ""  # ISO format - will be converted to DateTime in Prisma
     endDate: Optional[str] = None  # ISO format - will be converted to DateTime in Prisma
+    url: Optional[str] = None
     locationId: Optional[str] = None
     communityId: Optional[str] = None
     image: Optional[str] = None
@@ -29,6 +30,7 @@ class Event:
             "description": self.description or "",
             "startDate": self.startDate,
             "endDate": self.endDate,
+            "url": self.url,
             "locationId": self.locationId,
             "communityId": self.communityId,
             "image": self.image,

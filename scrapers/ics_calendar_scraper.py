@@ -62,7 +62,7 @@ def get_luma_event_details(event_url: str) -> Optional[Dict]:
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
-        response = requests.get(event_url, headers=headers, timeout=10)
+        response = requests.get(event_url, headers=headers, timeout=30)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         
@@ -194,7 +194,7 @@ def get_luma_events(ics_url):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
-        response = requests.get(ics_url, headers=headers, timeout=10)
+        response = requests.get(ics_url, headers=headers, timeout=30)
         response.raise_for_status()
         
         if not response.text:
@@ -333,14 +333,22 @@ def clean_description(desc: Optional[str]) -> str:
         return ""
     return desc.replace("Find more information on https://lu.ma/nyc-tech", "").strip()
 
-def parse_price(desc):
+def parse_price(desc: Optional[str]) -> dict:
     """Extract price info from description"""
+    if not desc:
+        return {
+            "amount": 0,
+            "type": "Free", 
+            "currency": "USD",
+            "details": "Status Unknown"
+        }
+
     if "free" in desc.lower():
         return {
             "amount": 0,
             "type": "Free",
             "currency": "USD",
-            "details": "Status Unknown"
+            "details": ""
         }
     
     # Add more price parsing logic as needed
