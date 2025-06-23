@@ -40,6 +40,7 @@ jobs:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         SCRAPER_SECRET: ${{ secrets.SCRAPER_SECRET }}
         VERCEL_URL: ${{ secrets.VERCEL_URL }}
+        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
       run: |
         cd scrapers
         python cron_handler_db.py 

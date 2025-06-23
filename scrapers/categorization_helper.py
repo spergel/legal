@@ -61,6 +61,27 @@ class EventCategorizer:
         return any(indicator in text for indicator in cls.NETWORKING_INDICATORS)
     
     @classmethod
+    def get_tags(cls, title: str, description: str = "") -> List[str]:
+        """Extract relevant tags from event details."""
+        tags = []
+        if cls.is_cle_event(title, description):
+            tags.append('CLE')
+        if cls.is_networking_event(title, description):
+            tags.append('Networking')
+        # This can be expanded to extract more tags
+        return tags
+    
+    @classmethod
+    def get_event_type(cls, title: str, description: str = "") -> str:
+        """Determine the primary type of the event."""
+        if cls.is_cle_event(title, description):
+            return 'CLE'
+        if cls.is_networking_event(title, description):
+            return 'Networking'
+        # Can be expanded with more sophisticated logic
+        return 'General'
+    
+    @classmethod
     def categorize_event(cls, title: str, description: str = "", 
                         base_categories: List[str] = None) -> List[str]:
         """

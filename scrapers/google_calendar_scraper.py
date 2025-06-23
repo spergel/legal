@@ -164,18 +164,18 @@ class GoogleCalendarScraper(BaseScraper):
         """Get events from all configured Google Calendars for this community."""
         events = []
         
-        # Get calendar IDs for this community
-        calendar_ids = GOOGLE_CALENDARS.get(self.community_id, [])
-        
-        for calendar_id in calendar_ids:
-            google_events = self._fetch_google_calendar_events(calendar_id)
-            for event in google_events:
-                try:
-                    formatted_event = self._format_google_event(event)
-                    events.append(formatted_event)
-                except Exception as e:
-                    logging.error(f"Error formatting event {event.get('id')}: {e}")
-                    continue
+        for calendar_config in GOOGLE_CALENDARS:
+            if calendar_config.get("community_id") == self.community_id:
+                calendar_id = calendar_config.get("calendar_id")
+                if calendar_id:
+                    google_events = self._fetch_google_calendar_events(calendar_id)
+                    for event in google_events:
+                        try:
+                            formatted_event = self._format_google_event(event)
+                            events.append(formatted_event)
+                        except Exception as e:
+                            logging.error(f"Error formatting event {event.get('id')}: {e}")
+                            continue
         
         return events
 
