@@ -102,7 +102,7 @@
       "id": "com_hnba",
       "name": "Hispanic National Bar Association",
       "url": "https://hnba.com/",
-      "eventsUrl": "https://hnba.com/events/",
+      "eventsUrl": "https://hnba.com/calendar-of-events/",
       "description": "The Hispanic National Bar Association is a nonprofit, nonpartisan, national membership organization that represents the interests of Hispanic legal professionals.",
       "category": ["Bar Association", "Professional Organization"]
     },
@@ -142,7 +142,7 @@
       "id": "com_cardozo_law",
       "name": "Cardozo Law",
       "url": "https://cardozo.yu.edu/",
-      "eventsUrl": "https://cardozo.yu.edu/events?field_end_date_value=1&field_event_audience_tag_value=2&tid=All&select_type_option=All",
+      "eventsUrl": "https://cardozo.yu.edu/events?page=5",
       "description": "Benjamin N. Cardozo School of Law is a law school at Yeshiva University.",
       "category": ["Law School", "University"]
     },
@@ -150,7 +150,7 @@
       "id": "com_nyls",
       "name": "New York Law School",
       "url": "https://www.nyls.edu/",
-      "eventsUrl": "https://www.nyls.edu/events/",
+      "eventsUrl": "https://www.nyls.edu/academics/specialty-areas/centers-and-institutes/center-for-international-law/",
       "description": "New York Law School is a private law school in New York City.",
       "category": ["Law School", "University"]
     },
@@ -382,6 +382,21 @@
         "state": "NY",
         "country": "USA",
         "zip": "10019"
+      }
+    },
+    {
+      "id": "com_nyiac",
+      "name": "New York International Arbitration Center",
+      "url": "https://nyiac.org/",
+      "eventsUrl": "https://nyiac.org/events/",
+      "description": "The New York International Arbitration Center is a non-profit organization that promotes and enhances the conduct of international arbitration in New York.",
+      "category": ["Arbitration", "Non-Profit"],
+      "location": {
+        "address": "150 E 42nd St",
+        "city": "New York",
+        "state": "NY",
+        "country": "USA",
+        "zip": "10017"
       }
     }
   ]

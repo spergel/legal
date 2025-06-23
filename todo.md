@@ -154,6 +154,16 @@
   - [ ] Legal Aid Society
   - [ ] Legal Services NYC
   - [ ] National Lawyers Guild - NYC Chapter
+  - [ ] Barker Gilmore - https://barkergilmore.com/gc-advantage-webinars/
+  - [ ] The L Suite - https://www.lsuite.co/events
+  - [ ] Major, Lindsey & Africa - https://www.mlaglobal.com/en/insights#94c43f95-2882-4674-904e-3546d67aa716facet=Content%20Type:Webinars
+  - [ ] Law.com - https://www.law.com/events/
+  - [ ] Morgan Lewis - https://www.morganlewis.com/events/global-public-company-academy
+  - [ ] Kilpatrick - https://events.zoom.us/eo/Av2cDH_dxJcMRgGd_RUApCT3LYo24WXLsVl4PQ4dKB9OnZ9g9zki~AggLXsr32QYFjq8BlYLZ5I06Dg
+  - [ ] American Bar Association - https://www.americanbar.org/events-cle/
+  - [ ] Association of Corporate Counsel - https://www.acc.com/education-events
+  - [ ] Federal Bar Council - https://www.federalbarcouncil.org/calendar/events/
+  - [ ] NYIPLA - https://www.nyipla.org/nyipla/Events.asp
 
 - [ ] Scraper Improvements
   - [ ] Error handling and retry logic
