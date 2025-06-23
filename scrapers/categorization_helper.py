@@ -36,6 +36,11 @@ class EventCategorizer:
         'coffee', 'wine tasting', 'holiday party', 'awards ceremony', 'fundraiser'
     ]
     
+    # Webinar indicators
+    WEBINAR_INDICATORS = [
+        'webinar', 'webcast', 'virtual event', 'online event', 'virtual seminar', 'online presentation'
+    ]
+    
     @classmethod
     def extract_practice_areas(cls, title: str, description: str = "") -> List[str]:
         """Extract practice areas from event title and description."""
@@ -61,6 +66,12 @@ class EventCategorizer:
         return any(indicator in text for indicator in cls.NETWORKING_INDICATORS)
     
     @classmethod
+    def is_webinar(cls, title: str, description: str = "") -> bool:
+        """Determine if this is a webinar."""
+        text = f"{title} {description or ''}".lower()
+        return any(indicator in text for indicator in cls.WEBINAR_INDICATORS)
+    
+    @classmethod
     def get_tags(cls, title: str, description: str = "") -> List[str]:
         """Extract relevant tags from event details."""
         tags = []
@@ -68,6 +79,8 @@ class EventCategorizer:
             tags.append('CLE')
         if cls.is_networking_event(title, description):
             tags.append('Networking')
+        if cls.is_webinar(title, description):
+            tags.append('Webinar')
         # This can be expanded to extract more tags
         return tags
     
@@ -76,6 +89,8 @@ class EventCategorizer:
         """Determine the primary type of the event."""
         if cls.is_cle_event(title, description):
             return 'CLE'
+        if cls.is_webinar(title, description):
+            return 'Webinar'
         if cls.is_networking_event(title, description):
             return 'Networking'
         # Can be expanded with more sophisticated logic
@@ -124,6 +139,10 @@ def is_cle_event(title: str, description: str = "") -> bool:
 def is_networking_event(title: str, description: str = "") -> bool:
     """Determine if this is a networking event."""
     return EventCategorizer.is_networking_event(title, description)
+
+def is_webinar(title: str, description: str = "") -> bool:
+    """Determine if this is a webinar."""
+    return EventCategorizer.is_webinar(title, description)
 
 def categorize_event(title: str, description: str = "", 
                     base_categories: List[str] = None) -> List[str]:
