@@ -68,3 +68,6 @@ SCRAPERS = [
     #'substack_scraper',
     #'nyc_parks_scraper'
 ] 
+
+# Add this line for the google_calendar_scraper
+GOOGLE_CALENDARS = [] 

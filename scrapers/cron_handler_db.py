@@ -5,6 +5,22 @@ import argparse
 from datetime import datetime, timezone
 from typing import List, Dict, Any
 from models import Event
+import sys
+
+# Setup paths
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(PROJECT_ROOT)
+
+# Use VERCEL_URL for the API URL if available, otherwise default to localhost
+API_URL = os.environ.get("VERCEL_URL")
+if API_URL:
+    API_URL = f"https://{API_URL}"
+else:
+    API_URL = "http://localhost:3000"
+
+SCRAPER_SECRET = os.environ.get("SCRAPER_SECRET")
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 class ScraperManagerDB:
     """Manages all scrapers and sends their output to the database via API."""
@@ -12,12 +28,10 @@ class ScraperManagerDB:
     def __init__(self):
         self.scrapers = {}
         # Get the base URL, default to localhost for local dev
-        base_url = os.getenv('VERCEL_URL')
-        if base_url and not base_url.startswith('http'):
-            base_url = f'https://{base_url}'
+        base_url = API_URL
         
-        self.api_url = base_url or 'http://localhost:3000'
-        self.scraper_secret = os.getenv('SCRAPER_SECRET')
+        self.api_url = base_url
+        self.scraper_secret = SCRAPER_SECRET
         
         if not self.scraper_secret:
             raise ValueError("SCRAPER_SECRET environment variable is required")

@@ -384,15 +384,14 @@ def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
         location_details = parse_location(location or "")
 
         # Categorize event
-        categorizer = EventCategorizer(summary, description or "")
-        categories = categorizer.get_categories()
-        tags = categorizer.get_tags()
-        event_type = categorizer.get_event_type()
+        categories = EventCategorizer.categorize_event(summary, description)
+        tags = EventCategorizer.get_tags(summary, description)
+        event_type = EventCategorizer.get_event_type(summary, description)
 
         # Generate external ID
-        uid = ics_event.get('uid') or f"{summary}-{ics_event.get('start')}"
-        external_id = f"ics-{hashlib.md5(uid.encode('utf-8')).hexdigest()}"
-        
+        hash_input = f"{summary}-{ics_event.get('start')}-{ics_event.get('end')}-{location_details['name']}"
+        external_id = hashlib.sha256(hash_input.encode('utf-8')).hexdigest()
+
         # Check if the event is likely a placeholder or private event
         summary_lower = summary.lower() if summary else ''
         description_lower = description.lower() if isinstance(description, str) else ''
@@ -402,20 +401,30 @@ def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
             logging.info(f"Skipping potentially private event: {summary}")
             return None
 
-        return Event(
-            externalId=external_id,
-            name=summary,
-            description=clean_description(description),
-            startDate=ics_event.get('start'),
-            endDate=ics_event.get('end'),
-            locationName=location_details['name'],
-            url=url,
-            communityId=community_id,
-            status='PENDING',
-            category=categories,
-            tags=tags,
-            eventType=event_type
-        )
+        # Create event object
+        event_data = {
+            "externalId": external_id,
+            "name": summary,
+            "description": clean_description(description),
+            "startDate": ics_event.get('start'),
+            "endDate": ics_event.get('end'),
+            "locationName": location_details['name'],
+            "url": url,
+            "communityId": community_id,
+            "status": "PENDING",
+            "category": categories,
+            "tags": tags,
+            "eventType": event_type,
+            "price": parse_price(description),
+            "metadata": {
+                "organizer": ics_event.get('organizer'),
+                "geo": ics_event.get('geo'),
+                "speakers": extract_speakers(description),
+                "raw_location": location,
+                "original_description": ics_event.get('description')
+            }
+        }
+        return Event(**event_data)
     except Exception as e:
         logging.error(f"Error converting ICS event: {e}")
         return None
@@ -503,6 +512,15 @@ class ICSCalendarScraper(BaseScraper):
                     try:
                         event = convert_ics_event(ics_event, calendar_config["community_id"])
                         if event is not None:
+                            # Add CLE credits if available
+                            if hasattr(ics_event, 'cle_credits'):
+                                event.cleCredits = ics_event.cle_credits
+
+                            # Categorize the event
+                            description = event.description
+                            categories = EventCategorizer.categorize_event(event.name, description)
+                            event.category = categories
+
                             events.append(event)
                     except Exception as e:
                         logging.error(f"Error converting ICS event: {e}")

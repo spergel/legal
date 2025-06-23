@@ -86,3 +86,7 @@ scrapers/data/
 
 package-lock.json
 /src/generated/prisma
+
+# Generated files
+/scrapers/generated/
+/src/generated/

@@ -32,6 +32,9 @@ jobs:
     - name: Install root npm dependencies
       run: npm install
         
+    - name: Generate Prisma Clients
+      run: npx prisma generate
+        
     - name: Run scrapers
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
