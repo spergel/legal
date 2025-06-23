@@ -403,7 +403,7 @@ def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
 
         # Create event object
         event_data = {
-            "externalId": external_id,
+            "id": external_id,
             "name": summary,
             "description": clean_description(description),
             "startDate": ics_event.get('start'),
