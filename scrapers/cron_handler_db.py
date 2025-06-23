@@ -15,9 +15,12 @@ sys.path.append(PROJECT_ROOT)
 # Use VERCEL_URL for the API URL if available, otherwise default to localhost
 API_URL = os.environ.get("VERCEL_URL")
 if API_URL:
+    # Ensure the URL is properly formatted for Vercel
     API_URL = f"https://{API_URL}"
 else:
     API_URL = "http://localhost:3000"
+
+print(f"Cron handler using API URL: {API_URL}")
 
 SCRAPER_SECRET = os.environ.get("SCRAPER_SECRET")
 DATABASE_URL = os.environ.get("DATABASE_URL")
