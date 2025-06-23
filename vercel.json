@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "prisma generate && next build",
+  "buildCommand": "npx prisma generate --generator client && next build",
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",
