@@ -10,14 +10,16 @@ The scraper uses the ics library to parse the calendar data and extract event in
 
 import logging
 import requests
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import List, Optional
 from ics import Calendar, Event as ICSEvent
-from base_scraper import BaseScraper
-from models import Event
+from .base_scraper import BaseScraper
+from .models import Event
 import hashlib
 import re
-from categorization_helper import EventCategorizer
+from .categorization_helper import EventCategorizer
+from .calendar_configs import ICS_CALENDARS
+import json
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -26,17 +28,19 @@ logger = logging.getLogger(__name__)
 class CUNYLawICSScraper(BaseScraper):
     """Scraper for CUNY School of Law events from ICS feed."""
     
-    def __init__(self):
-        super().__init__(community_id="com_cuny_law")
-        self.ics_url = "https://www.law.cuny.edu/events/list/?ical=1"
+    def __init__(self, community_id="com_cuny_law"):
+        super().__init__()
+        self.community_id = community_id
+        # Use the URL from the centralized config
+        self.url = ICS_CALENDARS["cuny_law"]["id"]
         
     def get_events(self) -> List[Event]:
         """Fetch and parse events from CUNY School of Law ICS feed."""
-        logger.info(f"Fetching events from CUNY School of Law ICS feed: {self.ics_url}")
+        logger.info(f"Fetching events from CUNY School of Law ICS feed: {self.url}")
         
         try:
             # Fetch the ICS data
-            response = self.session.get(self.ics_url, timeout=30)
+            response = self.session.get(self.url, timeout=30)
             response.raise_for_status()
             
             # Parse the ICS data
@@ -86,7 +90,7 @@ class CUNYLawICSScraper(BaseScraper):
             # Create metadata
             metadata = {
                 "source": "CUNY School of Law",
-                "ics_url": self.ics_url,
+                "ics_url": self.url,
                 "location": location,
                 "organizer": "CUNY School of Law",
                 "raw_ics_event": {
@@ -201,8 +205,8 @@ class CUNYLawICSScraper(BaseScraper):
 def main():
     """Main function to run the scraper."""
     scraper = CUNYLawICSScraper()
-    events = scraper.run()
-    print(f"Scraped {len(events)} events from CUNY School of Law")
+    events = scraper.get_events()
+    print(json.dumps([event.to_dict() for event in events], indent=2))
     
     # Print some sample events
     for i, event in enumerate(events[:3]):

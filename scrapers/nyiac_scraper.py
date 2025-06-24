@@ -3,19 +3,22 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import re
 from typing import List, Optional
-from base_scraper import BaseScraper
-from models import Event
+from .base_scraper import BaseScraper
+from .models import Event
 import os
-from categorization_helper import EventCategorizer
+from .categorization_helper import EventCategorizer
+import logging
+import json
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+logger = logging.getLogger(__name__)
 
 class NYIACScraper(BaseScraper):
     """Scraper for NYIAC events."""
     
     def __init__(self, community_id: str):
         super().__init__(community_id)
-        self.base_url = "https://www.nyiac.org"
+        self.base_url = "https://nyiac.org"
         self.events_url = f"{self.base_url}/events/category/new-york/"
     
     def get_events(self) -> List[Event]:
@@ -224,9 +227,10 @@ class NYIACScraper(BaseScraper):
 
 def main():
     """Main function to run the scraper."""
-    scraper = NYIACScraper(community_id='com_nyiac')
+    logging.basicConfig(level=logging.INFO)
+    scraper = NYIACScraper(community_id="com_nyiac")
     events = scraper.get_events()
-    print(f"Scraped {len(events)} events")
+    print(json.dumps([event.to_dict() for event in events], indent=2))
 
 if __name__ == "__main__":
     main()

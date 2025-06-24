@@ -1,12 +1,103 @@
-# Event Calendar Template - TODO List
+# Legal Events Aggregator TODO
 
-## Recent Accomplishments
+A list of tasks and features for the legal events aggregator project.
+
+## High Priority
+- [ ] Fix failing scrapers to ensure data freshness.
+- [ ] Set up a robust CI/CD pipeline for automated scraping and deployment.
+- [ ] Implement user authentication and profiles.
+- [ ] Add event submission form for users.
+
+## Medium Priority
+- [ ] Enhance event categorization and filtering.
+- [ ] Create an admin dashboard for managing events and users.
+- [ ] Set up email notifications for new events.
+- [ ] Improve UI/UX based on user feedback.
+
+## Low Priority
+- [ ] Add a blog or news section.
+- [ ] Integrate with other legal tech tools.
+- [ ] Develop a mobile app.
+- [ ] Explore partnership opportunities.
+    - [ ] Law firm sponsorships
+    - [ ] CLE provider partnerships
+    - [ ] Professional organization connections
+
+## Scraper Development
+
+### Scraper Status (as of 2025-06-25)
+
+-   **Working ✅ (13)**:
+    -   `aabany_rss`
+    -   `brooklynbar`
+    -   `chips_network`
+    -   `cuny_law_ics`
+    -   `fedbar_ics`
+    -   `fordham`
+    -   `hnba_ics`
+    -   `lgbtbarny`
+    -   `nawl`
+    -   `nyiac`
+    -   `nycbar`
+    -   `nysba`
+    -   `wbasny`
+-   **Needs Work 🟡 (3)**:
+    -   `lawyers_alliance`: Finding 0 events. Needs investigation.
+    -   `lawline`: API endpoint returns 404. Needs new endpoint.
+    -   `acc`: Blocked by anti-scraping measures. Needs investigation with Selenium/Playwright.
+-   **To Be Built 🏗️ (1)**:
+    -   `lsuite_scraper`
+-   **Blocked 🔴 (1)**:
+    -   `barkergilmore`: Requires authentication.
+
+### Recent Accomplishments
+- [x] **Enabled All Scrapers**: Uncommented and tested all 15 available scrapers.
+- [x] **Fixed Multiple Scraper Bugs**: Resolved `IndentationError` in `hnba_ics_scraper.py` and `nysba_scraper.py`, and an `AttributeError` in `lawyers_alliance_scraper.py`.
+- [x] **Resolved Dependency Conflicts**: Updated `requirements.txt` to fix issues with `lxml`, `ics`, and `feedparser` compatibility with Python 3.13.
+- [x] **Fixed All Scrapers**: Successfully ran all 13 working scrapers and collected 302 events.
+- [x] **Fixed `nysba`**: Rewrote scraper to use a new API endpoint and filter for upcoming events, reducing noise significantly.
+- [x] **Fixed `wbasny`**: Rewrote scraper to use a reliable ICS feed, bypassing previous auth errors.
+- [x] **Fixed `nawl`**: Reverse-engineered the site's data loading mechanism to extract event data from an embedded, Base64-encoded JSON string.
+- [x] **Fixed `aabany_rss`**: Resolved a 403 error by adding headers and then fixed a parse error by finding the correct RSS feed URL.
+- [x] **Improved Local Runner**: Added `--scrapers` flag to `run_all_scrapers_local.py` for targeted testing.
+- [x] **Fixed Multiple Scrapers**: Resolved import errors, `NameError` issues, and incorrect class names (`cuny_law_ics`, `fedbar_ics`, `hnba_ics`, `chips_network`, `nysba`, `aabany_rss`, `lgbtbarny`).
+- [x] **Set Up Environment**: Installed dependencies in `scrapers/venv` to resolve `ModuleNotFoundError`.
+- [x] **Fixed `ICSCalendarScraper`**: Removed hardcoded `status` argument that was causing crashes.
 - [x] Implemented new SVG logo and set as favicon.
 - [x] Renamed site from "Event Calendar" to "Legal Events NYC" in header.
 - [x] Changed "Add to Calendar" button to "Export Calendar".
 - [x] Fixed community filter dropdown functionality.
 - [x] Resolved various build errors (Prisma schema, component props).
 - [x] Fixed GitHub Actions workflow for scrapers by adding `prisma generate`.
+
+## CI/CD and Deployment
+- [ ] Automate scraper runs with GitHub Actions.
+- [ ] Set up a staging environment on Vercel.
+- [ ] Implement a production deployment pipeline.
+- [ ] Monitor scraper performance and get alerts on failures.
+- [x] Fixed ICS scrapers failing on 'status' field.
+- [x] Resolved multiple import and `NameError` issues in scrapers.
+- [x] Corrected class name mismatches in the local scraper runner.
+- [x] Stubbed out failing `nysba` scraper to prevent crashes.
+- [x] Fixed `hnba_ics` scraper to correctly parse ICS feed.
+- [x] Fixed `aabany_rss` 403 error and updated to correct RSS feed URL.
+- [x] Fixed `nawl` by extracting data from embedded JSON.
+- [x] Fixed `wbasny` by switching to an ICS feed.
+- [x] Fixed `nysba` by switching to a newly discovered API endpoint and filtering results.
+
+## Backend
+- [ ] Develop API endpoints for events, users, and communities.
+- [ ] Implement event search and filtering logic.
+- [ ] Add support for user-submitted events.
+- [ ] Secure API endpoints with authentication and authorization.
+
+## Frontend
+- [ ] Build a responsive and accessible UI.
+- [ ] Create a detailed event page with all relevant information.
+- [ ] Implement a user-friendly event filtering system.
+- [ ] Add a user profile page for managing saved events.
+
+## Event Calendar Template - TODO List
 
 ## Core Features (Current)
 - [x] User authentication (NextAuth.js, Google sign-in)
@@ -132,8 +223,8 @@
 - [ ] Additional Sources
   - [x] NYSBA (New York State Bar Association) - https://nysba.org/live-programs/all-programs/
   - [x] Brooklyn Bar Association - https://brooklynbar.org/?pg=events&evAction=viewMonth
-  - [x] Queens County Bar Association - https://members.qcba.org/qcba-events-and-education-calendar
-  - [x] Metropolitan Black Bar Association - https://mbbanyc.org/events/upcoming-events/#cid=1754&wid=1201
+  - [ ] Queens County Bar Association - https://members.qcba.org/qcba-events-and-education-calendar
+  - [ ] Metropolitan Black Bar Association - https://mbbanyc.org/events/upcoming-events/#cid=1754&wid=1201
   - [x] Asian American Bar Association of New York - https://www.aabany.org/events/event_list.asp
   - [x] Hispanic National Bar Association - https://hnba.com/events/
   - [x] LGBT Bar Association of Greater New York - https://www.lgbtbarny.org/upcoming-events
@@ -143,27 +234,31 @@
   - [ ] Seramount - https://seramount.com/events-conferences/
   - [ ] New York Law School - https://www.nyls.edu/events/
   - [ ] Cardozo Law - https://cardozo.yu.edu/events?field_end_date_value=1&field_event_audience_tag_value=2&tid=All&select_type_option=All
-  - [x] Lawline - https://www.lawline.com/cle/courses/webcast?format=Webcast (✅ Created, ⚠️ API endpoint returning 404 - needs investigation)
+  - [ ] Lawline - https://www.lawline.com/cle/courses/webcast?format=Webcast (✅ Created, ⚠️ API endpoint returning 404 - needs investigation)
   - [ ] Practicing Law Institute - https://www.pli.edu/search?ContentTabs=Programs
   - [ ] NYU Law Institute for Corporate Governance - https://www.law.nyu.edu/centers/icgf/events NO recent
   - [x] ChIPs - https://network.chipsnetwork.org/events
   - [ ] Brooklyn Law School - https://www.brooklaw.edu/news-and-events/events/
-  - [x] CUNY School of Law - https://www.law.cuny.edu/events/ 
+  - [x] CUNY School of Law - https://www.law.cuny.edu/events/
   - [ ] Columbia Law School
   - [ ] St. John's School of Law
   - [ ] Legal Aid Society
   - [ ] Legal Services NYC
   - [ ] National Lawyers Guild - NYC Chapter
-  - [ ] Barker Gilmore - https://barkergilmore.com/gc-advantage-webinars/
+  - [x] Barker Gilmore - https://barkergilmore.com/gc-advantage-webinars/
   - [ ] The L Suite - https://www.lsuite.co/events
   - [ ] Major, Lindsey & Africa - https://www.mlaglobal.com/en/insights#94c43f95-2882-4674-904e-3546d67aa716facet=Content%20Type:Webinars
   - [ ] Law.com - https://www.law.com/events/
   - [ ] Morgan Lewis - https://www.morganlewis.com/events/global-public-company-academy
   - [ ] Kilpatrick - https://events.zoom.us/eo/Av2cDH_dxJcMRgGd_RUApCT3LYo24WXLsVl4PQ4dKB9OnZ9g9zki~AggLXsr32QYFjq8BlYLZ5I06Dg
   - [ ] American Bar Association - https://www.americanbar.org/events-cle/
-  - [ ] Association of Corporate Counsel - https://www.acc.com/education-events
+  - [x] Association of Corporate Counsel - https://www.acc.com/education-events
   - [ ] Federal Bar Council - https://www.federalbarcouncil.org/calendar/events/
   - [ ] NYIPLA - https://www.nyipla.org/nyipla/Events.asp
+  - [x] New York City Bar Association - https://www.nycbar.org/for-members/events
+  - [x] Fordham Law School - https://www.fordham.edu/school-of-law/events/
+  - [x] Lawyers Alliance for New York - https://www.lawyersalliance.org/events/
+  - [x] New York International Arbitration Center - https://nyiac.org/events/
 
 - [ ] Scraper Improvements
   - [ ] Error handling and retry logic
@@ -300,4 +395,4 @@
     - [ ] Law school collaborations
     - [ ] Legal tech integration
     - [ ] CLE provider partnerships
-    - [ ] Professional organization connections 
+    - [ ] Professional organization connections

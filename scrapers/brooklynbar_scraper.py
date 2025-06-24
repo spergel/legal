@@ -1,21 +1,24 @@
-import requests
-from bs4 import BeautifulSoup
-from datetime import datetime
-from typing import List, Optional
-from base_scraper import BaseScraper
-from models import Event
 import logging
 import re
-from categorization_helper import EventCategorizer
+from datetime import datetime
+from typing import List, Optional
+
+from bs4 import BeautifulSoup
+
+from .base_scraper import BaseScraper
+from .models import Event
+from .categorization_helper import EventCategorizer
+import json
 
 logger = logging.getLogger(__name__)
 
 class BrooklynBarScraper(BaseScraper):
     """Scraper for Brooklyn Bar Association events."""
-    def __init__(self):
-        super().__init__("com_brooklyn_bar")
-        self.base_url = "https://brooklynbar.org"
+    def __init__(self, community_id="com_brooklyn_bar"):
+        super().__init__(community_id)
+        self.base_url = "https://www.brooklynbar.org"
         self.events_url = f"{self.base_url}/?pg=events&evAction=listAll"
+        self.url = self.events_url
 
     def get_event_details(self, event_id: str) -> dict:
         """Fetch detailed information for a specific event."""
@@ -220,7 +223,7 @@ class BrooklynBarScraper(BaseScraper):
                         startDate=startDate or "",
                         endDate=endDate,
                         locationId=None,
-                        communityId="com_brooklyn_bar",
+                        communityId="com_brooklynbar",
                         image=None,
                         price=None,
                         metadata=metadata,
@@ -239,10 +242,8 @@ class BrooklynBarScraper(BaseScraper):
             logger.error(f"Error fetching Brooklyn Bar events: {e}")
         return events
 
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     scraper = BrooklynBarScraper()
-    events = scraper.run()
-    print(f"Scraped {len(events)} events from Brooklyn Bar Association")
-    print(f"Events saved to scrapers/data/") 
+    events = scraper.get_events()
+    print(json.dumps([event.to_dict() for event in events], indent=2)) 

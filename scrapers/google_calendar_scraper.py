@@ -14,9 +14,9 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import pickle
-from base_scraper import BaseScraper
-from models import Event
-from calendar_configs import GOOGLE_CALENDARS
+from .base_scraper import BaseScraper
+from .models import Event
+from .calendar_configs import GOOGLE_CALENDARS
 from dotenv import load_dotenv
 
 # Setup paths
@@ -39,7 +39,7 @@ os.makedirs(CACHE_DIR, exist_ok=True)
 try:
     # Adjust import path for ics_calendar_scraper
     sys.path.append(SCRIPT_DIR) # Add SCRIPT_DIR to path if not already
-    from ics_calendar_scraper import get_luma_event_details
+    from .ics_calendar_scraper import get_luma_event_details
 except ImportError:
     # Define a fallback function if import fails
     def get_luma_event_details(url):

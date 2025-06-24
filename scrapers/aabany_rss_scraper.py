@@ -1,21 +1,27 @@
-import requests
-import xml.etree.ElementTree as ET
-from datetime import datetime
-from typing import List, Optional
-from base_scraper import BaseScraper
-from models import Event
 import logging
 import re
+from datetime import datetime
+from typing import List, Optional
+
+import feedparser
 from bs4 import BeautifulSoup
-from categorization_helper import EventCategorizer
+import requests
+import xml.etree.ElementTree as ET
+
+from .base_scraper import BaseScraper
+from .models import Event
+from .categorization_helper import EventCategorizer
+import json
 
 logger = logging.getLogger(__name__)
 
-class AABANYRSSScraper(BaseScraper):
-    """RSS scraper for Asian American Bar Association of New York events."""
-    def __init__(self):
-        super().__init__("com_aabany")
-        self.rss_url = "https://cdn.ymaws.com/www.aabany.org/resource/rss/events.rss"
+class AabanyRssScraper(BaseScraper):
+    """
+    Scraper for AABANY events from their RSS feed.
+    """
+    def __init__(self, community_id="com_aabany"):
+        super().__init__(community_id)
+        self.url = "https://www.aabany.org/resource/rss/events.rss"
 
     def clean_html(self, html_content: str) -> str:
         """Clean HTML content and extract plain text."""
@@ -153,20 +159,21 @@ class AABANYRSSScraper(BaseScraper):
     def get_events(self) -> List[Event]:
         events = []
         try:
-            response = self.session.get(self.rss_url)
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1'
+            }
+            response = requests.get(self.url, headers=headers)
             response.raise_for_status()
             
             # Parse RSS XML
             root = ET.fromstring(response.content)
             
-            # Define namespace for RSS
-            namespace = {'rss': 'http://www.w3.org/2005/Atom'}
-            
-            # Find all item elements (RSS items are direct children, not in namespace)
-            items = root.findall('.//item')
-            logger.info(f"Found {len(items)} events in RSS feed")
-            
-            for item in items:
+            for item in root.findall('.//item'):
                 try:
                     # Extract basic event information
                     title_elem = item.find('title')
@@ -221,7 +228,7 @@ class AABANYRSSScraper(BaseScraper):
                     
                     # Build metadata
                     metadata = {
-                        "source_url": self.rss_url,
+                        "source_url": self.url,
                         "event_link": link,
                         "rss_guid": guid,
                         "price_info": price_info,
@@ -263,11 +270,8 @@ class AABANYRSSScraper(BaseScraper):
         
         return events
 
-if __name__ == "__main__":
-    # Enable debug logging
-    logging.basicConfig(level=logging.DEBUG)
-    
-    scraper = AABANYRSSScraper()
-    events = scraper.run()
-    print(f"Scraped {len(events)} events from AABANY RSS feed")
-    print(f"Events saved to scrapers/data/") 
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    scraper = AabanyRssScraper()
+    events = scraper.get_events()
+    print(json.dumps([event.to_dict() for event in events], indent=2)) 

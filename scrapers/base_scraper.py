@@ -1,12 +1,14 @@
 import logging
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import requests
 import json
 import os
 from datetime import datetime, timezone
-from models import Event
+from .models import Event
 from dotenv import load_dotenv
+import time
+from .categorization_helper import EventCategorizer
 
 # Configure logging
 logging.basicConfig(
@@ -21,7 +23,7 @@ load_dotenv(os.path.join(PROJECT_ROOT, '.env.local'))
 class BaseScraper(ABC):
     """Base class for all scrapers."""
     
-    def __init__(self, community_id: str):
+    def __init__(self, community_id: Optional[str] = None):
         self.community_id = community_id
         # Always save to scrapers/data relative to project root
         self.data_dir = os.path.join(PROJECT_ROOT, "scrapers", "data")

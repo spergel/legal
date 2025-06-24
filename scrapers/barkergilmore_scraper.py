@@ -6,6 +6,8 @@ from datetime import datetime
 import hashlib
 import sys
 import re
+import logging
+import json
 
 # Adjust path to import from parent directory
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -14,76 +16,123 @@ sys.path.append(PROJECT_ROOT)
 
 from scrapers.base_scraper import BaseScraper
 from scrapers.models import Event
+from scrapers.categorization_helper import EventCategorizer
+
+logger = logging.getLogger(__name__)
 
 class BarkerGilmoreScraper(BaseScraper):
-    def __init__(self, community_id: str):
+    """Scraper for BarkerGilmore webinars."""
+    def __init__(self, community_id: str = "com_barkergilmore"):
         super().__init__(community_id)
-        self.base_url = "https://barkergilmore.com"
-        self.events_url = f"{self.base_url}/content_type/webinar/"
+        self.base_url = "https://www.barkergilmore.com"
+        self.webinars_url = f"{self.base_url}/content_type/webinar/"
 
     def get_events(self) -> List[Event]:
         events = []
         try:
-            response = requests.get(self.events_url, timeout=20)
+            response = self.session.get(self.webinars_url, timeout=30)
             response.raise_for_status()
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching {self.events_url}: {e}")
-            return events
+            soup = BeautifulSoup(response.text, 'html.parser')
 
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # This selector is a guess based on common WordPress/FusionBuilder theme structures.
-        event_containers = soup.find_all('article', class_=re.compile(r'post-\d+'))
+            event_containers = soup.select('div.fusion-posts-container article.post')
+            if not event_containers:
+                logger.info("No event containers found on BarkerGilmore website.")
+                return events
 
-        for container in event_containers:
-            try:
-                title_tag = container.find('h2', class_='blog-shortcode-post-title')
-                if not title_tag or not title_tag.find('a'):
-                    continue
-                
-                title_link = title_tag.find('a')
-                name = title_link.get_text(strip=True)
-                url = title_link['href']
-
-                # The description snippet is in the main listing
-                description_tag = container.find('div', class_='fusion-post-content-container')
-                description = ""
-                if description_tag and description_tag.find('p'):
-                    description = description_tag.find('p').get_text(strip=True)
-
-                # Date parsing from metadata
-                date_str = ""
-                date_tag = container.find('span', class_='fusion-meta-tb-date')
-                start_date = None
-                if date_tag:
-                    date_str = date_tag.get_text(strip=True)
-                    # The date string is ISO 8601 format like '2025-06-20T07:32:26-04:00'
-                    try:
-                        start_date = datetime.fromisoformat(date_str)
-                    except ValueError:
-                        print(f"Could not parse date: {date_str}")
+            for container in event_containers:
+                try:
+                    title_tag = container.select_one('h2.blog-shortcode-post-title a')
+                    if not title_tag:
                         continue
-                else:
-                    # If we can't find a proper date tag, skip this event
+                    
+                    name = title_tag.get_text(strip=True)
+                    url = title_tag['href']
+
+                    date_str = None
+                    meta_info_tag = container.select_one('p.fusion-single-line-meta')
+                    if meta_info_tag:
+                        meta_text = meta_info_tag.get_text(separator='|', strip=True)
+                        parts = [p.strip() for p in meta_text.split('|')]
+                        # The date is usually the second part.
+                        if len(parts) > 1:
+                            # Find the part that can be parsed as a date
+                            for part in parts:
+                                try:
+                                    datetime.strptime(part, '%b %d, %Y')
+                                    date_str = part
+                                    break
+                                except ValueError:
+                                    continue
+
+                    startDate = None
+                    if date_str:
+                        try:
+                            # Check if date is in the future
+                            event_date = datetime.strptime(date_str, '%b %d, %Y')
+                            if event_date < datetime.now():
+                                continue
+                            startDate = event_date.isoformat()
+                        except ValueError:
+                            logger.warning(f"Could not parse date '{date_str}' for event: {name}")
+                            continue
+
+                    description_tag = container.select_one('div.fusion-post-content-container p')
+                    short_description = description_tag.get_text(strip=True) if description_tag else ""
+                    
+                    full_description = self.get_event_description(url)
+
+                    event_id = hashlib.md5(url.encode()).hexdigest()
+                    
+                    base_categories = ['Webinar', 'Legal', 'Professional Development']
+                    categories = EventCategorizer.categorize_event(name, full_description, base_categories)
+                    event_type = "Webinar"
+
+                    event = Event(
+                        id=f"barkergilmore_{event_id}",
+                        name=name,
+                        description=full_description,
+                        communityId=self.community_id,
+                        startDate=startDate,
+                        endDate=startDate, 
+                        url=url,
+                        event_type=event_type,
+                        category=categories,
+                        metadata={'source': 'BarkerGilmore Webinars', 'short_description': short_description}
+                    )
+                    events.append(event)
+                except Exception as e:
+                    logger.error(f"Error parsing event container for {url}: {e}")
                     continue
+        except Exception as e:
+            logger.error(f"Error fetching or parsing BarkerGilmore webinars page: {e}")
 
-                # Generate a unique ID
-                hash_input = f"{name}-{url}"
-                event_id = hashlib.sha256(hash_input.encode('utf-8')).hexdigest()
+        logger.info(f"Found {len(events)} events for BarkerGilmore.")
+        return events
 
-                event = Event(
-                    id=event_id,
-                    name=name,
-                    description=description,
-                    url=url,
-                    startDate=start_date.isoformat() if start_date else "",
-                    communityId=self.community_id,
-                    tags=['Webinar']
-                )
-                events.append(event)
-            except Exception as e:
-                print(f"Error parsing an event container on BarkerGilmore: {e}")
-                continue
-                
-        print(f"Found {len(events)} events for BarkerGilmore.")
-        return events 
+    def get_event_description(self, event_url: str) -> str:
+        """Fetches the event's page and extracts the full description."""
+        try:
+            response = self.session.get(event_url, timeout=30)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
+            content_area = soup.select_one('div.post-content')
+            if content_area:
+                return content_area.get_text(separator=' ', strip=True)
+            return ""
+        except Exception as e:
+            logger.error(f"Failed to fetch description from {event_url}: {e}")
+            return ""
+
+def main():
+    """Main function to run the scraper for testing purposes."""
+    logging.basicConfig(level=logging.INFO)
+    scraper = BarkerGilmoreScraper()
+    events = scraper.get_events()
+    if events:
+        for event in events:
+            print(json.dumps(event.to_dict(), indent=2))
+    else:
+        print("No events found.")
+
+if __name__ == "__main__":
+    main() 

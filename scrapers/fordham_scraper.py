@@ -6,8 +6,8 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import os
-from base_scraper import BaseScraper
-from models import Event
+from .base_scraper import BaseScraper
+from .models import Event
 import feedparser
 from dotenv import load_dotenv
 

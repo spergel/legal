@@ -41,13 +41,19 @@ class ScraperManagerDB:
 
         # Lazy import and instantiate scrapers
         scraper_configs = [
+            ("aabany_rss", "aabany_rss_scraper", "AabanyRssScraper", "com_aabany_rss"),
+            ("brooklynbar", "brooklynbar_scraper", "BrooklynBarScraper", "com_brooklynbar"),
+            ("nysba", "nysba_scraper", "NYSBAScraper", "com_nysba"),
+            ("hnba_ics", "hnba_ics_scraper", "HNBAICSScraper", "com_hnba_ics"),
+            ("lgbtbarny", "lgbtbarny_scraper", "LgbtBarNyScraper", "com_lgbtbarny"),
+            ("wbasny", "wbasny_scraper", "WBASNYScraper", "com_wbasny"),
+            ("nawl", "nawl_scraper", "NAWLScraper", "com_nawl"),
+            ("fedbar_ics", "fedbar_ics_scraper", "FBAICSScraper", "com_fedbar_ics"),
+            ("cuny_law_ics", "cuny_law_ics_scraper", "CUNYLawICSScraper", "com_cuny_law_ics"),
+            ("chips_network", "chips_network_scraper", "ChIPsNetworkScraper", "com_chips_network"),
             ("nycbar", "nycbar_scraper", "NYCBarScraper", "com_nycbar"),
             ("fordham", "fordham_scraper", "FordhamScraper", "com_fordham"),
-            ("lawyers_alliance", "lawyers_alliance_scraper", "LawyersAllianceScraper", "com_lawyers_alliance"),
             ("nyiac", "nyiac_scraper", "NYIACScraper", "com_nyiac"),
-            ("google_calendar", "google_calendar_scraper", "GoogleCalendarScraper", "com_google_calendar"),
-            ("ics_calendar", "ics_calendar_scraper", "ICSCalendarScraper", "com_ics_calendar"),
-            ("barkergilmore", "barkergilmore_scraper", "BarkerGilmoreScraper", "com_barkergilmore")
         ]
         
         for name, module_name, class_name, community_id in scraper_configs:

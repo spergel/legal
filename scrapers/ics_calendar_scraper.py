@@ -9,10 +9,10 @@ from bs4 import BeautifulSoup
 from typing import Dict, List, Optional
 from datetime import datetime, timedelta
 from ics import Calendar, Event as ICSEvent
-from base_scraper import BaseScraper
-from models import Event
-from calendar_configs import ICS_CALENDARS
-from categorization_helper import EventCategorizer
+from .base_scraper import BaseScraper
+from .models import Event
+from .categorization_helper import EventCategorizer
+from .calendar_configs import ICS_CALENDARS
 
 # Setup paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -421,10 +421,9 @@ def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
             "locationId": None, # Set to None for now
             "url": url,
             "communityId": community_id,
-            "status": "PENDING",
             "category": categories,
             "tags": tags,
-            "eventType": event_type,
+            "event_type": event_type,
             "price": parse_price(description),
             "metadata": {
                 "organizer": ics_event.get('organizer'),
@@ -498,10 +497,15 @@ def main():
     logging.info(f"Saved {len(filtered_events)} events to {output_file}")
     return output_file
 
+logger = logging.getLogger(__name__)
+
 class ICSCalendarScraper(BaseScraper):
-    """Scraper for ICS calendar feeds (e.g., Luma)."""
-    def __init__(self, community_id: str):
+    """
+    A generic scraper for ICS calendars.
+    """
+    def __init__(self, community_id: str, url: str):
         super().__init__(community_id)
+        self.url = url
 
     def get_events(self) -> List[Event]:
         events = []
@@ -543,4 +547,12 @@ class ICSCalendarScraper(BaseScraper):
         return events
 
 if __name__ == "__main__":
-    main() 
+    # This scraper is meant to be used with specific calendar configs,
+    # so direct execution is for testing purposes.
+    logging.basicConfig(level=logging.INFO)
+    # Example usage:
+    # scraper = ICSCalendarScraper(community_id="some_community")
+    # scraper.ics_url = "https://example.com/calendar.ics"
+    # events = scraper.get_events()
+    # print(json.dumps([event.to_dict() for event in events], indent=2))
+    print("This scraper is not meant to be run directly.") 

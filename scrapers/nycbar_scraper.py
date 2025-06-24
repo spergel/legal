@@ -7,10 +7,10 @@ from bs4 import BeautifulSoup
 import time
 import re
 import os
-from base_scraper import BaseScraper
-from models import Event
+from .base_scraper import BaseScraper
+from .models import Event
+from .categorization_helper import EventCategorizer
 from dotenv import load_dotenv
-from categorization_helper import EventCategorizer
 
 logger = logging.getLogger(__name__)
 

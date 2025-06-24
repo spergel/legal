@@ -12,13 +12,13 @@ import logging
 import requests
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional, Dict, Any
-from base_scraper import BaseScraper
-from models import Event
+from .base_scraper import BaseScraper
+from .models import Event
 import hashlib
 import re
 import json
 import brotli
-from categorization_helper import EventCategorizer
+from .categorization_helper import EventCategorizer
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

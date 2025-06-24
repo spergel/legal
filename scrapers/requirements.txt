@@ -1,4 +1,4 @@
-beautifulsoup4
+beautifulsoup4==4.11.1
 black
 brotli
 feedparser
@@ -12,9 +12,9 @@ isort
 lxml
 nest-asyncio
 prisma
-python-dateutil
+python-dateutil==2.8.2
 python-dotenv
-pytz
-requests
+pytz==2022.6
+requests==2.28.1
 selenium
 webdriver-manager

@@ -1,20 +1,26 @@
-import requests
-from datetime import datetime
-from typing import List, Optional
-from base_scraper import BaseScraper
-from models import Event
 import logging
+from datetime import datetime, timezone
+from typing import List, Optional
+import requests
+from ics import Calendar, Event as ICSEvent
+
+from .base_scraper import BaseScraper
+from .models import Event
+from .categorization_helper import EventCategorizer
+from .calendar_configs import ICS_CALENDARS
+import json
 import re
-from ics import Calendar
-from categorization_helper import EventCategorizer
 
 logger = logging.getLogger(__name__)
 
 class FBAICSScraper(BaseScraper):
     """ICS scraper for Federal Bar Association events using the ics library."""
-    def __init__(self):
-        super().__init__("com_fedbar")
-        self.ics_url = "https://www.fedbar.org/events/list/?ical=1"
+    def __init__(self, community_id="com_fedbar"):
+        super().__init__()
+        self.community_id = community_id
+        # The FBA calendar seems to be missing from the new config, this will need to be added
+        self.url = "https://www.fedbar.org/events/list/?ical=1" # Placeholder
+        self.ics_url = "https://www.fedbar.org/events/?ical=1"
 
     def clean_html(self, html_content: str) -> str:
         if not html_content:
@@ -67,8 +73,6 @@ class FBAICSScraper(BaseScraper):
                 except ValueError:
                     continue
         return None
-
-
 
     def get_events(self) -> List[Event]:
         events = []
@@ -130,6 +134,7 @@ class FBAICSScraper(BaseScraper):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     scraper = FBAICSScraper()
-    events = scraper.run()
+    events = scraper.get_events()
     print(f"Scraped {len(events)} events from Federal Bar Association")
-    print(f"Events saved to scrapers/data/") 
+    print(f"Events saved to scrapers/data/")
+    print(json.dumps([event.to_dict() for event in events], indent=2)) 

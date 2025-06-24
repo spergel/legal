@@ -7,23 +7,21 @@ This script runs all scrapers and saves their output to the data/ directory.
 import json
 import os
 import sys
+import importlib
+import argparse
 from datetime import datetime, timezone
-from typing import List, Dict, Any
-from models import Event
+from typing import List, Dict, Any, Type
 
-# Add current directory to path for imports
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-def run_all_scrapers():
+def run_all_scrapers(target_scrapers: List[str] = None):
     """Run all available scrapers and save results to JSON files."""
     
     # List of all available scrapers with their module names, class names, and constructor arguments
     scraper_configs = [
-        ("aabany_rss", "aabany_rss_scraper", "AABANYRSSScraper", {}),
+        ("aabany_rss", "aabany_rss_scraper", "AabanyRssScraper", {}),
         ("brooklynbar", "brooklynbar_scraper", "BrooklynBarScraper", {}),
         ("nysba", "nysba_scraper", "NYSBAScraper", {}),
         ("hnba_ics", "hnba_ics_scraper", "HNBAICSScraper", {}),
-        ("lgbtbarny", "lgbtbarny_scraper", "LGBTBarNYScraper", {}),
+        ("lgbtbarny", "lgbtbarny_scraper", "LgbtBarNyScraper", {}),
         ("wbasny", "wbasny_scraper", "WBASNYScraper", {}),
         ("nawl", "nawl_scraper", "NAWLScraper", {}),
         ("fedbar_ics", "fedbar_ics_scraper", "FBAICSScraper", {}),
@@ -33,8 +31,16 @@ def run_all_scrapers():
         ("fordham", "fordham_scraper", "FordhamScraper", {"community_id": "com_fordham"}),
         ("lawyers_alliance", "lawyers_alliance_scraper", "LawyersAllianceScraper", {"community_id": "com_lawyers_alliance"}),
         ("nyiac", "nyiac_scraper", "NYIACScraper", {"community_id": "com_nyiac"}),
-        ("ics_calendar", "ics_calendar_scraper", "ICSCalendarScraper", {"community_id": "com_ics_calendar"}),
+        ("acc", "acc_scraper", "ACCScraper", {"community_id": "com_acc_nyc"}),
     ]
+    
+    run_list = scraper_configs
+    if target_scrapers:
+        run_list = [c for c in scraper_configs if c[0] in target_scrapers]
+        if not run_list:
+            print(f"❌ No matching scrapers found for: {', '.join(target_scrapers)}")
+            print(f"   Available scrapers: {', '.join([c[0] for c in scraper_configs])}")
+            return {}
     
     results = {}
     total_events = 0
@@ -47,12 +53,12 @@ def run_all_scrapers():
     data_dir = os.path.join(os.path.dirname(__file__), 'data')
     os.makedirs(data_dir, exist_ok=True)
     
-    for name, module_name, class_name, kwargs in scraper_configs:
+    for name, module_name, class_name, kwargs in run_list:
         try:
             print(f"\n📊 Running {name} scraper...")
             
             # Import and instantiate scraper
-            module = __import__(module_name, fromlist=[class_name])
+            module = importlib.import_module(f".{module_name}", __package__)
             scraper_class = getattr(module, class_name)
             scraper = scraper_class(**kwargs)
             
@@ -149,8 +155,17 @@ def run_all_scrapers():
     return summary
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Run legal event scrapers.")
+    parser.add_argument(
+        "--scrapers",
+        nargs="+",
+        help="Run only the specified scrapers by name (e.g., aabany_rss brooklynbar)",
+        default=None,
+    )
+    args = parser.parse_args()
+
     try:
-        summary = run_all_scrapers()
+        summary = run_all_scrapers(target_scrapers=args.scrapers)
         print(f"\n✅ All done! Check the data/ directory for results.")
     except Exception as e:
         print(f"❌ Fatal error: {e}")

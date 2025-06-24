@@ -2,19 +2,19 @@ import requests
 import json
 from datetime import datetime
 from typing import List, Optional
-from base_scraper import BaseScraper
-from models import Event
+from .base_scraper import BaseScraper
+from .models import Event
 import logging
 import re
 from bs4 import BeautifulSoup
-from categorization_helper import EventCategorizer
+from .categorization_helper import EventCategorizer
 
 logger = logging.getLogger(__name__)
 
-class LGBTBarNYScraper(BaseScraper):
+class LgbtBarNyScraper(BaseScraper):
     """Scraper for LGBT Bar Association of Greater New York events via Elfsight API."""
-    def __init__(self):
-        super().__init__("com_lgbtbarny")
+    def __init__(self, community_id="com_lgbt_bar_ny"):
+        super().__init__(community_id)
         self.api_url = "https://core.service.elfsight.com/p/boot/"
         self.widget_id = "6ffa7426-290d-46ec-8cea-f9a0d386b5c8"
         self.page_url = "https://www.lgbtbarny.org/upcoming-events"
@@ -181,7 +181,7 @@ class LGBTBarNYScraper(BaseScraper):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     
-    scraper = LGBTBarNYScraper()
+    scraper = LgbtBarNyScraper()
     events = scraper.run()
     print(f"Scraped {len(events)} events from LGBT Bar NY")
     print(f"Events saved to scrapers/data/") 

@@ -11,11 +11,14 @@ import logging
 import requests
 from datetime import datetime, timezone
 from typing import List, Optional, Dict, Any
-from base_scraper import BaseScraper
-from models import Event
-import hashlib
+from bs4 import BeautifulSoup
 import re
-from categorization_helper import EventCategorizer
+import hashlib
+import json
+
+from .base_scraper import BaseScraper
+from .models import Event
+from .categorization_helper import EventCategorizer
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -24,8 +27,8 @@ logger = logging.getLogger(__name__)
 class ChIPsNetworkScraper(BaseScraper):
     """Scraper for ChIPs Network events from their JSON API."""
     
-    def __init__(self):
-        super().__init__(community_id="com_chips")
+    def __init__(self, community_id="com_chips_network"):
+        super().__init__(community_id=community_id)
         self.api_url = "https://network.chipsnetwork.org/events.json"
         self.base_url = "https://network.chipsnetwork.org"
         
@@ -281,8 +284,8 @@ class ChIPsNetworkScraper(BaseScraper):
 def main():
     """Main function to run the scraper."""
     scraper = ChIPsNetworkScraper()
-    events = scraper.run()
-    print(f"Scraped {len(events)} events from ChIPs Network")
+    events = scraper.get_events()
+    print(json.dumps([event.to_dict() for event in events], indent=2))
     
     # Print some sample events
     for i, event in enumerate(events[:3]):
