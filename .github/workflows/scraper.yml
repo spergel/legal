@@ -42,12 +42,10 @@ jobs:
         VERCEL_URL: ${{ secrets.VERCEL_URL }}
         GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
       run: |
-        cd scrapers
-        python cron_handler_db.py 
+        python -m scrapers.cron_handler_db 
         
     - name: Run database cleanup
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
       run: |
-        cd scrapers
-        python cleanup_events.py 
+        python -m scrapers.cleanup_events 
