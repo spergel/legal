@@ -21,6 +21,8 @@ else:
     API_URL = "http://localhost:3000"
 
 print(f"Cron handler using API URL: {API_URL}")
+print(f"VERCEL_URL environment variable: {os.environ.get('VERCEL_URL', 'NOT_SET')}")
+print(f"SCRAPER_SECRET set: {'YES' if SCRAPER_SECRET else 'NO'}")
 
 SCRAPER_SECRET = os.environ.get("SCRAPER_SECRET")
 DATABASE_URL = os.environ.get("DATABASE_URL")
