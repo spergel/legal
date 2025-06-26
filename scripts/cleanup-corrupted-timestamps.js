@@ -30,9 +30,9 @@ async function cleanupCorruptedTimestamps() {
     });
     console.log(`📊 AABANY events found: ${aabanyEvents}`);
     
-    // Target the specific problematic timestamp range
-    const corruptedDate = new Date('2025-07-22T16:14:23.000Z');
-    const corruptedDateEnd = new Date('2025-07-22T16:14:25.000Z');
+    // Target the broader problematic timestamp range (16:14:XX on July 22, 2025)
+    const corruptedDate = new Date('2025-07-22T16:14:00.000Z');
+    const corruptedDateEnd = new Date('2025-07-22T16:15:00.000Z');
     
     // Find events with the corrupted timestamp (broader search)
     const corruptedEvents = await prisma.event.findMany({
