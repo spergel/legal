@@ -224,12 +224,17 @@ class LawlineScraper(BaseScraper):
                 }
             }
             
+            # Skip events without valid dates
+            if not start_datetime:
+                logger.warning(f"Skipping Lawline course '{name}' - no valid date found")
+                return None
+            
             # Create the Event object
             event = Event(
                 id=event_id,
                 name=name,
                 description=full_description,
-                startDate=start_datetime.isoformat() if start_datetime else "",
+                startDate=start_datetime.isoformat(),
                 endDate=end_datetime.isoformat() if end_datetime else None,
                 communityId=self.community_id,
                 image=image_url,
@@ -280,12 +285,17 @@ class LawlineScraper(BaseScraper):
                 "raw_event_data": event_data
             }
             
+            # Skip events without valid dates
+            if not start_datetime:
+                logger.warning(f"Skipping Lawline live event '{title}' - no valid date found")
+                return None
+            
             # Create the Event object
             event = Event(
                 id=event_id_str,
                 name=title,
                 description=description,
-                startDate=start_datetime.isoformat() if start_datetime else "",
+                startDate=start_datetime.isoformat(),
                 endDate=end_datetime.isoformat() if end_datetime else None,
                 communityId=self.community_id,
                 event_type="Live Event",

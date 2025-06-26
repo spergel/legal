@@ -169,12 +169,17 @@ class ChIPsNetworkScraper(BaseScraper):
                 }
             }
             
+            # Skip events without valid dates
+            if not start_datetime:
+                logger.warning(f"Skipping CHiPs Network event '{title}' - no valid date found")
+                return None
+            
             # Create the Event object
             event = Event(
                 id=event_id,
                 name=title,
                 description=description,
-                startDate=start_datetime.isoformat() if start_datetime else "",
+                startDate=start_datetime.isoformat(),
                 endDate=end_datetime.isoformat() if end_datetime else None,
                 communityId=self.community_id,
                 image=image_url,

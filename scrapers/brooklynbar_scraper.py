@@ -216,11 +216,16 @@ class BrooklynBarScraper(BaseScraper):
                         base_categories.extend(category)
                     categories = EventCategorizer.categorize_event(name, description, base_categories)
                     
+                    # Skip events without valid dates
+                    if not startDate:
+                        logger.warning(f"Skipping Brooklyn Bar event '{name}' - no valid date found")
+                        continue
+                    
                     event = Event(
                         id=event_id_final,
                         name=name,
                         description=description,
-                        startDate=startDate or "",
+                        startDate=startDate,
                         endDate=endDate,
                         locationId=None,
                         communityId="com_brooklynbar",

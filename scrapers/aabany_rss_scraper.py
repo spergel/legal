@@ -45,27 +45,42 @@ class AabanyRssScraper(BaseScraper):
 
     def extract_date_from_description(self, description: str) -> Optional[str]:
         """Extract date information from event description."""
-        # Look for common date patterns
+        # Look for common date patterns with more comprehensive matching
         date_patterns = [
-            r'(\w+ \d{1,2},? \d{4})',  # "June 21, 2025"
-            r'(\d{1,2}/\d{1,2}/\d{4})',  # "6/21/2025"
-            r'(\w+ \d{1,2}, \d{4})',  # "June 21, 2025"
+            # "June 21, 2025" or "June 21 2025"
+            (r'(\w+ \d{1,2},? \d{4})', ["%B %d, %Y", "%B %d %Y"]),
+            # "Jun 21, 2025" (abbreviated month)
+            (r'(\w{3} \d{1,2},? \d{4})', ["%b %d, %Y", "%b %d %Y"]),
+            # "6/21/2025" or "06/21/2025"
+            (r'(\d{1,2}/\d{1,2}/\d{4})', ["%m/%d/%Y"]),
+            # "2025-06-21" (ISO format)
+            (r'(\d{4}-\d{1,2}-\d{1,2})', ["%Y-%m-%d"]),
+            # "Friday June 27" - need to add current year
+            (r'(\w+day \w+ \d{1,2})', ["%A %B %d"]),
+            # "June 27 - June 28" (date ranges - take first date)
+            (r'(\w+ \d{1,2})\s*-\s*\w+ \d{1,2}', ["%B %d"]),
         ]
         
-        for pattern in date_patterns:
-            match = re.search(pattern, description)
+        for pattern, formats in date_patterns:
+            match = re.search(pattern, description, re.IGNORECASE)
             if match:
                 date_str = match.group(1)
-                try:
-                    # Try to parse the date
-                    if '/' in date_str:
-                        dt = datetime.strptime(date_str, "%m/%d/%Y")
-                    else:
-                        # Handle "June 21, 2025" format
-                        dt = datetime.strptime(date_str, "%B %d, %Y")
-                    return dt.isoformat()
-                except ValueError:
-                    continue
+                for date_format in formats:
+                    try:
+                        # Parse the date
+                        dt = datetime.strptime(date_str, date_format)
+                        
+                        # If only month/day (no year), assume current or next year
+                        if "%Y" not in date_format:
+                            current_year = datetime.now().year
+                            dt = dt.replace(year=current_year)
+                            # If the date is in the past, assume next year
+                            if dt < datetime.now():
+                                dt = dt.replace(year=current_year + 1)
+                        
+                        return dt.isoformat()
+                    except ValueError:
+                        continue
         
         return None
 
@@ -214,6 +229,11 @@ class AabanyRssScraper(BaseScraper):
                     if not start_date:
                         start_date = self.extract_date_from_description(description)
                     
+                    # Skip events without valid dates to prevent database errors
+                    if not start_date:
+                        logger.warning(f"Skipping event '{title}' - no valid date found in pub_date '{pub_date}' or description")
+                        continue
+                    
                     # Extract CLE credits
                     cle_credits = self.extract_cle_credits(description)
                     
@@ -243,7 +263,7 @@ class AabanyRssScraper(BaseScraper):
                         id=event_id,
                         name=title,
                         description=description,
-                        startDate=start_date or "",
+                        startDate=start_date,
                         endDate=None,
                         locationId=None,
                         communityId="com_aabany",

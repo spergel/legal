@@ -121,11 +121,16 @@ class NYSBAScraper(BaseScraper):
                 'event_format': event_format,
                 'practice_areas': practice_areas,
             }
+            # Skip events without valid dates
+            if not startDate:
+                logger.warning(f"Skipping NYSBA event '{name}' - no valid date found")
+                return None
+            
             event = Event(
                 id=f"nysba_{event_id}",
                 name=name,
                 description=description,
-                startDate=startDate or "",
+                startDate=startDate,
                 endDate=None,
                 locationId=None,
                 communityId="com_nysba",
