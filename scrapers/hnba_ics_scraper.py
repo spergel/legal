@@ -35,21 +35,21 @@ class HNBAICSScraper(BaseScraper):
             logger.info(f"Loaded ICS feed for HNBA")
             for component in cal.events:
                 try:
-                    event = Event(
-                    id=f"hnba_{component.uid}",
-                    name=str(component.name),
-                    description=str(component.description),
-                    url=str(component.url),
-                    startDate=component.begin.isoformat(),
-                    endDate=component.end.isoformat() if component.end else None,
-                    communityId=self.community_id,
-                    locationId=str(component.location) if component.location else "Unknown",
-                    tags=[],
-                    event_type="Unknown",
-                    category="Unknown"
-                    )
-                    events.append(event)
-                except Exception as e:
+                        event = Event(
+                        id=f"hnba_{component.uid}",
+                        name=str(component.name),
+                        description=str(component.description),
+                        url=str(component.url),
+                        startDate=component.begin.isoformat(),
+                        endDate=component.end.isoformat() if component.end else None,
+                        communityId=self.community_id,
+                        locationId=str(component.location) if component.location else "Unknown",
+                        tags=[],
+                        event_type="Unknown",
+                        category="Unknown"
+                        )
+                        events.append(event)
+                    except Exception as e:
                     logger.error(f"Error parsing HNBA event: {e}")
         except requests.RequestException as e:
             logger.error(f"Error fetching HNBA ICS feed: {e}")

@@ -96,9 +96,6 @@ class CUNYLawICSScraper(BaseScraper):
                 "raw_ics_event": {
                     "uid": getattr(ics_event, 'uid', None),
                     "url": getattr(ics_event, 'url', None),
-                    "status": getattr(ics_event, 'status', None),
-                    "created": str(getattr(ics_event, 'created', None)) if hasattr(ics_event, 'created') else None,
-                    "last_modified": str(getattr(ics_event, 'last_modified', None)) if hasattr(ics_event, 'last_modified') else None,
                 }
             }
             

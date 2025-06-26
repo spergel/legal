@@ -50,6 +50,11 @@ class LawyersAllianceScraper(BaseScraper):
         try:
             response = requests.get(self.url, headers=self.headers)
             response.raise_for_status()
+
+            # For debugging, save the HTML content
+            with open("lawyers_alliance_debug.html", "w", encoding="utf-8") as f:
+                f.write(response.text)
+
             soup = BeautifulSoup(response.content, 'html.parser')
 
             for item in soup.select('article.event-item'):

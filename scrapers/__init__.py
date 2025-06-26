@@ -21,7 +21,7 @@ from .aabany_rss_scraper import AabanyRssScraper
 from .barkergilmore_scraper import BarkerGilmoreScraper
 from .brooklynbar_scraper import BrooklynBarScraper
 from .lsuite_scraper import LSuiteScraper
-from .acc_scraper import ACCScraper
+from .acc_scraper import AccScraper
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -43,6 +43,6 @@ __all__ = [
     'NYIACScraper',
     'NYSBAScraper',
     'WBASNYScraper',
-    'ACCScraper',
+    'AccScraper',
     # 'GoogleCalendarScraper',
 ] 

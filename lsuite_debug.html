@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+              <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-PGQPLCZN');</script>
+      <!-- End Google Tag Manager -->
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" type="image/png" href="/assets/favicons/lsuite/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicons/lsuite/favicon.svg">
+
+          <link rel="stylesheet" href="/_compiled/lsuite.css?v=d0da50b1e62b79c70484d7fd91d5d5c7891a2d81">
+    
+    <!-- Lazysizes -->
+        <script>
+      /*! lazysizes - v5.3.2 */
+      !function(e){var t=function(u,D,f){"use strict";var k,H;if(function(){var e;var t={lazyClass:"lazyload",loadedClass:"lazyloaded",loadingClass:"lazyloading",preloadClass:"lazypreload",errorClass:"lazyerror",autosizesClass:"lazyautosizes",fastLoadedClass:"ls-is-cached",iframeLoadMode:0,srcAttr:"data-src",srcsetAttr:"data-srcset",sizesAttr:"data-sizes",minSize:40,customMedia:{},init:true,expFactor:1.5,hFac:.8,loadMode:2,loadHidden:true,ricTimeout:0,throttleDelay:125};H=u.lazySizesConfig||u.lazysizesConfig||{};for(e in t){if(!(e in H)){H[e]=t[e]}}}(),!D||!D.getElementsByClassName){return{init:function(){},cfg:H,noSupport:true}}var O=D.documentElement,i=u.HTMLPictureElement,P="addEventListener",$="getAttribute",q=u[P].bind(u),I=u.setTimeout,U=u.requestAnimationFrame||I,o=u.requestIdleCallback,j=/^picture$/i,r=["load","error","lazyincluded","_lazyloaded"],a={},G=Array.prototype.forEach,J=function(e,t){if(!a[t]){a[t]=new RegExp("(\\s|^)"+t+"(\\s|$)")}return a[t].test(e[$]("class")||"")&&a[t]},K=function(e,t){if(!J(e,t)){e.setAttribute("class",(e[$]("class")||"").trim()+" "+t)}},Q=function(e,t){var a;if(a=J(e,t)){e.setAttribute("class",(e[$]("class")||"").replace(a," "))}},V=function(t,a,e){var i=e?P:"removeEventListener";if(e){V(t,a)}r.forEach(function(e){t[i](e,a)})},X=function(e,t,a,i,r){var n=D.createEvent("Event");if(!a){a={}}a.instance=k;n.initEvent(t,!i,!r);n.detail=a;e.dispatchEvent(n);return n},Y=function(e,t){var a;if(!i&&(a=u.picturefill||H.pf)){if(t&&t.src&&!e[$]("srcset")){e.setAttribute("srcset",t.src)}a({reevaluate:true,elements:[e]})}else if(t&&t.src){e.src=t.src}},Z=function(e,t){return(getComputedStyle(e,null)||{})[t]},s=function(e,t,a){a=a||e.offsetWidth;while(a<H.minSize&&t&&!e._lazysizesWidth){a=t.offsetWidth;t=t.parentNode}return a},ee=function(){var a,i;var t=[];var r=[];var n=t;var s=function(){var e=n;n=t.length?r:t;a=true;i=false;while(e.length){e.shift()()}a=false};var e=function(e,t){if(a&&!t){e.apply(this,arguments)}else{n.push(e);if(!i){i=true;(D.hidden?I:U)(s)}}};e._lsFlush=s;return e}(),te=function(a,e){return e?function(){ee(a)}:function(){var e=this;var t=arguments;ee(function(){a.apply(e,t)})}},ae=function(e){var a;var i=0;var r=H.throttleDelay;var n=H.ricTimeout;var t=function(){a=false;i=f.now();e()};var s=o&&n>49?function(){o(t,{timeout:n});if(n!==H.ricTimeout){n=H.ricTimeout}}:te(function(){I(t)},true);return function(e){var t;if(e=e===true){n=33}if(a){return}a=true;t=r-(f.now()-i);if(t<0){t=0}if(e||t<9){s()}else{I(s,t)}}},ie=function(e){var t,a;var i=99;var r=function(){t=null;e()};var n=function(){var e=f.now()-a;if(e<i){I(n,i-e)}else{(o||r)(r)}};return function(){a=f.now();if(!t){t=I(n,i)}}},e=function(){var v,m,c,h,e;var y,z,g,p,C,b,A;var n=/^img$/i;var d=/^iframe$/i;var E="onscroll"in u&&!/(gle|ing)bot/.test(navigator.userAgent);var _=0;var w=0;var M=0;var N=-1;var L=function(e){M--;if(!e||M<0||!e.target){M=0}};var x=function(e){if(A==null){A=Z(D.body,"visibility")=="hidden"}return A||!(Z(e.parentNode,"visibility")=="hidden"&&Z(e,"visibility")=="hidden")};var W=function(e,t){var a;var i=e;var r=x(e);g-=t;b+=t;p-=t;C+=t;while(r&&(i=i.offsetParent)&&i!=D.body&&i!=O){r=(Z(i,"opacity")||1)>0;if(r&&Z(i,"overflow")!="visible"){a=i.getBoundingClientRect();r=C>a.left&&p<a.right&&b>a.top-1&&g<a.bottom+1}}return r};var t=function(){var e,t,a,i,r,n,s,o,l,u,f,c;var d=k.elements;if((h=H.loadMode)&&M<8&&(e=d.length)){t=0;N++;for(;t<e;t++){if(!d[t]||d[t]._lazyRace){continue}if(!E||k.prematureUnveil&&k.prematureUnveil(d[t])){R(d[t]);continue}if(!(o=d[t][$]("data-expand"))||!(n=o*1)){n=w}if(!u){u=!H.expand||H.expand<1?O.clientHeight>500&&O.clientWidth>500?500:370:H.expand;k._defEx=u;f=u*H.expFactor;c=H.hFac;A=null;if(w<f&&M<1&&N>2&&h>2&&!D.hidden){w=f;N=0}else if(h>1&&N>1&&M<6){w=u}else{w=_}}if(l!==n){y=innerWidth+n*c;z=innerHeight+n;s=n*-1;l=n}a=d[t].getBoundingClientRect();if((b=a.bottom)>=s&&(g=a.top)<=z&&(C=a.right)>=s*c&&(p=a.left)<=y&&(b||C||p||g)&&(H.loadHidden||x(d[t]))&&(m&&M<3&&!o&&(h<3||N<4)||W(d[t],n))){R(d[t]);r=true;if(M>9){break}}else if(!r&&m&&!i&&M<4&&N<4&&h>2&&(v[0]||H.preloadAfterLoad)&&(v[0]||!o&&(b||C||p||g||d[t][$](H.sizesAttr)!="auto"))){i=v[0]||d[t]}}if(i&&!r){R(i)}}};var a=ae(t);var S=function(e){var t=e.target;if(t._lazyCache){delete t._lazyCache;return}L(e);K(t,H.loadedClass);Q(t,H.loadingClass);V(t,B);X(t,"lazyloaded")};var i=te(S);var B=function(e){i({target:e.target})};var T=function(e,t){var a=e.getAttribute("data-load-mode")||H.iframeLoadMode;if(a==0){e.contentWindow.location.replace(t)}else if(a==1){e.src=t}};var F=function(e){var t;var a=e[$](H.srcsetAttr);if(t=H.customMedia[e[$]("data-media")||e[$]("media")]){e.setAttribute("media",t)}if(a){e.setAttribute("srcset",a)}};var s=te(function(t,e,a,i,r){var n,s,o,l,u,f;if(!(u=X(t,"lazybeforeunveil",e)).defaultPrevented){if(i){if(a){K(t,H.autosizesClass)}else{t.setAttribute("sizes",i)}}s=t[$](H.srcsetAttr);n=t[$](H.srcAttr);if(r){o=t.parentNode;l=o&&j.test(o.nodeName||"")}f=e.firesLoad||"src"in t&&(s||n||l);u={target:t};K(t,H.loadingClass);if(f){clearTimeout(c);c=I(L,2500);V(t,B,true)}if(l){G.call(o.getElementsByTagName("source"),F)}if(s){t.setAttribute("srcset",s)}else if(n&&!l){if(d.test(t.nodeName)){T(t,n)}else{t.src=n}}if(r&&(s||l)){Y(t,{src:n})}}if(t._lazyRace){delete t._lazyRace}Q(t,H.lazyClass);ee(function(){var e=t.complete&&t.naturalWidth>1;if(!f||e){if(e){K(t,H.fastLoadedClass)}S(u);t._lazyCache=true;I(function(){if("_lazyCache"in t){delete t._lazyCache}},9)}if(t.loading=="lazy"){M--}},true)});var R=function(e){if(e._lazyRace){return}var t;var a=n.test(e.nodeName);var i=a&&(e[$](H.sizesAttr)||e[$]("sizes"));var r=i=="auto";if((r||!m)&&a&&(e[$]("src")||e.srcset)&&!e.complete&&!J(e,H.errorClass)&&J(e,H.lazyClass)){return}t=X(e,"lazyunveilread").detail;if(r){re.updateElem(e,true,e.offsetWidth)}e._lazyRace=true;M++;s(e,t,r,i,a)};var r=ie(function(){H.loadMode=3;a()});var o=function(){if(H.loadMode==3){H.loadMode=2}r()};var l=function(){if(m){return}if(f.now()-e<999){I(l,999);return}m=true;H.loadMode=3;a();q("scroll",o,true)};return{_:function(){e=f.now();k.elements=D.getElementsByClassName(H.lazyClass);v=D.getElementsByClassName(H.lazyClass+" "+H.preloadClass);q("scroll",a,true);q("resize",a,true);q("pageshow",function(e){if(e.persisted){var t=D.querySelectorAll("."+H.loadingClass);if(t.length&&t.forEach){U(function(){t.forEach(function(e){if(e.complete){R(e)}})})}}});if(u.MutationObserver){new MutationObserver(a).observe(O,{childList:true,subtree:true,attributes:true})}else{O[P]("DOMNodeInserted",a,true);O[P]("DOMAttrModified",a,true);setInterval(a,999)}q("hashchange",a,true);["focus","mouseover","click","load","transitionend","animationend"].forEach(function(e){D[P](e,a,true)});if(/d$|^c/.test(D.readyState)){l()}else{q("load",l);D[P]("DOMContentLoaded",a);I(l,2e4)}if(k.elements.length){t();ee._lsFlush()}else{a()}},checkElems:a,unveil:R,_aLSL:o}}(),re=function(){var a;var n=te(function(e,t,a,i){var r,n,s;e._lazysizesWidth=i;i+="px";e.setAttribute("sizes",i);if(j.test(t.nodeName||"")){r=t.getElementsByTagName("source");for(n=0,s=r.length;n<s;n++){r[n].setAttribute("sizes",i)}}if(!a.detail.dataAttr){Y(e,a.detail)}});var i=function(e,t,a){var i;var r=e.parentNode;if(r){a=s(e,r,a);i=X(e,"lazybeforesizes",{width:a,dataAttr:!!t});if(!i.defaultPrevented){a=i.detail.width;if(a&&a!==e._lazysizesWidth){n(e,r,i,a)}}}};var e=function(){var e;var t=a.length;if(t){e=0;for(;e<t;e++){i(a[e])}}};var t=ie(e);return{_:function(){a=D.getElementsByClassName(H.autosizesClass);q("resize",t)},checkElems:t,updateElem:i}}(),t=function(){if(!t.i&&D.getElementsByClassName){t.i=true;re._();e._()}};return I(function(){H.init&&t()}),k={cfg:H,autoSizer:re,loader:e,init:t,uP:Y,aC:K,rC:Q,hC:J,fire:X,gW:s,rAF:ee}}(e,e.document,Date);e.lazySizes=t,"object"==typeof module&&module.exports&&(module.exports=t)}("undefined"!=typeof window?window:{});
+    </script>
+    <!-- Splide -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js"></script>
+    <link media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+
+    <!-- Alpine -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.13.5/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
+    <script>
+  document.addEventListener('alpine:init', () => {
+    // Alpine magic to copy page URL to clipboard
+    // @see https://alpinejs.dev/advanced/extending#magic-functions
+    Alpine.magic('copyPageURL', () => subject => {
+        navigator.clipboard.writeText(window.location.href)
+    })
+
+    Alpine.data('body', () => ({
+      isMenuOpen: false,
+      isGridOn: false,
+      isHeaderVisible: true,
+      isAnnouncementBarVisible: true,
+      prevScrollPosition: 0,
+
+      init() {
+        this.$watch('isMenuOpen', value => {
+          const mobileMenuContainer = this.$refs.mobileMenuContainer
+
+          /**
+           * When the mobile menu is opened, scroll to the top of the menu
+           * so that the announcement bar is hidden.
+           */
+          if (value) {
+            this.isAnnouncementBarVisible = false
+            const top = mobileMenuContainer.getBoundingClientRect().top
+            window.scrollBy({ top, behavior: 'smooth' })
+          }
+        })
+      },
+
+      toggleGrid() {
+        this.isGridOn = !this.isGridOn
+      },
+
+      handleScroll() {
+        const offset = window.pageYOffset;
+
+        /**
+         * Make sure the header is at its original position if the announcement bar
+         * is visible (at the top of page). Otherwise, hide the header when scrolling down.
+         */
+        this.isHeaderVisible = this.isAnnouncementBarVisible || offset <= this.prevScrollPosition;
+        this.prevScrollPosition = Math.max(0, offset);
+      }
+    }))
+  })
+</script>
+    <script>!function () {var reb2b = window.reb2b = window.reb2b || [];if (reb2b.invoked) return;reb2b.invoked = true;reb2b.methods = ["identify", "collect"];reb2b.factory = function (method) {return function () {var args = Array.prototype.slice.call(arguments);args.unshift(method);reb2b.push(args);return reb2b;};};for (var i = 0; i < reb2b.methods.length; i++) {var key = reb2b.methods[i];reb2b[key] = reb2b.factory(key);}reb2b.load = function (key) {var script = document.createElement("script");script.type = "text/javascript";script.async = true;script.src = "https://s3-us-west-2.amazonaws.com/b2bjsstore/b/" + key + "/reb2b.js.gz";var first = document.getElementsByTagName("script")[0];first.parentNode.insertBefore(script, first);};reb2b.SNIPPET_VERSION = "1.0.1";reb2b.load("1W6Z57H98QOX");}();</script>
+  <title>2025 General Counsel &amp; CLO Events | The L Suite</title>
+<script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments)};
+gtag('js', new Date());
+gtag('config', 'G-G0MZHW4V77', {'send_page_view': true,'anonymize_ip': true,'link_attribution': false,'allow_display_features': false});
+</script><meta name="generator" content="SEOmatic">
+<meta name="description" content="Get exclusive access to thought-provoking conferences, roundtables, webinars, and more. ">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<meta name="robots" content="all">
+<meta content="en_US" property="og:locale">
+<meta content="The L Suite" property="og:site_name">
+<meta content="website" property="og:type">
+<meta content="https://www.lsuite.co/events" property="og:url">
+<meta content="2025 General Counsel &amp; CLO Events" property="og:title">
+<meta content="Get exclusive access to thought-provoking conferences, roundtables, webinars, and more. " property="og:description">
+<meta content="https://the-suite.transforms.svdcdn.com/production/lsuite/Placeholder-images-from-Upstatement/og-image-lsuite.jpg?w=1200&amp;h=630&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1712154597&amp;s=11dfd71cc578978e7c9d46cbc97088de" property="og:image">
+<meta content="1200" property="og:image:width">
+<meta content="630" property="og:image:height">
+<meta content="The L Suite logo" property="og:image:alt">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@">
+<meta name="twitter:title" content="2025 General Counsel &amp; CLO Events">
+<meta name="twitter:description" content="Get exclusive access to thought-provoking conferences, roundtables, webinars, and more. ">
+<meta name="twitter:image" content="https://the-suite.transforms.svdcdn.com/production/lsuite/Placeholder-images-from-Upstatement/og-image-lsuite.jpg?w=1200&amp;h=630&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1712154597&amp;s=11dfd71cc578978e7c9d46cbc97088de">
+<meta name="twitter:image:width" content="1200">
+<meta name="twitter:image:height" content="630">
+<meta name="twitter:image:alt" content="The L Suite logo">
+<link href="https://www.lsuite.co/events" rel="canonical">
+<link href="https://www.lsuite.co" rel="home">
+<link type="text/plain" href="https://www.lsuite.co/humans.txt" rel="author"></head>
+
+  
+  <body
+    class="section--l_suite_pages type--eventArchive"
+    x-data="body"
+    x-init="isAnnouncementBarVisible = false"    x-on:keydown.escape.prevent.stop="isMenuOpen = false"
+    x-on:keydown.0="toggleGrid"
+    x-on:scroll.window.throttle.50ms="handleScroll"
+    x-bind:class="{ 'mobile-menu-is-open': isMenuOpen, 'header-is-visible': isHeaderVisible || isMenuOpen }"
+  ><script async src="https://www.googletagmanager.com/gtag/js?id=G-G0MZHW4V77"></script>
+
+          <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PGQPLCZN"
+                        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+        <svg display="none" width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true">
+  <defs>
+        <symbol id="cropped-lsuite" viewBox="0 0 434 584" fill="none" >
+      <path d="M434 369.839V364.897C276.447 364.897 248.401 551.876 161.788 551.876C114.77 551.876 96.6221 523.047 96.6221 476.92V86.488C96.6221 39.5374 113.12 10.708 160.963 10.708V0H0V569.173H165.088H167.562C218.705 569.173 269.023 559.289 297.894 559.289C329.24 559.289 358.111 569.997 380.383 584H382.857C382.032 528.812 404.304 415.966 434 369.839Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="cropped-thesuite" viewBox="0 0 434 584" fill="none">
+      <path d="M0 392.523H23.4827C23.4827 439.6 44.5031 472.041 91.3414 472.041C138.18 472.041 156.801 442.008 156.801 415.269C156.801 388.531 142.283 367.432 97.78 351.971L31.4995 329.288C20.1121 325.405 9.62498 321.221 0 316.745V42.9918L32.3832 9.75763C43.6825 5.70251 63.8822 0 94.6238 0C173.845 0 272.382 50.3088 269.983 179.249H150.363C149.542 131.411 124.482 111.896 87.3014 111.896C52.583 111.896 32.3201 132.995 32.3201 159.734C32.3201 184.888 46.0812 202.692 86.4808 216.505L149.542 237.604C233.56 265.99 278 308.189 278 377.126C278 431.49 248.079 475.272 198.779 523.934L148.658 574.242C135.718 579.945 111.478 584 86.4176 584C55.2252 584 25.8 578.177 0 566.553V392.523Z" fill="white"/>
+    </symbol>
+
+        <svg id="cropped-esuite" viewBox="0 0 434 584" fill="none">
+      <path d="M312 377.38V380.25L287.44 584H0V0H271.54L296.11 203.75H278.77C245.54 33 219.53 15.78 160.29 15.78H79.37V269.76H151.62C200.74 269.76 209.41 261.15 202.19 182.23H219.53L239.76 381.68H222.42C210.86 294.15 203.63 285.54 148.73 285.54H79.37V565.35H176.18C232.53 565.35 262.87 548.13 294.66 377.38H312Z" fill="currentColor"/>
+    </svg>
+
+
+
+        <symbol id="simple-lsuite-logo" viewBox="0 0 34 48" fill="none">
+      <path d="M16.7273 48C7.49682 48 0 40.5146 0 31.2982V16.7018C0 7.48539 7.49682 0 16.7273 0C25.9577 0 33.4545 7.48539 33.4545 16.7018V31.2982C33.4545 40.5146 25.9577 48 16.7273 48ZM16.7273 0.608189C7.87166 0.608189 0.655976 7.81287 0.655976 16.655V31.2515C0.655976 40.0936 7.87166 47.2982 16.7273 47.2982C25.5829 47.2982 32.7986 40.0936 32.7986 31.2515V16.655C32.7986 7.81287 25.5829 0.608189 16.7273 0.608189Z" fill="currentColor"/>
+      <path d="M25.4221 26.8419V26.9888C24.5449 28.3593 23.887 31.7122 23.9113 33.352H23.8382C23.1803 32.9359 22.3274 32.6178 21.4014 32.6178C20.5485 32.6178 19.0621 32.9115 17.5513 32.9115H17.4782H9.55859V32.5933C11.2887 32.5199 11.8735 31.7367 11.8735 30.3417V18.5698C11.8735 17.1747 11.2887 16.3916 9.55859 16.3182V16H17.3563V16.3182C15.943 16.3182 15.4556 17.1747 15.4556 18.5698V30.1704C15.4556 31.5409 15.9917 32.3975 17.3807 32.3975C19.9393 32.3975 20.7679 26.8419 25.4221 26.8419Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="simple-lsuite-logo-filled" viewBox="0 0 48 68" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 44.3392C0 57.3957 10.6205 68 23.697 68C36.7734 68 47.3939 57.3957 47.3939 44.3392V23.6608C47.3939 10.6043 36.7734 0 23.697 0C10.6205 0 0 10.6043 0 23.6608V44.3392ZM36.0144 38.2354V38.0274C32.2281 38.0274 30.229 40.6226 28.5267 42.8326C27.2646 44.4711 26.1656 45.8978 24.6223 45.8978C22.6546 45.8978 21.8952 44.6843 21.8952 42.7427V26.3085C21.8952 24.3322 22.5856 23.1187 24.5878 23.1187V22.668H13.541V23.1187C15.992 23.2227 16.8205 24.3322 16.8205 26.3085V42.9854C16.8205 44.9617 15.992 46.0711 13.541 46.1752V46.6259H24.864C26.0861 46.6259 27.2969 46.4902 28.3359 46.3739C29.1165 46.2864 29.8 46.2098 30.3184 46.2098C31.6302 46.2098 32.8384 46.6606 33.7705 47.25H33.874C33.8395 44.927 34.7716 40.177 36.0144 38.2354Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="simple-esuite-logo" viewBox="0 0 34 48" fill="none">
+      <path d="M16.7402 48C7.50259 48 0 40.5146 0 31.2982V16.7018C0 7.48539 7.50259 0 16.7402 0C25.9777 0 33.4803 7.48539 33.4803 16.7018V31.2982C33.4803 40.5146 25.9777 48 16.7402 48ZM16.7402 0.654975C7.87772 0.654975 0.656481 7.85965 0.656481 16.7018V31.2982C0.656481 40.1404 7.87772 47.345 16.7402 47.345C25.6026 47.345 32.8238 40.1404 32.8238 31.2982V16.7018C32.8238 7.85965 25.6026 0.654975 16.7402 0.654975Z" fill="currentColor"/>
+      <path d="M22.9299 25.9172L22.1327 32.5605H11.0195V32.3265C12.0042 32.0458 12.2387 31.8587 12.2387 30.0342V16.0926C12.2387 14.2681 12.0042 14.0809 11.0195 13.8002V13.5195H21.6169L22.4141 20.1628H21.8514C20.7729 14.5956 19.9289 14.0341 18.0063 14.0341H15.3804V22.3149H17.725C19.3193 22.3149 19.6006 22.0341 19.3662 19.461H19.9289L20.5853 25.964H20.0226C19.6475 23.1102 19.4131 22.8295 17.6312 22.8295H15.3804V31.9523H18.5221C20.3509 31.9523 21.3356 31.3909 22.3672 25.8236H22.9299V25.9172Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="simple-esuite-logo-filled" viewBox="0 0 34 48" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 31.2982C0 40.5146 7.4958 48 16.725 48C25.9542 48 33.45 40.5146 33.45 31.2982V16.7018C33.45 7.48539 25.9542 0 16.725 0C7.4958 0 0 7.48539 0 16.7018V31.2982ZM22.1126 32.5614L22.909 25.9181V25.8245H22.3469C21.3162 31.3918 20.3323 31.9532 18.5052 31.9532H15.3664V22.8304H17.6151C19.3954 22.8304 19.6296 23.1111 20.0044 25.9649H20.5666L19.9107 19.462H19.3485C19.5828 22.0351 19.3017 22.3158 17.7088 22.3158H15.3664V14.0351H17.9899C19.9107 14.0351 20.754 14.5965 21.8315 20.1637H22.3937L21.5973 13.5205H11.0095V13.8011C11.9933 14.0819 12.2275 14.269 12.2275 16.0936V30.0351C12.2275 31.8596 11.9933 32.0468 11.0095 32.3275V32.5614H22.1126Z" fill="currentColor"/>
+    </symbol>
+
+
+        <symbol id="simple-fsuite-logo" viewBox="0 0 34 48" fill="none">
+      <path d="M15.9754 25.3099V33.9649H11.8059V13.2866H21.363V17.1696H15.9754V21.4737H21.2225V25.3099H15.9754Z" fill="currentColor"/>
+      <path d="M16.725 48C7.4958 48 0 40.5146 0 31.2982V16.7018C0 7.48539 7.4958 0 16.725 0C25.9542 0 33.45 7.48539 33.45 16.7018V31.2982C33.45 40.5146 25.9542 48 16.725 48ZM16.725 0.608189C7.87059 0.608189 0.655887 7.81287 0.655887 16.655V31.2515C0.655887 40.0936 7.87059 47.2982 16.725 47.2982C25.5794 47.2982 32.7941 40.0936 32.7941 31.2515V16.655C32.7941 7.81287 25.5794 0.608189 16.725 0.608189Z" fill="currentColor"/>
+    </symbol>
+    
+        <symbol id="simple-fsuite-logo-filled" viewBox="0 0 34 48" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 31.2982C0 40.5146 7.4958 48 16.725 48C25.9542 48 33.45 40.5146 33.45 31.2982V16.7018C33.45 7.48539 25.9542 0 16.725 0C7.4958 0 0 7.48539 0 16.7018V31.2982ZM15.9754 33.9649V25.31H21.2225V21.4737H15.9754V17.1696H21.363V13.2866H11.8059V33.9649H15.9754Z" fill="currentColor" />
+    </symbol>
+
+
+        <symbol id="simple-thesuite-logo" viewBox="0 0 34 48" fill="none">
+      <path d="M16.8712 48C7.56711 48 0 40.4296 0 31.1288V16.8712C0 7.56711 7.56711 0 16.8712 0C26.1753 0 33.7424 7.56711 33.7424 16.8712V31.1288C33.7424 40.4329 26.1753 48 16.8712 48ZM16.8712 1.74024C8.52848 1.73698 1.73698 8.52848 1.73698 16.8712V31.1288C1.73698 39.4715 8.52522 46.263 16.8712 46.263C25.2172 46.263 32.0054 39.4748 32.0054 31.1288V16.8712C32.0054 8.52848 25.2172 1.73698 16.8712 1.73698V1.74024Z" fill="currentColor"/>
+      <path d="M7.25752 28.7759H13.5146C13.5146 31.1972 14.5998 32.8658 17.0179 32.8658C19.4359 32.8658 20.3973 31.3211 20.3973 29.9458C20.3973 28.5706 19.6478 27.4854 17.3503 26.6902L13.9284 25.5235C9.50614 24.0212 7.71376 21.6422 7.71376 18.5984C7.71376 16.5551 8.54803 14.5933 10.3437 12.8009L13.9741 9.08901C14.5574 8.88044 15.6002 8.58714 17.1873 8.58714C21.2772 8.58714 26.3643 11.1747 26.2405 17.8065H20.0649C20.0225 15.3461 18.7288 14.3423 16.8093 14.3423C15.0169 14.3423 13.9708 15.4275 13.9708 16.8028C13.9708 18.0965 14.6812 19.0123 16.7669 19.7227L20.0225 20.8079C24.3601 22.2679 26.6544 24.4383 26.6544 27.984C26.6544 30.7801 25.1096 33.032 22.5645 35.5348L19.9769 38.1223C19.3088 38.4156 18.0574 38.6242 16.7637 38.6242C11.4224 38.6242 7.0848 35.3295 7.251 28.7791L7.25752 28.7759Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="simple-thesuite-logo-filled" width="48" height="68" viewBox="0 0 48 68" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M0 31.1288C0 40.4296 7.56711 48 16.8712 48C26.1753 48 33.7424 40.4329 33.7424 31.1288V16.8712C33.7424 7.56711 26.1753 0 16.8712 0C7.56711 0 0 7.56711 0 16.8712V31.1288ZM13.5146 28.7759H7.25752L7.251 28.7791C7.0848 35.3295 11.4224 38.6242 16.7637 38.6242C18.0574 38.6242 19.3088 38.4156 19.9769 38.1223L22.5645 35.5348C25.1096 33.032 26.6544 30.7801 26.6544 27.984C26.6544 24.4383 24.3601 22.2679 20.0225 20.8079L16.7669 19.7227C14.6812 19.0123 13.9708 18.0965 13.9708 16.8028C13.9708 15.4275 15.0169 14.3423 16.8093 14.3423C18.7288 14.3423 20.0225 15.3461 20.0649 17.8065H26.2405C26.3643 11.1747 21.2772 8.58714 17.1873 8.58714C15.6002 8.58714 14.5574 8.88044 13.9741 9.08901L10.3437 12.8009C8.54803 14.5933 7.71376 16.5551 7.71376 18.5984C7.71376 21.6422 9.50614 24.0212 13.9284 25.5235L17.3503 26.6902C19.6478 27.4854 20.3973 28.5706 20.3973 29.9458C20.3973 31.3211 19.4359 32.8658 17.0179 32.8658C14.5998 32.8658 13.5146 31.1972 13.5146 28.7759Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="hamburger" viewBox="0 0 25 10">
+      <line x1="0.5" y1="1.25" x2="24.5" y2="1.25" stroke="currentColor" stroke-width="2"/>
+      <line x1="0.5" y1="5.25" x2="24.5" y2="5.25" stroke="currentColor" stroke-width="2"/>
+      <line x1="0.5" y1="5.25" x2="24.5" y2="5.25" stroke="currentColor" stroke-width="2"/>
+      <line x1="0.5" y1="9.25" x2="24.5" y2="9.25" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+
+        <symbol id="arrow-ne" viewBox="0 0 9 10">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M6.25089 2.25H1.06153V0.75H8.81153V8.5H7.31153V3.31068L1.15442 9.46788L0.09375 8.40723L6.25089 2.25Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="caret-e" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0.65625 1L6.3125 6.65625L0.65625 12.3125" stroke="currentColor" stroke-width="1.5"/>
+    </symbol>
+
+        <symbol id="x" viewBox="0 0 24 24">
+      <line x1="0" y1="0" x2="24" y2="24" stroke="currentColor" stroke-width="2" />
+      <line x1="0" y1="24" x2="24" y2="0" stroke="currentColor" stroke-width="2" />
+    </symbol>
+
+        <symbol id="lsuite-wordmark" viewBox="0 0 1376 212" fill="none">
+        <path d="M1338.42 177.511C1352.87 177.511 1366.17 171.729 1376 161.612C1370.51 183.581 1349.41 209.018 1317.9 209.018C1279.45 209.018 1254.02 179.245 1254.02 141.956C1254.02 103.8 1283.5 73.1602 1316.45 73.1602C1349.41 73.1602 1371.95 91.949 1374.55 124.613H1287.84C1287.84 157.276 1307.49 177.511 1338.42 177.511ZM1315.59 78.6523C1301.13 78.6523 1287.55 97.4412 1287.55 117.386H1336.11C1336.11 95.9959 1330.62 78.6523 1315.59 78.6523Z" fill="currentColor"/>
+        <path d="M1261.89 181.557H1266.23C1261.6 195.721 1248.01 208.729 1228.94 208.729C1204.08 208.729 1193.67 196.01 1193.67 177.221V81.2533H1171.41V75.7612C1199.45 74.605 1221.13 46.5662 1228.36 26.9102H1232.41V75.7612H1259.29V81.2533H1232.41V177.221C1232.41 188.783 1238.76 194.276 1246.86 194.276C1256.69 194.276 1260.16 185.893 1261.89 181.557Z" fill="currentColor"/>
+        <path d="M1154.59 60.1519C1141.3 60.1519 1130.31 50.0348 1130.31 37.3162C1130.31 24.5976 1141.3 14.1914 1154.59 14.1914C1168.18 14.1914 1179.16 24.5976 1179.16 37.3162C1179.16 50.0348 1168.18 60.1519 1154.59 60.1519ZM1174.54 178.666C1174.54 193.408 1180.03 202.369 1194.48 202.369V206.127H1115.57V202.369C1130.31 202.369 1135.8 193.408 1135.8 179.244V113.05C1135.8 98.5968 1129.73 94.2609 1114.99 94.2609V91.6594L1174.54 73.1595V178.666Z" fill="currentColor"/>
+        <path d="M1109.78 179.534C1109.78 194.276 1113.25 202.081 1127.99 202.081V205.838H1070.76V189.073C1047.92 201.503 1033.47 208.729 1017.57 208.729C999.07 208.729 989.531 196.299 989.531 181.268V113.05C989.531 98.5974 983.461 94.2615 968.719 94.2615V91.3709L1028.26 73.1602V171.44C1028.26 184.737 1032.31 193.409 1044.45 193.409C1053.7 193.409 1061.8 187.339 1067.58 184.159L1070.76 182.425L1071.05 113.05C1071.05 98.5974 1064.98 94.2615 1050.23 94.2615V91.3709L1109.78 73.1602V179.534Z" fill="currentColor"/>
+        <path d="M948.905 95.1279C964.803 102.643 982.725 126.057 982.725 150.916C982.725 184.447 953.241 209.017 921.444 209.017C895.429 209.017 875.773 196.877 858.718 196.877C849.468 196.877 840.508 201.502 832.992 209.017H830.101C832.414 184.158 831.258 158.143 820.852 136.463C882.132 136.463 890.226 200.924 922.022 200.924C939.655 200.924 956.131 189.939 956.131 169.416C956.131 146.87 934.163 138.198 927.515 135.018C924.335 133.573 871.437 108.136 869.992 107.558C855.828 100.909 833.57 84.1437 833.57 56.394C833.57 27.199 858.14 3.49609 885.89 3.49609C905.546 3.49609 919.421 10.4335 935.319 10.4335C946.592 10.4335 950.061 7.54293 958.155 3.49609H960.178C957.866 23.4412 964.514 48.0113 970.295 67.6673H969.139C959.889 65.933 952.085 61.0189 946.881 55.8159C938.499 48.0112 930.983 39.0504 923.179 30.3786C913.062 19.3944 902.077 10.7226 885.601 10.7226C868.835 10.7226 859.296 20.2616 859.296 32.9802C859.296 50.0347 872.015 58.4174 882.421 63.3314C883.577 63.9095 948.905 95.1279 948.905 95.1279Z" fill="currentColor"/>
+        <path d="M741.853 134.44V136.174C731.447 152.362 723.643 191.963 723.932 211.33H723.065C715.26 206.416 705.143 202.658 694.159 202.658C684.042 202.658 666.409 206.127 648.487 206.127H647.62H553.676V202.369C574.199 201.502 581.136 192.252 581.136 175.776V36.738C581.136 20.2616 574.199 11.0117 553.676 10.1445V6.38672H646.175V10.1445C629.409 10.1445 623.628 20.2616 623.628 36.738V173.752C623.628 189.939 629.987 200.057 646.464 200.057C676.815 200.057 686.643 134.44 741.853 134.44Z" fill="currentColor"/>
+        <path d="M435.21 177.511C449.663 177.511 462.96 171.729 472.788 161.612C467.296 183.581 446.194 209.018 414.687 209.018C376.242 209.018 350.805 179.245 350.805 141.956C350.805 103.8 380.289 73.1602 413.242 73.1602C446.194 73.1602 468.741 91.949 471.342 124.613H384.625C384.625 157.276 404.281 177.511 435.21 177.511ZM412.374 78.6523C397.921 78.6523 384.336 97.4412 384.336 117.386H432.898C432.898 95.9959 427.405 78.6523 412.374 78.6523Z" fill="currentColor"/>
+        <path d="M346.12 178.666C346.12 193.408 351.323 202.369 366.065 202.369V206.127H289.175V202.369C303.628 202.369 307.097 194.275 307.097 180.4V125.768H346.12V178.666ZM346.12 125.768C336.292 125.768 309.409 125.768 307.097 125.768V110.448C307.097 97.4404 303.05 88.7686 291.198 88.7686C282.816 88.7686 272.12 94.8389 266.339 98.0185L261.136 100.62V179.533C261.136 194.275 264.605 202.369 279.347 202.369V206.127H202.168V202.369C216.91 202.369 222.402 193.408 222.402 179.244V41.3629C222.402 26.9099 216.332 22.2849 201.59 22.2849V19.6834L261.136 1.18359V93.9717C285.128 80.964 300.737 73.1594 317.792 73.1594C336.581 73.1594 345.831 85.589 346.12 100.909V125.768Z" fill="currentColor"/>
+        <path d="M130.655 175.776C130.655 192.252 137.592 201.502 158.116 202.369V206.127H60.7025V202.369C81.2257 201.502 88.1631 192.252 88.1631 175.776V38.4723C88.1631 24.3084 86.7178 12.4569 76.8898 12.4569C48.562 12.4569 54.0541 68.2454 0 68.2454V66.511C8.67178 53.5033 17.9217 20.2615 17.6326 0.894531H18.4998C26.3044 6.0976 34.9762 10.7225 48.562 10.7225C57.2338 10.7225 70.2415 6.38666 80.0695 6.38666H130.655V175.776ZM218.818 66.511L219.107 68.2454C164.764 68.2454 170.256 12.4569 141.928 12.4569C132.1 12.4569 130.655 24.3084 130.655 38.4723V6.38666H138.749C148.577 6.38666 161.584 10.7225 170.256 10.7225C183.842 10.7225 192.514 6.0976 200.318 0.894531H201.185C200.896 20.2615 210.146 53.5033 218.818 66.511Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="thesuite-wordmark" viewBox="0 0 1440 269" fill="none">
+      <path d="M128.32 265.264V48.5694H209.503V3.73611H0V48.5694H81.5564V265.264H128.32Z" fill="currentColor"/>
+      <path d="M268.51 265.264V159.906C268.51 130.017 284.971 113.204 309.288 113.204C332.109 113.204 347.073 130.017 347.073 159.906V265.264H391.967V148.697C391.967 102.369 363.534 72.1069 319.015 72.1069C304.425 72.1069 294.698 75.4695 291.705 76.9639L268.51 101.249V3.73611H223.617V265.264H268.51Z" fill="currentColor"/>
+      <path d="M508.622 269C537.803 269 562.495 257.792 580.452 240.979L558.753 207.354C551.271 214.453 535.558 226.782 511.241 226.782C482.435 226.782 464.103 209.969 458.866 185.311H560.998L594.668 149.818C587.934 94.8972 545.285 72.1069 509.371 72.1069C492.161 72.1069 481.686 75.8431 477.197 78.0847L445.772 110.589C427.814 129.269 414.346 150.192 414.346 181.201C414.346 232.013 455.124 269 508.622 269ZM459.614 151.686C465.6 128.896 481.686 113.204 504.881 113.204C532.94 113.204 547.156 130.39 551.645 151.686H459.614Z" fill="currentColor"/>
+      <path d="M762.215 269C773.064 269 782.791 267.879 789.151 265.264L814.216 240.232C834.792 220.057 847.512 202.871 847.512 177.092C847.512 146.082 826.188 125.907 788.402 113.204L758.473 103.117C736.027 95.6444 729.667 84.0625 729.667 72.1069C729.667 55.668 740.89 43.7125 761.466 43.7125C782.417 43.7125 796.259 54.5472 797.755 81.8208H844.519C846.016 23.5375 801.87 0 766.33 0C749.121 0 739.394 3.3625 735.653 4.85695L703.105 38.8556C687.766 54.5472 682.903 70.6125 682.903 87.0514C682.903 114.699 698.99 134.874 738.272 147.95L768.575 158.038C793.64 166.257 800.748 178.586 800.748 192.783C800.748 206.981 790.647 225.288 764.459 225.288C740.89 225.288 727.422 209.222 726.674 180.081H679.91C678.414 242.474 715.077 269 762.215 269Z" fill="currentColor"/>
+      <path d="M940.236 269C953.704 269 963.057 266.758 969.417 263.396L991.115 240.232V265.264H1036.01V75.8431H991.115V185.311C991.115 210.343 976.151 226.035 953.704 226.035C931.258 226.035 916.293 210.343 916.293 185.311V75.8431H871.4V194.651C871.4 244.715 908.063 269 940.236 269Z" fill="currentColor"/>
+      <path d="M1121.7 55.2944V4.85695H1067.08V55.2944H1121.7ZM1116.84 265.264V75.8431H1071.94V265.264H1116.84Z" fill="currentColor"/>
+      <path d="M1219.2 75.8431V19.8014H1174.31V75.8431H1135.03V117.688H1174.31V265.264H1219.2V117.688H1258.49V75.8431H1219.2Z" fill="currentColor"/>
+      <path d="M1353.95 269C1383.13 269 1407.83 257.792 1425.78 240.979L1404.09 207.354C1396.6 214.453 1380.89 226.782 1356.57 226.782C1327.77 226.782 1309.43 209.969 1304.2 185.311H1406.33L1440 149.818C1433.27 94.8972 1390.62 72.1069 1354.7 72.1069C1337.49 72.1069 1327.02 75.8431 1322.53 78.0847L1291.1 110.589C1273.15 129.269 1259.68 150.192 1259.68 181.201C1259.68 232.013 1300.46 269 1353.95 269ZM1304.95 151.686C1310.93 128.896 1327.02 113.204 1350.21 113.204C1378.27 113.204 1392.49 130.39 1396.98 151.686H1304.95Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="esuite-wordmark" viewBox="0 0 1440 327">
+      <path d="M104.572 288.505C104.572 303.406 111.626 312.927 128.64 312.927H133.619V318.722H49.3811V312.927H54.7756C71.7893 312.927 78.4287 303.406 78.4287 288.505V20.6962H57.6804C24.898 20.6962 15.3538 36.4253 6.2245 69.5392L4.14967 76.9899H0L5.80954 8.27847H177.191L183 76.9899H178.851L176.776 69.5392C167.647 36.4253 158.102 20.6962 125.32 20.6962H104.572V288.505Z" fill="currentColor"/>
+      <path d="M229.691 296.784C229.691 306.718 234.67 313.341 247.949 313.341H252.929V318.722H183.214V313.341H188.194C201.058 313.341 206.453 306.718 206.453 296.784V45.1177H184.044V40.9785C200.643 32.2861 214.752 18.2127 226.786 0H229.691V145.287C243.8 123.763 259.983 105.551 288.616 105.551C323.473 105.551 340.487 135.767 340.487 177.573V296.784C340.487 306.718 345.881 313.341 358.33 313.341H363.725V318.722H293.596V313.341H298.99C311.854 313.341 317.249 306.718 317.249 296.784V183.782C317.249 148.185 308.949 126.661 279.487 126.661C257.493 126.661 242.14 138.251 229.691 155.222V296.784Z" fill="currentColor"/>
+      <path d="M394.261 197.442C394.261 263.256 413.764 303.406 449.866 303.406C467.71 303.406 486.383 291.403 495.513 265.739L501.737 267.809C488.873 304.648 471.445 324.93 440.322 324.93C398.825 324.93 368.533 280.227 368.533 214.827C368.533 149.841 397.58 105.551 438.247 105.551C467.295 105.551 491.778 127.489 499.247 171.365L396.75 168.881C395.091 177.987 394.261 187.508 394.261 197.442ZM437.832 115.899C417.914 115.899 404.635 134.939 398.41 161.016H466.88C469.785 161.016 470.2 159.775 470.2 156.463C470.2 132.87 461.07 115.899 437.832 115.899Z" fill="currentColor"/>
+      <path d="M569.97 318.722V312.927H574.95C591.963 312.927 599.018 303.406 599.018 288.505V38.4949C599.018 24.0076 591.963 14.0734 574.95 14.0734H569.97V8.27847H729.317L735.127 76.9899H730.562L728.902 69.5392C721.018 34.7696 710.644 20.6962 677.446 20.6962H625.161V153.152H656.283C682.841 153.152 689.895 139.078 693.63 104.723L694.46 97.2722H699.855V219.38H694.46L693.63 211.929C689.895 178.815 682.841 165.57 656.283 165.57H625.161V306.304H682.011C720.188 306.304 733.467 286.022 742.596 245.457L744.256 238.006H749.236L737.617 318.722H569.97Z" fill="currentColor"/>
+      <path d="M848.293 65.4C848.293 93.9608 857.837 114.243 902.654 143.632C947.47 173.02 959.919 201.995 959.919 241.318C959.919 297.197 928.381 324.93 887.715 324.93C858.252 324.93 837.089 312.513 823.81 300.509V231.797H828.789L829.204 238.006C832.109 284.366 852.857 314.582 888.96 314.582C919.667 314.582 941.245 293.886 941.245 259.53C941.245 223.105 927.967 199.097 884.81 168.881C841.653 138.665 830.864 112.587 830.864 77.8177C830.864 34.3557 858.252 2.06962 897.259 2.06962C919.252 2.06962 936.681 13.2456 947.885 27.319V89.4076H942.49L942.075 80.7152C940.416 42.2202 927.137 12.8317 895.599 12.8317C870.286 12.8317 848.293 33.1139 848.293 65.4Z" fill="currentColor"/>
+      <path d="M1093.59 285.608C1080.31 307.132 1064.96 324.93 1037.57 324.93C1003.96 324.93 988.192 298.025 988.192 261.186V148.599H966.199V144.873C982.382 134.939 996.491 121.28 1008.53 103.481H1011.43V254.977C1011.43 286.022 1018.9 304.234 1046.7 304.234C1067.04 304.234 1078.24 296.784 1093.59 276.087V148.599H1071.6V144.873C1087.78 134.939 1101.89 121.28 1113.93 103.481H1116.83V293.886L1138.82 298.439V302.578C1123.89 310.029 1109.78 317.894 1096.5 327H1093.59V285.608Z" fill="currentColor"/>
+      <path d="M1179.08 58.3633C1169.54 58.3633 1162.9 52.5684 1162.9 43.0481C1162.9 33.5279 1169.54 26.9051 1179.08 26.9051C1188.21 26.9051 1195.26 33.5279 1195.26 43.0481C1195.26 52.5684 1188.21 58.3633 1179.08 58.3633ZM1190.7 296.784C1190.7 306.718 1195.68 313.341 1208.96 313.341H1213.94V318.722H1144.22V313.341H1149.2C1162.07 313.341 1167.46 306.718 1167.46 296.784V148.599H1145.47V144.873C1161.65 134.939 1175.76 121.28 1187.79 103.481H1190.7V296.784Z" fill="currentColor"/>
+      <path d="M1262.37 111.76H1304.28L1300.96 126.661H1262.78V280.641C1262.78 298.025 1268.17 305.89 1280.62 305.89C1291.41 305.89 1298.05 300.509 1304.69 293.058L1307.6 296.37C1298.47 312.513 1286.43 322.861 1267.76 322.861C1249.5 322.861 1239.54 310.029 1239.54 284.78V126.661H1220.45V123.763C1236.64 108.862 1249.5 91.4772 1259.46 71.1949H1262.37V111.76Z" fill="currentColor"/>
+      <path d="M1332.52 197.442C1332.52 263.256 1352.03 303.406 1388.13 303.406C1405.97 303.406 1424.65 291.403 1433.78 265.739L1440 267.809C1427.14 304.648 1409.71 324.93 1378.58 324.93C1337.09 324.93 1306.8 280.227 1306.8 214.827C1306.8 149.841 1335.84 105.551 1376.51 105.551C1405.56 105.551 1430.04 127.489 1437.51 171.365L1335.01 168.881C1333.35 177.987 1332.52 187.508 1332.52 197.442ZM1376.1 115.899C1356.18 115.899 1342.9 134.939 1336.67 161.016H1405.14C1408.05 161.016 1408.46 159.775 1408.46 156.463C1408.46 132.87 1399.33 115.899 1376.1 115.899Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="calligraphy-outline" viewBox="0 0 438 658" fill="none" >
+
+      <path d="M437 656.56C399.01 653.63 362.14 635.31 299.92 589.64C294.41 585.64 289.74 582.29 289.62 582.29C289.44 582.29 286.75 584.5 283.58 587.13C246.72 618.03 204.17 638.29 159.77 645.94C143.61 648.69 134.51 649.47 116.38 649.47C97.65 649.53 91.79 648.93 78.62 645.64C47.74 637.99 19.5 617.13 7.71 593.35C2.98 583.78 1.42 577.09 1.07 565.43C1.02 564.05 1 562.72 1 561.43C1 549.12 3.12 540.21 8.49 529.33C15.55 514.99 31.41 499.87 48.34 491.38C72.94 479.01 102.92 475.36 133.38 480.98C166.59 487.14 205.13 503.81 248.57 530.95C257.01 536.21 259.16 537.34 259.76 536.74C262.46 533.94 277.6 503.51 278.91 498.19L279.33 496.64L276.4 497.06C271.55 497.72 248.81 497.95 241.45 497.36C196.27 493.83 155.04 477.33 118.71 448.17C73.23 411.65 40.74 356.36 30.27 297.79C25.48 271.07 24.82 239.46 28.47 212.92C34.88 166.66 54.98 121.17 85.2 84.47C92.86 75.21 113.09 54.89 122.37 47.3C146.74 27.15 173.07 11.76 201.58 1H289.25C247.37 4.49 207.55 18.86 169.64 44.07C131.34 69.59 100.58 104.56 78.92 147.41C63.54 177.65 55.52 204.31 51.33 238.62C50.02 249.62 49.84 282.07 51.03 292.11C55.58 329.95 68.69 364.19 90.17 394.26C106.21 416.67 128.35 436.69 153.18 451.28C178.26 465.98 203.09 474.64 231.88 478.71C237.8 479.55 243.43 479.79 259.1 479.79C270 479.79 280.35 479.55 282.14 479.31L285.49 478.83L291 464.07C301.77 435.08 311.35 405.91 322.84 367.12C326.19 355.77 332.29 335.2 336.42 321.4C340.49 307.59 346.41 287.27 349.53 276.27C380.12 168.47 399.89 121.69 437 73.73V187.61C425.08 227.16 413.59 271.78 401.83 324.09C390.76 373.22 380.94 411.89 371.31 443.8C369.69 449.3 368.32 454.08 368.32 454.38C368.32 455.94 402.07 439.32 411.7 432.99C419.57 427.82 427.67 421.56 437 413.33V436.88C417.79 451.17 397.66 462.25 371.67 473.51L359.76 478.65L355.45 488.21C350.12 499.99 348.51 503.16 342.11 514.45C331.69 532.8 317.21 553.06 303.57 568.3L302.43 569.62L306.5 571.83C356.77 599.55 392.72 610.96 437 612.95V656.56ZM437 656.56V657M206.14 526.7C225.53 537.7 249.83 552.52 249.41 553.24C247.08 557.36 238.1 569.62 233.31 575.36C220.27 590.9 205.13 603.57 187.77 613.31C146.42 636.56 91.01 637.99 55.64 616.66C40.5 607.51 28.71 595.68 23.57 584.32C20.04 576.61 19.14 572.13 19.14 561.97C19.14 550.91 19.92 547.21 24.22 538.36C34.64 516.9 59.17 501.48 89.99 497.12C97.95 495.98 125.06 496.34 133.74 497.72C154.74 501 175.21 509.19 206.14 526.7Z" stroke="currentColor" stroke-width="2"/>
+
+    </symbol>
+
+        <symbol id="full-fsuite-logo" viewBox="0 0 174 250" fill="none">
+      <path d="M120.71 33.39L113.35 29.4L114.25 27.74L119.81 30.76L121.28 28.06L116.9 25.68L117.8 24.02L122.18 26.4L124.34 22.41L126.14 23.39L120.71 33.39Z" fill="currentColor"/>
+      <path d="M99.54 17.62C99.52 16.06 98.69 15.05 97.23 14.85C95.88 14.66 95.08 15.1 94.93 16.13C94.84 17.09 95.24 17.4 97.3 18.36C99.69 19.44 100.5 20.46 100.27 22.07C100 23.94 98.25 25.08 96.11 24.78C94.02 24.48 92.53 22.86 92.46 20.81L94.46 20.72C94.54 21.9 95.27 22.76 96.38 22.91C97.36 23.05 98.15 22.59 98.26 21.8C98.36 21.11 97.95 20.72 96.04 19.89C93.8 18.91 92.65 17.75 92.93 15.8C93.22 13.74 95.01 12.63 97.5 12.99C98.74 13.17 99.72 13.67 100.44 14.48C101.16 15.29 101.54 16.33 101.54 17.56L99.54 17.64V17.62Z" fill="currentColor"/>
+      <path d="M88.97 23.77L86.94 23.84L86.71 16.69C86.65 14.89 85.96 14.13 84.58 14.17C83.2 14.21 82.59 15 82.65 16.82L82.88 23.97L80.85 24.04L80.61 16.79C80.52 13.98 81.98 12.37 84.51 12.29C87.04 12.21 88.64 13.73 88.73 16.53L88.97 23.78V23.77Z" fill="currentColor"/>
+      <path d="M75.6 15.16L72.86 15.74L74.43 23.18L77.16 22.6L77.55 24.44L70.08 26.02L69.69 24.18L72.43 23.6L70.86 16.16L68.13 16.74L67.74 14.9L75.21 13.32L75.6 15.16Z" fill="currentColor"/>
+      <path d="M63.4 26.37L66.74 25.01L67.45 26.76L58.87 30.25L58.16 28.5L61.5 27.14L57.93 18.35L59.83 17.58L63.4 26.38V26.37Z" fill="currentColor"/>
+      <path d="M56.58 31.48L49.57 35.9L48.56 34.3L53.84 30.97L52.36 28.62L48.21 31.24L47.24 29.7L51.39 27.08L49.79 24.53L44.51 27.86L43.5 26.26L50.51 21.84L56.57 31.47L56.58 31.48Z" fill="currentColor"/>
+      <path d="M39.19 45.42L34.07 52.04L32.58 50.89L36.44 45.89L34.01 44.01L30.96 47.96L29.47 46.81L32.52 42.86L28.93 40.09L30.18 38.47L39.18 45.42H39.19Z" fill="currentColor"/>
+      <path d="M20.2 63.79C18.65 63.56 17.53 64.21 17.09 65.62C16.68 66.92 16.99 67.78 17.98 68.1C18.91 68.34 19.29 68 20.56 66.12C22.01 63.94 23.15 63.3 24.7 63.79C26.5 64.35 27.34 66.27 26.7 68.33C26.07 70.35 24.22 71.56 22.2 71.29L22.43 69.3C23.6 69.41 24.57 68.83 24.9 67.76C25.2 66.81 24.87 65.96 24.11 65.72C23.44 65.51 23 65.85 21.87 67.61C20.54 69.66 19.21 70.61 17.33 70.02C15.35 69.4 14.54 67.46 15.29 65.06C15.66 63.87 16.32 62.98 17.23 62.4C18.15 61.82 19.23 61.61 20.45 61.81L20.2 63.79Z" fill="currentColor"/>
+      <path d="M24.58 75.17L24.32 77.18L17.23 76.28C15.44 76.05 14.58 76.62 14.41 77.98C14.24 79.35 14.91 80.07 16.72 80.31L23.81 81.21L23.55 83.22L16.36 82.31C13.57 81.96 12.22 80.26 12.53 77.75C12.84 75.24 14.61 73.9 17.38 74.26L24.57 75.18L24.58 75.17Z" fill="currentColor"/>
+      <path d="M14.06 86.75V89.54H21.66V86.75H23.55V94.39H21.66V91.6H14.06V94.39H12.17V86.75H14.06Z" fill="currentColor"/>
+      <path d="M21.67 101.48V97.87H23.56V107.13H21.67V103.52H12.18V101.47H21.67V101.48Z" fill="currentColor"/>
+      <path d="M23.55 110.44V118.73H21.66V112.49H18.88V117.4H17.06V112.49H14.05V118.73H12.16V110.44H23.55Z" fill="currentColor"/>
+      <path d="M23.55 134.33V142.7H21.66V136.38H18.59V141.37H16.7V136.38H12.17V134.33H23.55Z" fill="currentColor"/>
+      <path d="M16.24 159.73C14.7 159.97 13.82 160.93 13.82 162.41C13.82 163.78 14.37 164.51 15.41 164.51C16.37 164.46 16.63 164.02 17.28 161.85C18.01 159.33 18.9 158.39 20.53 158.39C22.41 158.39 23.8 159.97 23.8 162.13C23.8 164.29 22.4 165.95 20.39 166.31L20.02 164.34C21.17 164.1 21.92 163.25 21.92 162.13C21.92 161.14 21.35 160.42 20.56 160.42C19.86 160.42 19.54 160.87 18.98 162.89C18.33 165.25 17.34 166.55 15.37 166.55C13.29 166.55 11.94 164.94 11.94 162.42C11.94 161.17 12.3 160.13 13 159.3C13.7 158.47 14.67 157.95 15.89 157.77L16.25 159.74L16.24 159.73Z" fill="currentColor"/>
+      <path d="M23.76 169.32L24.1 171.32L17.05 172.51C15.27 172.81 14.61 173.6 14.84 174.96C15.07 176.32 15.93 176.82 17.72 176.52L24.77 175.33L25.11 177.33L17.97 178.54C15.2 179.01 13.41 177.78 12.99 175.28C12.57 172.78 13.86 171 16.62 170.53L23.76 169.32Z" fill="currentColor"/>
+      <path d="M17.04 183.74L17.98 186.37L25.14 183.8L24.2 181.17L25.97 180.53L28.55 187.72L26.78 188.36L25.84 185.73L18.68 188.3L19.62 190.93L17.85 191.57L15.27 184.38L17.04 183.74Z" fill="currentColor"/>
+      <path d="M29.81 194.3L28.01 191.17L29.64 190.23L34.26 198.26L32.63 199.2L30.83 196.07L22.61 200.8L21.59 199.03L29.82 194.3H29.81Z" fill="currentColor"/>
+      <path d="M35.8 200.36L41.13 206.71L39.69 207.92L35.68 203.14L33.55 204.93L36.71 208.69L35.32 209.86L32.17 206.1L29.87 208.03L33.88 212.81L32.44 214.02L27.11 207.67L35.82 200.36H35.8Z" fill="currentColor"/>
+      <path d="M51.98 215.75L59.23 219.92L58.29 221.55L52.81 218.4L51.28 221.06L55.6 223.55L54.66 225.18L50.34 222.69L48.08 226.62L46.3 225.6L51.97 215.74L51.98 215.75Z" fill="currentColor"/>
+      <path d="M72.75 232.05C72.73 233.61 73.53 234.64 74.99 234.88C76.33 235.11 77.15 234.69 77.32 233.66C77.43 232.71 77.04 232.38 75.01 231.37C72.65 230.23 71.87 229.19 72.14 227.59C72.45 225.73 74.24 224.63 76.37 224.99C78.45 225.34 79.9 227.01 79.92 229.05L77.92 229.09C77.87 227.91 77.16 227.03 76.06 226.85C75.08 226.68 74.28 227.13 74.15 227.91C74.03 228.6 74.43 229 76.32 229.88C78.53 230.91 79.65 232.11 79.32 234.05C78.97 236.1 77.16 237.16 74.68 236.74C73.45 236.53 72.48 236.01 71.78 235.18C71.08 234.35 70.73 233.31 70.76 232.07L72.76 232.05H72.75Z" fill="currentColor"/>
+      <path d="M83.4 226.2L85.43 226.17L85.55 233.32C85.58 235.12 86.26 235.89 87.64 235.87C89.02 235.85 89.64 235.07 89.61 233.25L89.49 226.1L91.52 226.07L91.64 233.32C91.69 236.13 90.2 237.71 87.67 237.76C85.13 237.8 83.57 236.25 83.52 233.45L83.4 226.2Z" fill="currentColor"/>
+      <path d="M96.59 235.1L99.34 234.59L97.96 227.11L95.21 227.62L94.87 225.77L102.38 224.38L102.72 226.23L99.97 226.74L101.35 234.22L104.1 233.71L104.44 235.56L96.93 236.95L96.59 235.1Z" fill="currentColor"/>
+      <path d="M109.09 224.21L105.71 225.48L105.05 223.72L113.72 220.46L114.38 222.22L111 223.49L114.34 232.37L112.42 233.09L109.08 224.21H109.09Z" fill="currentColor"/>
+      <path d="M116.02 219.27L123.14 215.03L124.1 216.65L118.74 219.84L120.16 222.23L124.38 219.72L125.31 221.28L121.09 223.79L122.63 226.38L127.99 223.19L128.95 224.81L121.83 229.05L116.01 219.27H116.02Z" fill="currentColor"/>
+      <path d="M133.76 205.78L139.04 199.28L140.5 200.47L136.51 205.38L138.89 207.32L142.04 203.45L143.5 204.64L140.35 208.51L143.87 211.37L142.58 212.96L133.75 205.79L133.76 205.78Z" fill="currentColor"/>
+      <path d="M153.22 187.87C154.76 188.14 155.9 187.51 156.38 186.12C156.82 184.83 156.54 183.96 155.55 183.62C154.63 183.36 154.24 183.69 152.92 185.54C151.41 187.69 150.26 188.29 148.73 187.76C146.95 187.15 146.15 185.21 146.85 183.17C147.53 181.17 149.41 180.01 151.43 180.32L151.15 182.3C149.98 182.16 149 182.71 148.64 183.78C148.32 184.72 148.63 185.58 149.38 185.84C150.04 186.07 150.5 185.74 151.67 184.01C153.05 181.99 154.4 181.08 156.27 181.72C158.24 182.39 158.99 184.35 158.18 186.73C157.77 187.91 157.1 188.78 156.17 189.34C155.24 189.9 154.15 190.07 152.94 189.85L153.24 187.87H153.22Z" fill="currentColor"/>
+      <path d="M149.11 176.42L149.42 174.41L156.49 175.49C158.27 175.76 159.15 175.22 159.35 173.86C159.56 172.49 158.9 171.75 157.1 171.48L150.03 170.4L150.34 168.39L157.51 169.49C160.29 169.92 161.6 171.65 161.22 174.15C160.84 176.66 159.04 177.94 156.28 177.52L149.11 176.42Z" fill="currentColor"/>
+      <path d="M159.96 164.95V162.16H152.36V164.95H150.47V157.31H152.36V160.1H159.96V157.31H161.85V164.95H159.96Z" fill="currentColor"/>
+      <path d="M152.36 150.23V153.84H150.47V144.58H152.36V148.19H161.85V150.24H152.36V150.23Z" fill="currentColor"/>
+      <path d="M150.47 141.25V132.96H152.36V139.2H155.14V134.29H156.96V139.2H159.97V132.96H161.86V141.25H150.47Z" fill="currentColor"/>
+      <path d="M150.47 117.4V109.03H152.36V115.35H155.43V110.36H157.32V115.35H161.85V117.4H150.47Z" fill="currentColor"/>
+      <path d="M157.79 91.96C159.33 91.72 160.21 90.76 160.21 89.28C160.21 87.91 159.66 87.18 158.62 87.18C157.66 87.23 157.4 87.67 156.75 89.84C156.02 92.36 155.13 93.3 153.5 93.3C151.62 93.3 150.23 91.72 150.23 89.56C150.23 87.4 151.63 85.74 153.64 85.38L154.01 87.35C152.86 87.59 152.11 88.44 152.11 89.56C152.11 90.55 152.68 91.27 153.47 91.27C154.17 91.27 154.49 90.82 155.05 88.8C155.7 86.44 156.69 85.14 158.66 85.14C160.74 85.14 162.09 86.75 162.09 89.27C162.09 90.52 161.73 91.56 161.03 92.39C160.33 93.22 159.36 93.74 158.14 93.92L157.78 91.95L157.79 91.96Z" fill="currentColor"/>
+      <path d="M150.41 82.26L150.12 80.25L157.2 79.24C158.99 78.99 159.66 78.22 159.47 76.85C159.27 75.48 158.43 74.96 156.63 75.22L149.55 76.23L149.26 74.22L156.43 73.2C159.21 72.8 160.97 74.08 161.33 76.59C161.69 79.1 160.35 80.85 157.58 81.25L150.41 82.27V82.26Z" fill="currentColor"/>
+      <path d="M157.49 68.03L156.61 65.38L149.39 67.77L150.27 70.42L148.48 71.01L146.08 63.76L147.87 63.17L148.75 65.82L155.97 63.43L155.09 60.78L156.88 60.19L159.28 67.44L157.49 68.03Z" fill="currentColor"/>
+      <path d="M144.99 57.13L146.71 60.3L145.05 61.2L140.63 53.06L142.29 52.16L144.01 55.33L152.35 50.8L153.33 52.6L144.99 57.13Z" fill="currentColor"/>
+      <path d="M139.16 50.94L133.99 44.46L135.46 43.28L139.35 48.16L141.52 46.43L138.46 42.59L139.88 41.45L142.94 45.29L145.29 43.42L141.4 38.54L142.87 37.36L148.04 43.84L139.14 50.93L139.16 50.94Z" fill="currentColor"/>
+      <path d="M87.01 250C39.03 250 0 210.97 0 162.99V87.02C0 39.03 39.03 0 87.01 0C134.99 0 174.02 39.03 174.02 87.01V162.98C174.02 210.96 134.99 249.99 87.01 249.99V250ZM87.01 3.47C40.95 3.47 3.47 40.94 3.47 87.01V162.98C3.47 209.05 40.95 246.53 87.02 246.53C133.09 246.53 170.57 209.05 170.57 162.98V87.01C170.57 40.94 133.09 3.46 87.02 3.46L87.01 3.47Z" fill="currentColor"/>
+      <path d="M83.22 132.02V177.09H61.62V69.53H111.36V89.74H83.23V112.12H110.59V132.01H83.23L83.22 132.02Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="full-lsuite-logo" viewBox="0 0 174 250" fill="none">
+      <path d="M128.98 133.25C124.45 140.41 120.97 157.87 121.13 166.43H120.76C117.32 164.21 112.76 162.57 107.95 162.57C103.46 162.57 95.67 164.08 87.81 164.1H45.92V162.4C55.06 162.05 58.04 157.94 58.04 150.66V89.36C58.04 82.08 55.06 77.97 45.92 77.62V75.92H86.86V77.62C79.42 77.62 76.87 82.08 76.87 89.36V149.81C76.87 156.93 79.6 161.4 86.88 161.4C100.37 161.4 104.7 132.53 128.98 132.53V133.25Z" fill="currentColor"/>
+      <path d="M87.01 250C39.03 250 0 210.97 0 162.99V87.02C0 39.03 39.03 0 87.01 0C134.99 0 174.02 39.03 174.02 87.01V162.98C174.02 210.96 134.99 249.99 87.01 249.99V250ZM87.01 3.47C40.95 3.47 3.47 40.94 3.47 87.01V162.98C3.47 209.05 40.95 246.53 87.02 246.53C133.09 246.53 170.57 209.05 170.57 162.98V87.01C170.57 40.94 133.09 3.46 87.02 3.46L87.01 3.47Z" fill="currentColor"/>
+      <path d="M118.92 32.42L123.45 24.08L117.67 20.94L118.57 19.28L126.14 23.39L120.71 33.39L118.92 32.42Z" fill="currentColor"/>
+      <path d="M99.54 17.62C99.52 16.06 98.69 15.05 97.23 14.84C95.88 14.65 95.08 15.09 94.93 16.12C94.84 17.08 95.24 17.39 97.3 18.35C99.69 19.43 100.5 20.45 100.27 22.06C100 23.93 98.25 25.07 96.11 24.76C94.02 24.46 92.53 22.84 92.46 20.79L94.46 20.7C94.54 21.88 95.27 22.74 96.38 22.89C97.36 23.03 98.15 22.57 98.26 21.78C98.36 21.09 97.95 20.7 96.04 19.87C93.8 18.89 92.65 17.73 92.93 15.78C93.22 13.72 95.01 12.61 97.5 12.97C98.74 13.15 99.72 13.65 100.44 14.46C101.16 15.27 101.54 16.31 101.54 17.54L99.54 17.62Z" fill="currentColor"/>
+      <path d="M88.97 23.77L86.94 23.84L86.71 16.69C86.65 14.89 85.96 14.13 84.58 14.17C83.2 14.21 82.59 15 82.65 16.82L82.88 23.97L80.85 24.04L80.61 16.79C80.52 13.98 81.98 12.37 84.51 12.29C87.04 12.21 88.64 13.73 88.73 16.53L88.97 23.78V23.77Z" fill="currentColor"/>
+      <path d="M75.6 15.16L72.86 15.74L74.43 23.18L77.16 22.6L77.55 24.44L70.08 26.02L69.69 24.18L72.43 23.6L70.86 16.16L68.13 16.74L67.74 14.9L75.21 13.32L75.6 15.16Z" fill="currentColor"/>
+      <path d="M63.4 26.37L66.74 25.01L67.45 26.76L58.87 30.25L58.16 28.5L61.5 27.14L57.93 18.35L59.83 17.58L63.4 26.37Z" fill="currentColor"/>
+      <path d="M56.58 31.48L49.57 35.9L48.56 34.3L53.84 30.97L52.36 28.62L48.21 31.24L47.24 29.7L51.39 27.08L49.79 24.54L44.51 27.87L43.5 26.27L50.51 21.85L56.57 31.48H56.58Z" fill="currentColor"/>
+      <path d="M37.95 47.02L30.44 41.22L26.42 46.43L24.93 45.28L30.2 38.46L39.2 45.41L37.96 47.02H37.95Z" fill="currentColor"/>
+      <path d="M20.2 63.79C18.65 63.56 17.53 64.21 17.09 65.62C16.68 66.92 16.99 67.79 17.98 68.1C18.91 68.34 19.29 68 20.56 66.12C22.01 63.94 23.15 63.3 24.7 63.79C26.5 64.35 27.34 66.27 26.7 68.33C26.07 70.35 24.22 71.56 22.2 71.29L22.43 69.3C23.6 69.41 24.57 68.83 24.9 67.76C25.2 66.81 24.87 65.96 24.11 65.72C23.44 65.51 23 65.85 21.87 67.61C20.54 69.66 19.21 70.61 17.33 70.02C15.35 69.4 14.54 67.46 15.29 65.06C15.66 63.87 16.32 62.98 17.23 62.4C18.15 61.82 19.23 61.61 20.45 61.81L20.2 63.79Z" fill="currentColor"/>
+      <path d="M24.58 75.17L24.32 77.18L17.23 76.28C15.44 76.05 14.58 76.61 14.41 77.98C14.24 79.35 14.91 80.07 16.72 80.3L23.81 81.2L23.55 83.21L16.36 82.3C13.57 81.95 12.22 80.25 12.53 77.74C12.85 75.23 14.61 73.89 17.38 74.25L24.57 75.16L24.58 75.17Z" fill="currentColor"/>
+      <path d="M14.06 86.75V89.54H21.66V86.75H23.55V94.39H21.66V91.6H14.06V94.39H12.17V86.75H14.06Z" fill="currentColor"/>
+      <path d="M21.67 101.48V97.87H23.56V107.13H21.67V103.52H12.18V101.47H21.67V101.48Z" fill="currentColor"/>
+      <path d="M23.55 110.44V118.73H21.66V112.49H18.88V117.4H17.06V112.49H14.05V118.73H12.16V110.44H23.55Z" fill="currentColor"/>
+      <path d="M23.55 136.36H14.06V142.94H12.17V134.33H23.54V136.36H23.55Z" fill="currentColor"/>
+      <path d="M16.24 159.73C14.7 159.97 13.82 160.93 13.82 162.41C13.82 163.78 14.37 164.51 15.41 164.51C16.37 164.46 16.63 164.02 17.28 161.85C18.01 159.33 18.9 158.39 20.53 158.39C22.41 158.39 23.8 159.97 23.8 162.13C23.8 164.29 22.4 165.95 20.39 166.31L20.02 164.34C21.17 164.1 21.92 163.25 21.92 162.13C21.92 161.14 21.35 160.42 20.56 160.42C19.86 160.42 19.54 160.87 18.98 162.89C18.33 165.25 17.34 166.55 15.37 166.55C13.29 166.55 11.94 164.94 11.94 162.42C11.94 161.17 12.3 160.13 13 159.3C13.7 158.47 14.67 157.95 15.89 157.77L16.25 159.74L16.24 159.73Z" fill="currentColor"/>
+      <path d="M23.76 169.32L24.1 171.32L17.05 172.51C15.27 172.81 14.61 173.6 14.84 174.96C15.07 176.32 15.93 176.82 17.72 176.52L24.77 175.33L25.11 177.33L17.97 178.54C15.2 179.01 13.41 177.78 12.99 175.28C12.57 172.78 13.86 171 16.62 170.53L23.76 169.32Z" fill="currentColor"/>
+      <path d="M17.04 183.74L17.98 186.37L25.14 183.8L24.2 181.17L25.97 180.53L28.55 187.72L26.78 188.36L25.84 185.73L18.68 188.3L19.62 190.93L17.85 191.57L15.27 184.38L17.04 183.74Z" fill="currentColor"/>
+      <path d="M29.81 194.3L28.01 191.17L29.64 190.23L34.26 198.26L32.63 199.2L30.83 196.07L22.61 200.8L21.59 199.02L29.82 194.29L29.81 194.3Z" fill="currentColor"/>
+      <path d="M35.8 200.36L41.13 206.71L39.69 207.92L35.68 203.14L33.55 204.93L36.71 208.69L35.32 209.86L32.17 206.1L29.87 208.03L33.88 212.81L32.44 214.02L27.11 207.67L35.82 200.36H35.8Z" fill="currentColor"/>
+      <path d="M53.74 216.76L49.01 224.98L54.71 228.26L53.77 229.89L46.31 225.6L51.98 215.74L53.74 216.75V216.76Z" fill="currentColor"/>
+      <path d="M72.75 232.05C72.73 233.61 73.53 234.64 74.99 234.88C76.33 235.11 77.15 234.69 77.32 233.66C77.43 232.71 77.04 232.38 75.01 231.37C72.65 230.23 71.87 229.19 72.14 227.59C72.45 225.73 74.24 224.63 76.37 224.99C78.45 225.34 79.9 227 79.92 229.05L77.92 229.09C77.87 227.91 77.16 227.03 76.06 226.85C75.08 226.68 74.28 227.13 74.15 227.91C74.03 228.6 74.43 229 76.32 229.88C78.53 230.91 79.65 232.11 79.32 234.05C78.97 236.1 77.16 237.16 74.68 236.74C73.45 236.53 72.48 236 71.78 235.18C71.08 234.35 70.73 233.3 70.76 232.07L72.76 232.05H72.75Z" fill="currentColor"/>
+      <path d="M83.4 226.2L85.43 226.17L85.55 233.32C85.58 235.12 86.26 235.89 87.64 235.87C89.02 235.85 89.64 235.07 89.61 233.25L89.49 226.1L91.52 226.07L91.64 233.32C91.69 236.13 90.2 237.72 87.67 237.76C85.13 237.8 83.57 236.25 83.52 233.46L83.4 226.21V226.2Z" fill="currentColor"/>
+      <path d="M96.59 235.1L99.34 234.59L97.96 227.11L95.21 227.62L94.87 225.77L102.38 224.38L102.72 226.23L99.97 226.74L101.35 234.22L104.1 233.71L104.44 235.56L96.93 236.95L96.59 235.1Z" fill="currentColor"/>
+      <path d="M109.09 224.21L105.71 225.48L105.05 223.72L113.72 220.46L114.38 222.22L111 223.49L114.34 232.37L112.42 233.09L109.08 224.21H109.09Z" fill="currentColor"/>
+      <path d="M116.02 219.27L123.14 215.03L124.1 216.65L118.74 219.84L120.16 222.23L124.38 219.72L125.31 221.28L121.09 223.79L122.63 226.37L127.99 223.18L128.95 224.8L121.83 229.04L116.01 219.26L116.02 219.27Z" fill="currentColor"/>
+      <path d="M135.04 204.2L142.41 210.19L146.56 205.08L148.02 206.27L142.59 212.95L133.76 205.78L135.04 204.2Z" fill="currentColor"/>
+      <path d="M153.22 187.87C154.76 188.14 155.9 187.52 156.38 186.12C156.82 184.83 156.54 183.96 155.55 183.62C154.63 183.36 154.24 183.69 152.92 185.54C151.41 187.69 150.26 188.29 148.73 187.76C146.95 187.15 146.15 185.21 146.85 183.17C147.53 181.17 149.41 180.01 151.43 180.32L151.15 182.3C149.98 182.16 149 182.71 148.64 183.78C148.32 184.72 148.63 185.58 149.38 185.84C150.04 186.07 150.5 185.74 151.67 184.01C153.05 181.99 154.4 181.08 156.27 181.72C158.24 182.39 158.99 184.35 158.18 186.73C157.77 187.91 157.1 188.78 156.17 189.34C155.24 189.9 154.15 190.07 152.94 189.85L153.24 187.87H153.22Z" fill="currentColor"/>
+      <path d="M149.11 176.42L149.42 174.41L156.49 175.49C158.27 175.76 159.15 175.22 159.35 173.86C159.55 172.5 158.9 171.75 157.1 171.48L150.03 170.4L150.34 168.39L157.51 169.49C160.29 169.92 161.6 171.65 161.22 174.15C160.84 176.66 159.04 177.94 156.28 177.52L149.11 176.42Z" fill="currentColor"/>
+      <path d="M159.96 164.95V162.16H152.36V164.95H150.47V157.31H152.36V160.1H159.96V157.31H161.85V164.95H159.96Z" fill="currentColor"/>
+      <path d="M152.36 150.23V153.84H150.47V144.58H152.36V148.19H161.85V150.24H152.36V150.23Z" fill="currentColor"/>
+      <path d="M150.47 141.25V132.96H152.36V139.2H155.14V134.29H156.96V139.2H159.97V132.96H161.86V141.25H150.47Z" fill="currentColor"/>
+      <path d="M150.47 115.36H159.96V108.78H161.85V117.39H150.48V115.36H150.47Z" fill="currentColor"/>
+      <path d="M157.79 91.96C159.33 91.72 160.21 90.76 160.21 89.28C160.21 87.92 159.66 87.18 158.62 87.18C157.66 87.23 157.4 87.67 156.75 89.84C156.02 92.36 155.13 93.3 153.5 93.3C151.62 93.3 150.23 91.72 150.23 89.56C150.23 87.4 151.63 85.74 153.64 85.38L154.01 87.35C152.86 87.59 152.11 88.44 152.11 89.56C152.11 90.55 152.68 91.27 153.47 91.27C154.17 91.27 154.49 90.82 155.05 88.8C155.7 86.44 156.69 85.14 158.66 85.14C160.74 85.14 162.09 86.75 162.09 89.27C162.09 90.52 161.73 91.56 161.03 92.39C160.33 93.22 159.36 93.74 158.14 93.92L157.78 91.95L157.79 91.96Z" fill="currentColor"/>
+      <path d="M150.41 82.26L150.12 80.25L157.2 79.24C158.99 78.99 159.66 78.21 159.47 76.85C159.28 75.49 158.43 74.96 156.63 75.22L149.55 76.23L149.26 74.22L156.43 73.2C159.21 72.8 160.97 74.08 161.33 76.59C161.69 79.1 160.35 80.85 157.58 81.24L150.41 82.27V82.26Z" fill="currentColor"/>
+      <path d="M157.49 68.03L156.61 65.38L149.39 67.77L150.27 70.42L148.48 71.01L146.08 63.76L147.87 63.17L148.75 65.82L155.97 63.43L155.09 60.78L156.88 60.19L159.28 67.44L157.49 68.03Z" fill="currentColor"/>
+      <path d="M144.99 57.13L146.71 60.3L145.05 61.2L140.63 53.06L142.29 52.16L144.01 55.33L152.35 50.8L153.33 52.6L144.99 57.13Z" fill="currentColor"/>
+      <path d="M139.16 50.94L133.99 44.46L135.46 43.28L139.35 48.16L141.52 46.43L138.46 42.59L139.88 41.46L142.94 45.3L145.29 43.43L141.4 38.55L142.87 37.37L148.04 43.85L139.14 50.94H139.16Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="full-esuite-logo" viewBox="0 0 174 250" fill="none">
+      <path d="M87.01 250C39.03 250 0 210.97 0 162.99V87.02C0 39.03 39.03 0 87.01 0C134.99 0 174.02 39.03 174.02 87.01V162.98C174.02 210.96 134.99 249.99 87.01 249.99V250ZM87.01 3.47C40.95 3.47 3.47 40.94 3.47 87.01V162.98C3.47 209.05 40.95 246.53 87.02 246.53C133.09 246.53 170.57 209.05 170.57 162.98V87.01C170.57 40.94 133.09 3.46 87.02 3.46L87.01 3.47Z" fill="currentColor"/>
+      <path d="M120.71 33.39L113.43 29.44L114.33 27.78L119.81 30.76L121.14 28.32L116.83 25.98L117.7 24.38L122.01 26.72L123.44 24.08L117.96 21.1L118.86 19.44L126.14 23.39L120.71 33.39Z" fill="currentColor"/>
+      <path d="M99.54 17.62C99.52 16.06 98.69 15.05 97.23 14.84C95.88 14.65 95.08 15.09 94.93 16.12C94.84 17.08 95.24 17.39 97.3 18.35C99.69 19.43 100.5 20.45 100.27 22.06C100 23.93 98.25 25.07 96.11 24.76C94.02 24.46 92.53 22.84 92.46 20.79L94.46 20.7C94.54 21.88 95.27 22.74 96.38 22.89C97.36 23.03 98.15 22.57 98.26 21.78C98.36 21.09 97.95 20.7 96.04 19.87C93.8 18.89 92.65 17.73 92.93 15.78C93.22 13.72 95.01 12.61 97.5 12.97C98.74 13.15 99.72 13.65 100.44 14.46C101.16 15.27 101.54 16.31 101.54 17.54L99.54 17.62Z" fill="currentColor"/>
+      <path d="M88.97 23.77L86.94 23.84L86.71 16.69C86.65 14.89 85.96 14.13 84.58 14.17C83.2 14.22 82.59 15 82.65 16.82L82.88 23.97L80.85 24.04L80.61 16.79C80.52 13.98 81.98 12.37 84.51 12.29C87.04 12.21 88.64 13.73 88.73 16.53L88.97 23.78V23.77Z" fill="currentColor"/>
+      <path d="M75.6 15.16L72.86 15.74L74.43 23.18L77.16 22.6L77.55 24.44L70.08 26.02L69.69 24.18L72.43 23.6L70.86 16.16L68.13 16.74L67.74 14.9L75.21 13.32L75.6 15.16Z" fill="currentColor"/>
+      <path d="M63.4 26.37L66.74 25.01L67.45 26.76L58.87 30.25L58.16 28.5L61.5 27.14L57.93 18.35L59.83 17.58L63.4 26.37Z" fill="currentColor"/>
+      <path d="M56.58 31.48L49.57 35.9L48.56 34.3L53.84 30.97L52.36 28.62L48.21 31.24L47.24 29.7L51.39 27.08L49.79 24.54L44.51 27.87L43.5 26.27L50.51 21.85L56.57 31.48H56.58Z" fill="currentColor"/>
+      <path d="M39.19 45.42L34.12 51.98L32.63 50.83L36.44 45.89L34.24 44.19L31.24 48.07L29.8 46.96L32.8 43.08L30.42 41.24L26.61 46.18L25.12 45.03L30.19 38.47L39.19 45.42Z" fill="currentColor"/>
+      <path d="M20.2 63.79C18.65 63.56 17.53 64.21 17.09 65.62C16.68 66.92 16.99 67.78 17.98 68.1C18.91 68.34 19.29 68 20.56 66.12C22.01 63.93 23.15 63.3 24.7 63.79C26.5 64.35 27.34 66.27 26.7 68.33C26.07 70.35 24.22 71.56 22.2 71.29L22.43 69.3C23.6 69.41 24.57 68.83 24.9 67.76C25.2 66.81 24.87 65.96 24.11 65.72C23.44 65.51 23 65.85 21.87 67.61C20.54 69.66 19.21 70.61 17.33 70.02C15.35 69.4 14.54 67.46 15.29 65.06C15.66 63.87 16.32 62.98 17.23 62.4C18.15 61.82 19.23 61.61 20.45 61.81L20.2 63.79Z" fill="currentColor"/>
+      <path d="M24.58 75.17L24.32 77.18L17.23 76.28C15.44 76.05 14.58 76.61 14.41 77.98C14.24 79.35 14.91 80.07 16.72 80.3L23.81 81.2L23.55 83.22L16.36 82.31C13.57 81.96 12.22 80.26 12.53 77.75C12.85 75.24 14.61 73.9 17.38 74.26L24.57 75.17H24.58Z" fill="currentColor"/>
+      <path d="M14.06 86.75V89.54H21.66V86.75H23.55V94.39H21.66V91.6H14.06V94.39H12.17V86.75H14.06Z" fill="currentColor"/>
+      <path d="M21.67 101.48V97.87H23.56V107.13H21.67V103.52H12.18V101.47H21.67V101.48Z" fill="currentColor"/>
+      <path d="M23.55 110.44V118.73H21.66V112.49H18.88V117.4H17.06V112.49H14.05V118.73H12.16V110.44H23.55Z" fill="currentColor"/>
+      <path d="M23.55 134.33V142.62H21.66V136.38H18.88V141.29H17.06V136.38H14.05V142.62H12.16V134.33H23.55Z" fill="currentColor"/>
+      <path d="M16.24 159.73C14.7 159.97 13.82 160.93 13.82 162.41C13.82 163.78 14.37 164.51 15.41 164.51C16.37 164.46 16.63 164.02 17.28 161.85C18.01 159.33 18.9 158.39 20.53 158.39C22.41 158.39 23.8 159.97 23.8 162.13C23.8 164.29 22.4 165.95 20.39 166.31L20.02 164.34C21.17 164.1 21.92 163.25 21.92 162.13C21.92 161.14 21.35 160.42 20.56 160.42C19.86 160.42 19.54 160.87 18.98 162.89C18.33 165.25 17.34 166.55 15.37 166.55C13.29 166.55 11.94 164.94 11.94 162.42C11.94 161.17 12.3 160.13 13 159.3C13.7 158.47 14.67 157.95 15.89 157.77L16.25 159.74L16.24 159.73Z" fill="currentColor"/>
+      <path d="M23.76 169.32L24.1 171.32L17.05 172.51C15.27 172.81 14.61 173.6 14.84 174.96C15.07 176.32 15.93 176.82 17.72 176.52L24.77 175.33L25.11 177.33L17.97 178.54C15.2 179.01 13.41 177.78 12.99 175.28C12.57 172.78 13.86 171 16.62 170.53L23.76 169.32Z" fill="currentColor"/>
+      <path d="M17.04 183.74L17.98 186.37L25.14 183.8L24.2 181.17L25.97 180.53L28.55 187.72L26.78 188.36L25.84 185.73L18.68 188.3L19.62 190.93L17.85 191.57L15.27 184.38L17.04 183.74Z" fill="currentColor"/>
+      <path d="M29.81 194.3L28.01 191.17L29.64 190.23L34.26 198.26L32.63 199.2L30.83 196.07L22.61 200.8L21.59 199.02L29.82 194.29L29.81 194.3Z" fill="currentColor"/>
+      <path d="M35.8 200.36L41.13 206.71L39.69 207.92L35.68 203.14L33.55 204.93L36.71 208.69L35.32 209.86L32.17 206.1L29.87 208.03L33.88 212.81L32.44 214.02L27.11 207.67L35.82 200.36H35.8Z" fill="currentColor"/>
+      <path d="M51.98 215.75L59.16 219.88L58.22 221.51L52.81 218.4L51.43 220.81L55.68 223.26L54.77 224.84L50.52 222.39L49.02 224.99L54.43 228.1L53.49 229.73L46.31 225.6L51.98 215.74V215.75Z" fill="currentColor"/>
+      <path d="M72.75 232.05C72.73 233.61 73.53 234.64 74.99 234.88C76.33 235.11 77.15 234.69 77.32 233.66C77.43 232.71 77.04 232.38 75.01 231.37C72.65 230.23 71.87 229.19 72.14 227.59C72.45 225.73 74.24 224.63 76.37 224.99C78.45 225.34 79.9 227 79.92 229.05L77.92 229.09C77.87 227.91 77.16 227.03 76.06 226.85C75.08 226.68 74.28 227.13 74.15 227.91C74.03 228.6 74.43 228.99 76.32 229.88C78.53 230.91 79.65 232.11 79.32 234.04C78.97 236.09 77.16 237.15 74.68 236.73C73.45 236.52 72.48 236 71.78 235.17C71.08 234.34 70.73 233.3 70.76 232.06L72.76 232.04L72.75 232.05Z" fill="currentColor"/>
+      <path d="M83.4 226.2L85.43 226.17L85.55 233.32C85.58 235.12 86.26 235.89 87.64 235.87C89.02 235.85 89.64 235.07 89.61 233.25L89.49 226.1L91.52 226.07L91.64 233.32C91.69 236.13 90.2 237.72 87.67 237.76C85.13 237.8 83.57 236.25 83.52 233.46L83.4 226.21V226.2Z" fill="currentColor"/>
+      <path d="M96.59 235.1L99.34 234.59L97.96 227.11L95.21 227.62L94.87 225.77L102.38 224.38L102.72 226.23L99.97 226.74L101.35 234.22L104.1 233.71L104.44 235.56L96.93 236.95L96.59 235.1Z" fill="currentColor"/>
+      <path d="M109.09 224.21L105.71 225.48L105.05 223.72L113.72 220.46L114.38 222.22L111 223.49L114.34 232.37L112.42 233.09L109.08 224.21H109.09Z" fill="currentColor"/>
+      <path d="M116.02 219.27L123.14 215.03L124.1 216.65L118.74 219.84L120.16 222.23L124.38 219.72L125.31 221.28L121.09 223.79L122.63 226.37L127.99 223.18L128.95 224.8L121.83 229.04L116.01 219.26L116.02 219.27Z" fill="currentColor"/>
+      <path d="M133.76 205.78L138.99 199.35L140.45 200.54L136.51 205.38L138.67 207.13L141.76 203.32L143.17 204.47L140.08 208.28L142.41 210.18L146.35 205.34L147.81 206.53L142.58 212.96L133.75 205.79L133.76 205.78Z" fill="currentColor"/>
+      <path d="M153.22 187.87C154.76 188.14 155.9 187.52 156.38 186.12C156.82 184.83 156.54 183.96 155.55 183.62C154.63 183.36 154.24 183.69 152.92 185.54C151.41 187.69 150.26 188.29 148.73 187.76C146.95 187.15 146.15 185.21 146.85 183.17C147.53 181.17 149.41 180.01 151.43 180.32L151.15 182.3C149.98 182.16 149 182.72 148.64 183.78C148.32 184.72 148.63 185.58 149.38 185.83C150.04 186.06 150.5 185.73 151.67 184C153.05 181.98 154.4 181.07 156.27 181.71C158.24 182.38 158.99 184.34 158.18 186.72C157.77 187.9 157.1 188.77 156.17 189.33C155.24 189.89 154.15 190.06 152.94 189.84L153.24 187.86L153.22 187.87Z" fill="currentColor"/>
+      <path d="M149.11 176.42L149.42 174.41L156.49 175.49C158.27 175.76 159.15 175.22 159.35 173.86C159.56 172.5 158.9 171.75 157.1 171.48L150.03 170.4L150.34 168.39L157.51 169.49C160.29 169.92 161.6 171.65 161.22 174.15C160.84 176.66 159.04 177.94 156.28 177.52L149.11 176.42Z" fill="currentColor"/>
+      <path d="M159.96 164.95V162.16H152.36V164.95H150.47V157.31H152.36V160.1H159.96V157.31H161.85V164.95H159.96Z" fill="currentColor"/>
+      <path d="M152.36 150.23V153.84H150.47V144.58H152.36V148.19H161.85V150.24H152.36V150.23Z" fill="currentColor"/>
+      <path d="M150.47 141.25V132.96H152.36V139.2H155.14V134.29H156.96V139.2H159.97V132.96H161.86V141.25H150.47Z" fill="currentColor"/>
+      <path d="M150.47 117.4V109.11H152.36V115.35H155.14V110.44H156.96V115.35H159.97V109.11H161.86V117.4H150.47Z" fill="currentColor"/>
+      <path d="M157.79 91.96C159.33 91.72 160.21 90.76 160.21 89.28C160.21 87.92 159.66 87.18 158.62 87.18C157.66 87.23 157.4 87.67 156.75 89.85C156.02 92.37 155.13 93.31 153.5 93.31C151.62 93.31 150.23 91.73 150.23 89.57C150.23 87.41 151.63 85.75 153.64 85.39L154.01 87.36C152.86 87.6 152.11 88.45 152.11 89.57C152.11 90.56 152.68 91.28 153.47 91.28C154.17 91.28 154.49 90.83 155.05 88.81C155.7 86.46 156.69 85.15 158.66 85.15C160.74 85.15 162.09 86.76 162.09 89.28C162.09 90.53 161.73 91.57 161.03 92.4C160.33 93.23 159.36 93.75 158.14 93.93L157.78 91.96H157.79Z" fill="currentColor"/>
+      <path d="M150.41 82.26L150.12 80.25L157.2 79.24C158.99 78.99 159.66 78.22 159.47 76.85C159.28 75.48 158.43 74.96 156.63 75.22L149.55 76.23L149.26 74.22L156.43 73.19C159.21 72.79 160.97 74.07 161.33 76.58C161.69 79.09 160.35 80.84 157.58 81.23L150.41 82.25V82.26Z" fill="currentColor"/>
+      <path d="M157.49 68.03L156.61 65.38L149.39 67.77L150.27 70.42L148.48 71.01L146.08 63.76L147.87 63.17L148.75 65.82L155.97 63.43L155.09 60.78L156.88 60.19L159.28 67.44L157.49 68.03Z" fill="currentColor"/>
+      <path d="M144.99 57.13L146.71 60.3L145.05 61.2L140.63 53.06L142.29 52.16L144.01 55.33L152.35 50.8L153.33 52.6L144.99 57.13Z" fill="currentColor"/>
+      <path d="M139.16 50.94L133.99 44.46L135.46 43.28L139.35 48.16L141.52 46.43L138.46 42.59L139.88 41.46L142.94 45.3L145.29 43.43L141.4 38.55L142.87 37.37L148.04 43.85L139.14 50.94H139.16Z" fill="currentColor"/>
+      <path d="M119.16 135.15L115.06 169.82H57.46V168.4C62.56 166.98 63.83 165.99 63.83 156.51V84.05C63.83 74.57 62.56 73.58 57.46 72.16V70.74H112.37L116.62 105.41H113.79C108.27 76.54 103.88 73.57 93.83 73.57H80.1V116.74H92.27C100.48 116.74 101.89 115.32 100.9 101.88H103.73L107.13 135.85H104.16C102.18 120.99 101.05 119.58 91.71 119.58H80.1V166.99H96.38C105.86 166.99 110.96 164.02 116.34 135.15H119.17H119.16Z" fill="currentColor"/>
+    </symbol>
+
+        <symbol id="full-wsuite-logo" viewBox="0 0 174 250" fill="none">
+      <path d="M99.54 17.62C99.52 16.06 98.69 15.05 97.23 14.85C95.88 14.66 95.08 15.1 94.93 16.13C94.84 17.09 95.24 17.4 97.3 18.36C99.69 19.44 100.5 20.46 100.27 22.07C100 23.94 98.25 25.08 96.11 24.78C94.02 24.48 92.53 22.86 92.46 20.81L94.46 20.72C94.54 21.9 95.27 22.76 96.38 22.91C97.36 23.05 98.15 22.59 98.26 21.8C98.36 21.11 97.95 20.72 96.04 19.89C93.8 18.91 92.65 17.75 92.93 15.8C93.22 13.74 95.01 12.63 97.5 12.99C98.74 13.17 99.72 13.67 100.44 14.48C101.16 15.29 101.54 16.33 101.54 17.56L99.54 17.64V17.62Z" fill="currentColor"/>
+      <path d="M88.97 23.77L86.94 23.84L86.71 16.69C86.65 14.89 85.96 14.13 84.58 14.17C83.2 14.21 82.59 15 82.65 16.82L82.88 23.97L80.85 24.04L80.61 16.79C80.52 13.98 81.98 12.37 84.51 12.29C87.04 12.21 88.64 13.73 88.73 16.53L88.97 23.78V23.77Z" fill="currentColor"/>
+      <path d="M75.6 15.16L72.86 15.74L74.43 23.18L77.16 22.6L77.55 24.44L70.08 26.02L69.69 24.18L72.43 23.6L70.86 16.16L68.13 16.74L67.74 14.9L75.21 13.32L75.6 15.16Z" fill="currentColor"/>
+      <path d="M63.4 26.37L66.74 25.01L67.45 26.76L58.87 30.25L58.16 28.5L61.5 27.14L57.93 18.35L59.83 17.58L63.4 26.38V26.37Z" fill="currentColor"/>
+      <path d="M56.58 31.48L49.57 35.9L48.56 34.3L53.84 30.97L52.36 28.62L48.21 31.24L47.24 29.7L51.39 27.08L49.79 24.53L44.51 27.86L43.5 26.26L50.51 21.84L56.57 31.47L56.58 31.48Z" fill="currentColor"/>
+      <path d="M20.2 63.79C18.65 63.56 17.53 64.21 17.09 65.62C16.68 66.92 16.99 67.78 17.98 68.1C18.91 68.34 19.29 68 20.56 66.12C22.01 63.94 23.15 63.3 24.7 63.79C26.5 64.35 27.34 66.27 26.7 68.33C26.07 70.35 24.22 71.56 22.2 71.29L22.43 69.3C23.6 69.41 24.57 68.83 24.9 67.76C25.2 66.81 24.87 65.96 24.11 65.72C23.44 65.51 23 65.85 21.87 67.61C20.54 69.66 19.21 70.61 17.33 70.02C15.35 69.4 14.54 67.46 15.29 65.06C15.66 63.87 16.32 62.98 17.23 62.4C18.15 61.82 19.23 61.61 20.45 61.81L20.2 63.79Z" fill="currentColor"/>
+      <path d="M24.58 75.17L24.32 77.18L17.23 76.28C15.44 76.05 14.58 76.62 14.41 77.98C14.24 79.35 14.91 80.07 16.72 80.31L23.81 81.21L23.55 83.22L16.36 82.31C13.57 81.96 12.22 80.26 12.53 77.75C12.84 75.24 14.61 73.9 17.38 74.26L24.57 75.18L24.58 75.17Z" fill="currentColor"/>
+      <path d="M14.06 86.75V89.54H21.66V86.75H23.55V94.39H21.66V91.6H14.06V94.39H12.17V86.75H14.06Z" fill="currentColor"/>
+      <path d="M21.67 101.48V97.87H23.56V107.13H21.67V103.52H12.18V101.47H21.67V101.48Z" fill="currentColor"/>
+      <path d="M23.55 110.44V118.73H21.66V112.49H18.88V117.4H17.06V112.49H14.05V118.73H12.16V110.44H23.55Z" fill="currentColor"/>
+      <path d="M16.24 159.73C14.7 159.97 13.82 160.93 13.82 162.41C13.82 163.78 14.37 164.51 15.41 164.51C16.37 164.46 16.63 164.02 17.28 161.85C18.01 159.33 18.9 158.39 20.53 158.39C22.41 158.39 23.8 159.97 23.8 162.13C23.8 164.29 22.4 165.95 20.39 166.31L20.02 164.34C21.17 164.1 21.92 163.25 21.92 162.13C21.92 161.14 21.35 160.42 20.56 160.42C19.86 160.42 19.54 160.87 18.98 162.89C18.33 165.25 17.34 166.55 15.37 166.55C13.29 166.55 11.94 164.94 11.94 162.42C11.94 161.17 12.3 160.13 13 159.3C13.7 158.47 14.67 157.95 15.89 157.77L16.25 159.74L16.24 159.73Z" fill="currentColor"/>
+      <path d="M23.76 169.32L24.1 171.32L17.05 172.51C15.27 172.81 14.61 173.6 14.84 174.96C15.07 176.32 15.93 176.82 17.72 176.52L24.77 175.33L25.11 177.33L17.97 178.54C15.2 179.01 13.41 177.78 12.99 175.28C12.57 172.78 13.86 171 16.62 170.53L23.76 169.32Z" fill="currentColor"/>
+      <path d="M17.04 183.74L17.98 186.37L25.14 183.8L24.2 181.17L25.97 180.53L28.55 187.72L26.78 188.36L25.84 185.73L18.68 188.3L19.62 190.93L17.85 191.57L15.27 184.38L17.04 183.74Z" fill="currentColor"/>
+      <path d="M29.81 194.3L28.01 191.17L29.64 190.23L34.26 198.26L32.63 199.2L30.83 196.07L22.61 200.8L21.59 199.03L29.82 194.3H29.81Z" fill="currentColor"/>
+      <path d="M35.8 200.36L41.13 206.71L39.69 207.92L35.68 203.14L33.55 204.93L36.71 208.69L35.32 209.86L32.17 206.1L29.87 208.03L33.88 212.81L32.44 214.02L27.11 207.67L35.82 200.36H35.8Z" fill="currentColor"/>
+      <path d="M72.75 232.05C72.73 233.61 73.53 234.64 74.99 234.88C76.33 235.11 77.15 234.69 77.32 233.66C77.43 232.71 77.04 232.38 75.01 231.37C72.65 230.23 71.87 229.19 72.14 227.59C72.45 225.73 74.24 224.63 76.37 224.99C78.45 225.34 79.9 227.01 79.92 229.05L77.92 229.09C77.87 227.91 77.16 227.03 76.06 226.85C75.08 226.68 74.28 227.13 74.15 227.91C74.03 228.6 74.43 229 76.32 229.88C78.53 230.91 79.65 232.11 79.32 234.05C78.97 236.1 77.16 237.16 74.68 236.74C73.45 236.53 72.48 236.01 71.78 235.18C71.08 234.35 70.73 233.31 70.76 232.07L72.76 232.05H72.75Z" fill="currentColor"/>
+      <path d="M83.4 226.2L85.43 226.17L85.55 233.32C85.58 235.12 86.26 235.89 87.64 235.87C89.02 235.85 89.64 235.07 89.61 233.25L89.49 226.1L91.52 226.07L91.64 233.32C91.69 236.13 90.2 237.71 87.67 237.76C85.13 237.8 83.57 236.25 83.52 233.45L83.4 226.2Z" fill="currentColor"/>
+      <path d="M96.59 235.1L99.34 234.59L97.96 227.11L95.21 227.62L94.87 225.77L102.38 224.38L102.72 226.23L99.97 226.74L101.35 234.22L104.1 233.71L104.44 235.56L96.93 236.95L96.59 235.1Z" fill="currentColor"/>
+      <path d="M109.09 224.21L105.71 225.48L105.05 223.72L113.72 220.46L114.38 222.22L111 223.49L114.34 232.37L112.42 233.09L109.08 224.21H109.09Z" fill="currentColor"/>
+      <path d="M116.02 219.27L123.14 215.03L124.1 216.65L118.74 219.84L120.16 222.23L124.38 219.72L125.31 221.28L121.09 223.79L122.63 226.38L127.99 223.19L128.95 224.81L121.83 229.05L116.01 219.27H116.02Z" fill="currentColor"/>
+      <path d="M153.22 187.87C154.76 188.14 155.9 187.51 156.38 186.12C156.82 184.83 156.54 183.96 155.55 183.62C154.63 183.36 154.24 183.69 152.92 185.54C151.41 187.69 150.26 188.29 148.73 187.76C146.95 187.15 146.15 185.21 146.85 183.17C147.53 181.17 149.41 180.01 151.43 180.32L151.15 182.3C149.98 182.16 149 182.71 148.64 183.78C148.32 184.72 148.63 185.58 149.38 185.84C150.04 186.07 150.5 185.74 151.67 184.01C153.05 181.99 154.4 181.08 156.27 181.72C158.24 182.39 158.99 184.35 158.18 186.73C157.77 187.91 157.1 188.78 156.17 189.34C155.24 189.9 154.15 190.07 152.94 189.85L153.24 187.87H153.22Z" fill="currentColor"/>
+      <path d="M149.11 176.42L149.42 174.41L156.49 175.49C158.27 175.76 159.15 175.22 159.35 173.86C159.56 172.49 158.9 171.75 157.1 171.48L150.03 170.4L150.34 168.39L157.51 169.49C160.29 169.92 161.6 171.65 161.22 174.15C160.84 176.66 159.04 177.94 156.28 177.52L149.11 176.42Z" fill="currentColor"/>
+      <path d="M159.96 164.95V162.16H152.36V164.95H150.47V157.31H152.36V160.1H159.96V157.31H161.85V164.95H159.96Z" fill="currentColor"/>
+      <path d="M152.36 150.23V153.84H150.47V144.58H152.36V148.19H161.85V150.24H152.36V150.23Z" fill="currentColor"/>
+      <path d="M150.47 141.25V132.96H152.36V139.2H155.14V134.29H156.96V139.2H159.97V132.96H161.86V141.25H150.47Z" fill="currentColor"/>
+      <path d="M157.79 91.96C159.33 91.72 160.21 90.76 160.21 89.28C160.21 87.91 159.66 87.18 158.62 87.18C157.66 87.23 157.4 87.67 156.75 89.84C156.02 92.36 155.13 93.3 153.5 93.3C151.62 93.3 150.23 91.72 150.23 89.56C150.23 87.4 151.63 85.74 153.64 85.38L154.01 87.35C152.86 87.59 152.11 88.44 152.11 89.56C152.11 90.55 152.68 91.27 153.47 91.27C154.17 91.27 154.49 90.82 155.05 88.8C155.7 86.44 156.69 85.14 158.66 85.14C160.74 85.14 162.09 86.75 162.09 89.27C162.09 90.52 161.73 91.56 161.03 92.39C160.33 93.22 159.36 93.74 158.14 93.92L157.78 91.95L157.79 91.96Z" fill="currentColor"/>
+      <path d="M150.41 82.26L150.12 80.25L157.2 79.24C158.99 78.99 159.66 78.22 159.47 76.85C159.27 75.48 158.43 74.96 156.63 75.22L149.55 76.23L149.26 74.22L156.43 73.2C159.21 72.8 160.97 74.08 161.33 76.59C161.69 79.1 160.35 80.85 157.58 81.25L150.41 82.27V82.26Z" fill="currentColor"/>
+      <path d="M157.49 68.03L156.61 65.38L149.39 67.77L150.27 70.42L148.48 71.01L146.08 63.76L147.87 63.17L148.75 65.82L155.97 63.43L155.09 60.78L156.88 60.19L159.28 67.44L157.49 68.03Z" fill="currentColor"/>
+      <path d="M144.99 57.13L146.71 60.3L145.05 61.2L140.63 53.06L142.29 52.16L144.01 55.33L152.35 50.8L153.33 52.6L144.99 57.13Z" fill="currentColor"/>
+      <path d="M139.16 50.94L133.99 44.46L135.46 43.28L139.35 48.16L141.52 46.43L138.46 42.59L139.88 41.45L142.94 45.29L145.29 43.42L141.4 38.54L142.87 37.36L148.04 43.84L139.14 50.93L139.16 50.94Z" fill="currentColor"/>
+      <path d="M87.01 250C39.03 250 0 210.97 0 162.99V87.02C0 39.03 39.03 0 87.01 0C134.99 0 174.02 39.03 174.02 87.01V162.98C174.02 210.96 134.99 249.99 87.01 249.99V250ZM87.01 3.47C40.95 3.47 3.47 40.94 3.47 87.01V162.98C3.47 209.05 40.95 246.53 87.02 246.53C133.09 246.53 170.57 209.05 170.57 162.98V87.01C170.57 40.94 133.09 3.46 87.02 3.46L87.01 3.47Z" fill="currentColor"/>
+      <path d="M61.08 175.8L40.61 71.14V70.83C40.61 69.91 41.07 69.44 42 69.44H54.16C55.18 69.44 55.75 69.9 55.85 70.83L68.32 143.02C68.42 143.23 68.52 143.33 68.63 143.33C68.74 143.33 68.83 143.23 68.94 143.02L80.02 70.83C80.12 69.91 80.64 69.44 81.56 69.44H91.87C92.79 69.44 93.31 69.9 93.41 70.83L105.26 143.02C105.36 143.23 105.46 143.33 105.57 143.33C105.68 143.33 105.77 143.23 105.88 143.02L117.27 70.83C117.47 69.91 117.99 69.44 118.81 69.44H130.82C131.33 69.44 131.72 69.59 131.97 69.9C132.23 70.21 132.3 70.62 132.2 71.13L112.81 175.79C112.71 176.71 112.14 177.18 111.12 177.18H100.19C99.37 177.18 98.86 176.72 98.65 175.79L86.95 102.99C86.85 102.79 86.72 102.68 86.57 102.68C86.42 102.68 86.34 102.78 86.34 102.99L75.26 175.79C75.16 176.71 74.64 177.18 73.72 177.18H62.79C61.87 177.18 61.3 176.72 61.1 175.79L61.08 175.8Z" fill="currentColor"/>
+      <path d="M112.82 29.16L120.56 20.76L122.25 21.8L120.35 29.97L126.75 24.56L128.44 25.6L124.51 36.33L122.86 35.32L125.57 27.86L119.28 33.15L118.02 32.38L119.86 24.37L114.45 30.18L112.81 29.18L112.82 29.16Z" fill="currentColor"/>
+      <path d="M32.81 53.49L25.31 44.87L26.52 43.3L34.43 46.08L29.76 39.12L30.98 37.55L41.21 42.64L40.03 44.17L32.91 40.66L37.48 47.49L36.58 48.65L28.82 45.94L34 51.96L32.82 53.48L32.81 53.49Z" fill="currentColor"/>
+      <path d="M23.18 144.49L11.98 142.22V140.24L19.95 137.63L12 134.96V132.97L23.22 130.77V132.71L15.43 134.27L23.22 136.91V138.38L15.41 140.96L23.18 142.57V144.49Z" fill="currentColor"/>
+      <path d="M150.68 104.85L161.88 107.12V109.1L153.91 111.71L161.86 114.38V116.37L150.64 118.57V116.63L158.43 115.07L150.64 112.43V110.96L158.45 108.38L150.68 106.77V104.85Z" fill="currentColor"/>
+      <path d="M140.93 197.96L147.94 206.98L146.64 208.48L138.9 205.27L143.18 212.47L141.88 213.97L131.94 208.33L133.21 206.87L140.13 210.77L135.95 203.69L136.91 202.58L144.51 205.71L139.67 199.42L140.93 197.97V197.96Z" fill="currentColor"/>
+      <path d="M60.89 221.28L53.06 229.6L51.38 228.55L53.36 220.4L46.9 225.74L45.22 224.69L49.26 214L50.9 215.03L48.12 222.47L54.47 217.24L55.72 218.02L53.8 226.01L59.27 220.25L60.9 221.27L60.89 221.28Z" fill="currentColor"/>
+    </symbol>
+
+  </defs>
+</svg>
+
+    
+    <a href="#main" class="skip-to-content" tabindex="0">Skip to content</a>
+
+    
+
+    <div class="site-container">
+      <div class="mobile-menu__container" x-ref="mobileMenuContainer" x-trap.noscroll.inert="isMenuOpen">
+        
+
+<header class="site-header" data-visible>
+  <nav class="site-header__nav has-utilities">
+    <a class="site-header__logo" href="https://www.lsuite.co/">
+              <svg fill="none" aria-hidden="true">
+          <use href="#simple-lsuite-logo"></use>
+        </svg>
+            
+
+
+      <span class="sr-only">
+        Home
+      </span>
+    </a>
+        <ul class="site-header__nav-items">
+              
+        <li x-data="{ expanded: false }">
+          <a
+            x-on:mouseenter="expanded = true"
+            x-on:mouseleave="expanded = false"
+            href="https://www.lsuite.co/techgc"
+          >
+            Communities
+
+                          <svg aria-hidden="true" width="8" height="13">
+                <use href="#caret-e" />
+              </svg>
+                      </a>
+
+                      <ul
+              class="site-header__sub-nav"
+              x-ref="subnav_ref"
+              x-bind:style="expanded ? '--subnav-height: ' + $refs.subnav_ref.scrollHeight + 'px' : '--subnav-height: 0px'"
+              x-on:mouseenter="expanded = true"
+              x-on:mouseleave="expanded = false"
+              :data-expanded="expanded"
+            >
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/techgc">
+                    <div style="transition-delay: 0.075s;">
+                      <span>TechGC</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/pubgc">
+                    <div style="transition-delay: 0.15s;">
+                      <span>PubGC</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/fundgc">
+                    <div style="transition-delay: 0.225s;">
+                      <span>FundGC</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/deputy">
+                    <div style="transition-delay: 0.3s;">
+                      <span>Deputy</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/counsel">
+                    <div style="transition-delay: 0.375s;">
+                      <span>Counsel</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://linkforlegal.com/">
+                    <div style="transition-delay: 0.45s;">
+                      <span>LINK LegalOps</span>
+                    </div>
+                  </a>
+                </li>
+                          </ul>
+                  </li>
+              
+        <li x-data="{ expanded: false }">
+          <a
+            x-on:mouseenter="expanded = true"
+            x-on:mouseleave="expanded = false"
+            href="https://www.lsuite.co/membership"
+          >
+            Membership
+
+                          <svg aria-hidden="true" width="8" height="13">
+                <use href="#caret-e" />
+              </svg>
+                      </a>
+
+                      <ul
+              class="site-header__sub-nav"
+              x-ref="subnav_ref"
+              x-bind:style="expanded ? '--subnav-height: ' + $refs.subnav_ref.scrollHeight + 'px' : '--subnav-height: 0px'"
+              x-on:mouseenter="expanded = true"
+              x-on:mouseleave="expanded = false"
+              :data-expanded="expanded"
+            >
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/membership">
+                    <div style="transition-delay: 0.075s;">
+                      <span>Benefits</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/membership/braintrust-platform">
+                    <div style="transition-delay: 0.15s;">
+                      <span>Platform</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://luminateplus.com/lsuite">
+                    <div style="transition-delay: 0.225s;">
+                      <span>On-Demand CLE</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/membership/members">
+                    <div style="transition-delay: 0.3s;">
+                      <span>Members</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/testimonials">
+                    <div style="transition-delay: 0.375s;">
+                      <span>Testimonials</span>
+                    </div>
+                  </a>
+                </li>
+                          </ul>
+                  </li>
+              
+        <li x-data="{ expanded: false }">
+          <a
+            x-on:mouseenter="expanded = true"
+            x-on:mouseleave="expanded = false"
+            href="https://www.lsuite.co/events"
+          >
+            Events
+
+                      </a>
+
+                  </li>
+              
+        <li x-data="{ expanded: false }">
+          <a
+            x-on:mouseenter="expanded = true"
+            x-on:mouseleave="expanded = false"
+            href="https://www.lsuite.co/blog"
+          >
+            Content
+
+                          <svg aria-hidden="true" width="8" height="13">
+                <use href="#caret-e" />
+              </svg>
+                      </a>
+
+                      <ul
+              class="site-header__sub-nav"
+              x-ref="subnav_ref"
+              x-bind:style="expanded ? '--subnav-height: ' + $refs.subnav_ref.scrollHeight + 'px' : '--subnav-height: 0px'"
+              x-on:mouseenter="expanded = true"
+              x-on:mouseleave="expanded = false"
+              :data-expanded="expanded"
+            >
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/blog">
+                    <div style="transition-delay: 0.075s;">
+                      <span>Blog</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://open.spotify.com/show/1gaFsMrqj7UjmJHnRAABMC">
+                    <div style="transition-delay: 0.15s;">
+                      <span>Podcast</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://jobs.lsuite.co/">
+                    <div style="transition-delay: 0.225s;">
+                      <span>Job Board</span>
+                    </div>
+                  </a>
+                </li>
+                          </ul>
+                  </li>
+              
+        <li x-data="{ expanded: false }">
+          <a
+            x-on:mouseenter="expanded = true"
+            x-on:mouseleave="expanded = false"
+            href="https://www.lsuite.co/about"
+          >
+            About
+
+                          <svg aria-hidden="true" width="8" height="13">
+                <use href="#caret-e" />
+              </svg>
+                      </a>
+
+                      <ul
+              class="site-header__sub-nav"
+              x-ref="subnav_ref"
+              x-bind:style="expanded ? '--subnav-height: ' + $refs.subnav_ref.scrollHeight + 'px' : '--subnav-height: 0px'"
+              x-on:mouseenter="expanded = true"
+              x-on:mouseleave="expanded = false"
+              :data-expanded="expanded"
+            >
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/about">
+                    <div style="transition-delay: 0.075s;">
+                      <span>Our Story</span>
+                    </div>
+                  </a>
+                </li>
+                              <li>
+                  <a x-on:focus="expanded = true" x-on:blur="expanded = false" href="https://www.lsuite.co/careers">
+                    <div style="transition-delay: 0.15s;">
+                      <span>Careers</span>
+                    </div>
+                  </a>
+                </li>
+                          </ul>
+                  </li>
+          </ul>
+
+          <div class="site-header__buttons">
+                  
+<a class="btn btn--tertiary btn--login" href="https://braintrust.lsuite.co/auth/login" >
+  <span class="btn__text">Login</span>
+
+  </a>
+        
+                  
+<a class="btn btn--primary " href="https://www.lsuite.co/apply" >
+  <span class="btn__text">Apply</span>
+
+      <svg class="btn__icon" aria-hidden="true">
+      <use href="#arrow-ne"></use>
+    </svg>
+  </a>
+              </div>
+    
+    <button
+      class="btn btn--mobile-menu"
+      aria-haspopup="dialog"
+      aria-controls="menu"
+      aria-expanded="false"
+      aria-label="menu"
+      x-bind:aria-expanded="isMenuOpen"
+      @click="isMenuOpen = !isMenuOpen"
+    >
+      <div class="btn-icon">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </button>
+  </nav>
+  </header>
+        
+
+<div
+  id="menu"
+  class="mobile-menu"
+  role="dialog"
+  aria-label="menu"
+  x-cloak
+  x-show="isMenuOpen"
+  x-transition:enter="mobile-menu--open"
+  x-transition:leave="!isMenuOpen && 'mobile-menu--closed'"
+>
+  <nav class="mobile-menu__nav">
+    <ul>
+              
+        <li x-data="{ isMobileSubnavOpen: false }" :class="isMobileSubnavOpen && isMenuOpen && 'mobile-menu__subnav-open'">
+
+                      <div class="mobile-menu__link">
+              <a href="https://www.lsuite.co/techgc">
+                <span class="mobile-menu__link-text" style="animation-delay: 0.05s;">Communities</span>
+              </a>
+
+              <button
+                @click="isMobileSubnavOpen = !isMobileSubnavOpen"
+                x-init="$watch('isMenuOpen', value => { if (!value) isMobileSubnavOpen = false })"
+                style="animation-delay: 0.2s;"
+                :aria-expanded="isMobileSubnavOpen"
+                aria-controls="41732-subnav"
+                aria-label="See Sub Menu"
+              >
+                <div>
+                  <svg aria-hidden="true" width="8" height="13">
+                    <use href="#caret-e" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+          
+                      <div
+              id="41732-subnav"
+              class="mobile-menu__subnav"
+              x-ref="mobile_subnav_ref"
+              x-bind:style="isMobileSubnavOpen && isMenuOpen ? '--mobile-subnav-height: ' + $refs.mobile_subnav_ref.scrollHeight + 'px' : '--mobile-subnav-height: 0px'"
+              :data-expanded="isMobileSubnavOpen && isMenuOpen"
+              :aria-hidden="!isMobileSubnavOpen"
+            >
+              <ul>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.05s;" href="https://www.lsuite.co/techgc">
+                      <span>
+                        TechGC
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.1s;" href="https://www.lsuite.co/pubgc">
+                      <span>
+                        PubGC
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.15s;" href="https://www.lsuite.co/fundgc">
+                      <span>
+                        FundGC
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.2s;" href="https://www.lsuite.co/deputy">
+                      <span>
+                        Deputy
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.25s;" href="https://www.lsuite.co/counsel">
+                      <span>
+                        Counsel
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.3s;" href="https://linkforlegal.com/">
+                      <span>
+                        LINK LegalOps
+                      </span>
+                    </a>
+                  </li>
+                              </ul>
+            </div>
+                  </li>
+              
+        <li x-data="{ isMobileSubnavOpen: false }" :class="isMobileSubnavOpen && isMenuOpen && 'mobile-menu__subnav-open'">
+
+                      <div class="mobile-menu__link">
+              <a href="https://www.lsuite.co/membership">
+                <span class="mobile-menu__link-text" style="animation-delay: 0.1s;">Membership</span>
+              </a>
+
+              <button
+                @click="isMobileSubnavOpen = !isMobileSubnavOpen"
+                x-init="$watch('isMenuOpen', value => { if (!value) isMobileSubnavOpen = false })"
+                style="animation-delay: 0.4s;"
+                :aria-expanded="isMobileSubnavOpen"
+                aria-controls="90406-subnav"
+                aria-label="See Sub Menu"
+              >
+                <div>
+                  <svg aria-hidden="true" width="8" height="13">
+                    <use href="#caret-e" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+          
+                      <div
+              id="90406-subnav"
+              class="mobile-menu__subnav"
+              x-ref="mobile_subnav_ref"
+              x-bind:style="isMobileSubnavOpen && isMenuOpen ? '--mobile-subnav-height: ' + $refs.mobile_subnav_ref.scrollHeight + 'px' : '--mobile-subnav-height: 0px'"
+              :data-expanded="isMobileSubnavOpen && isMenuOpen"
+              :aria-hidden="!isMobileSubnavOpen"
+            >
+              <ul>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.05s;" href="https://www.lsuite.co/membership">
+                      <span>
+                        Benefits
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.1s;" href="https://www.lsuite.co/membership/braintrust-platform">
+                      <span>
+                        Platform
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.15s;" href="https://luminateplus.com/lsuite">
+                      <span>
+                        On-Demand CLE
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.2s;" href="https://www.lsuite.co/membership/members">
+                      <span>
+                        Members
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.25s;" href="https://www.lsuite.co/testimonials">
+                      <span>
+                        Testimonials
+                      </span>
+                    </a>
+                  </li>
+                              </ul>
+            </div>
+                  </li>
+              
+        <li x-data="{ isMobileSubnavOpen: false }" :class="isMobileSubnavOpen && isMenuOpen && 'mobile-menu__subnav-open'">
+
+                      <a
+              class="mobile-menu__link"
+              href="https://www.lsuite.co/events"
+            >
+              <span class="mobile-menu__link-text" style="animation-delay: 0.15s;">Events</span>
+            </a>
+          
+                  </li>
+              
+        <li x-data="{ isMobileSubnavOpen: false }" :class="isMobileSubnavOpen && isMenuOpen && 'mobile-menu__subnav-open'">
+
+                      <div class="mobile-menu__link">
+              <a href="https://www.lsuite.co/blog">
+                <span class="mobile-menu__link-text" style="animation-delay: 0.2s;">Content</span>
+              </a>
+
+              <button
+                @click="isMobileSubnavOpen = !isMobileSubnavOpen"
+                x-init="$watch('isMenuOpen', value => { if (!value) isMobileSubnavOpen = false })"
+                style="animation-delay: 0.8s;"
+                :aria-expanded="isMobileSubnavOpen"
+                aria-controls="41742-subnav"
+                aria-label="See Sub Menu"
+              >
+                <div>
+                  <svg aria-hidden="true" width="8" height="13">
+                    <use href="#caret-e" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+          
+                      <div
+              id="41742-subnav"
+              class="mobile-menu__subnav"
+              x-ref="mobile_subnav_ref"
+              x-bind:style="isMobileSubnavOpen && isMenuOpen ? '--mobile-subnav-height: ' + $refs.mobile_subnav_ref.scrollHeight + 'px' : '--mobile-subnav-height: 0px'"
+              :data-expanded="isMobileSubnavOpen && isMenuOpen"
+              :aria-hidden="!isMobileSubnavOpen"
+            >
+              <ul>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.05s;" href="https://www.lsuite.co/blog">
+                      <span>
+                        Blog
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.1s;" href="https://open.spotify.com/show/1gaFsMrqj7UjmJHnRAABMC">
+                      <span>
+                        Podcast
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.15s;" href="https://jobs.lsuite.co/">
+                      <span>
+                        Job Board
+                      </span>
+                    </a>
+                  </li>
+                              </ul>
+            </div>
+                  </li>
+              
+        <li x-data="{ isMobileSubnavOpen: false }" :class="isMobileSubnavOpen && isMenuOpen && 'mobile-menu__subnav-open'">
+
+                      <div class="mobile-menu__link">
+              <a href="https://www.lsuite.co/about">
+                <span class="mobile-menu__link-text" style="animation-delay: 0.25s;">About</span>
+              </a>
+
+              <button
+                @click="isMobileSubnavOpen = !isMobileSubnavOpen"
+                x-init="$watch('isMenuOpen', value => { if (!value) isMobileSubnavOpen = false })"
+                style="animation-delay: 1s;"
+                :aria-expanded="isMobileSubnavOpen"
+                aria-controls="41748-subnav"
+                aria-label="See Sub Menu"
+              >
+                <div>
+                  <svg aria-hidden="true" width="8" height="13">
+                    <use href="#caret-e" />
+                  </svg>
+                </div>
+              </button>
+            </div>
+          
+                      <div
+              id="41748-subnav"
+              class="mobile-menu__subnav"
+              x-ref="mobile_subnav_ref"
+              x-bind:style="isMobileSubnavOpen && isMenuOpen ? '--mobile-subnav-height: ' + $refs.mobile_subnav_ref.scrollHeight + 'px' : '--mobile-subnav-height: 0px'"
+              :data-expanded="isMobileSubnavOpen && isMenuOpen"
+              :aria-hidden="!isMobileSubnavOpen"
+            >
+              <ul>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.05s;" href="https://www.lsuite.co/about">
+                      <span>
+                        Our Story
+                      </span>
+                    </a>
+                  </li>
+                                  <li>
+                    <a :tabindex="isMobileSubnavOpen ? 0 : -1" style="transition-delay: 0.1s;" href="https://www.lsuite.co/careers">
+                      <span>
+                        Careers
+                      </span>
+                    </a>
+                  </li>
+                              </ul>
+            </div>
+                  </li>
+          </ul>
+
+        <div class="mobile-menu__link mobile-menu__login">
+      <span class="mobile-menu__link-text" style="animation-delay: 0.3s;">
+        
+<a class="btn btn--tertiary " href="https://braintrust.lsuite.co/auth/login" >
+  <span class="btn__text">Login</span>
+
+  </a>
+      </span>
+    </div>
+      </nav>
+
+</div>
+      </div>
+
+      <main id="main" tabindex="-1">
+             
+<article class="basic-page event-archive-page">
+  <div class="topper topper--archive">
+    <h1 class="topper--archive__title">Events</h1>
+
+          <p>Get exclusive access to thought-provoking conferences, roundtables, webinars, and more. <br /></p>
+      </div>
+
+  
+  <div class="event-archive__main" x-data="eventArchive" :class="loading && 'loading'">
+    
+
+
+
+  
+
+
+
+
+
+
+<section aria-label="Events list" class="event-archive__all-events">
+      <h2 id="the-suite-events-list">All Events</h2>
+  
+  
+
+
+
+      
+    
+
+<aside x-data="{ expanded: false }" aria-label="Events filters" class="event-archive__filters" x-bind:class="expanded && 'filters--expanded'">
+  <h2 class="sr-only">Events filters</h2>
+
+  <button class="event-archive__filter-by" @click="expanded = ! expanded">Filter by</button>
+
+  <div
+  class="event-archive__filters-wrapper"
+  x-ref="filters_ref"
+  x-bind:style="expanded ? '--filters-content-height: ' + $refs.filters_ref.scrollHeight + 'px' : '--filters-content-height: 0px'">
+        <div class="event-filter-group event-filter-group--toggles">
+      <ul>
+        <li>
+          <p class="event-filter-group__label">Showing upcoming events</p>
+          <a x-on:click.prevent="handleFilter" class="event-filter__past-toggle" href="https://www.lsuite.co/events?past=1">
+            Show past events
+          </a>
+        </li>
+      </ul>
+    </div>
+
+                  <div class="event-filter-group">
+          <div class="event-filter-group__header">
+                        <h3 class="event-filter-group__label">Categories</h3>
+          </div>
+          <ul class="event-filters">
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?category=conferences">
+                  Conferences
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?category=local-events">
+                  Local Events
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?category=virtual-events">
+                  Virtual Events
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?category=workshops">
+                  Workshops
+                </a>
+              </li>
+                      </ul>
+        </div>
+              <div class="event-filter-group">
+          <div class="event-filter-group__header">
+                        <h3 class="event-filter-group__label">Communities</h3>
+          </div>
+          <ul class="event-filters">
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?community=techgc">
+                  TechGC
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?community=pubgc">
+                  PubGC
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?community=fundgc">
+                  FundGC
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?community=deputy">
+                  Deputy
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?community=counsel">
+                  Counsel
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?community=legal-ops">
+                  LINK LegalOps
+                </a>
+              </li>
+                      </ul>
+        </div>
+              <div class="event-filter-group">
+          <div class="event-filter-group__header">
+                        <h3 class="event-filter-group__label">Locations</h3>
+          </div>
+          <ul class="event-filters">
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=atlanta">
+                  Atlanta
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=austin">
+                  Austin
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=boston">
+                  Boston
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=chicago">
+                  Chicago
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=denver">
+                  Denver
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=la-jolla">
+                  La Jolla
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=london">
+                  London
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=los-angeles">
+                  Los Angeles
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=miami">
+                  Miami
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=miami-beach">
+                  Miami Beach
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=nashville">
+                  Nashville
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=new-york">
+                  New York
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=palo-alto">
+                  Palo Alto
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=redwood-city">
+                  Redwood City
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=salt-lake-city">
+                  Salt Lake City
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=san-carlos">
+                  San Carlos
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=san-diego">
+                  San Diego
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=san-francisco">
+                  San Francisco
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=san-jos%C3%A9-del-cabo">
+                  San José del Cabo
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=san-mateo">
+                  San Mateo
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=santa-monica">
+                  Santa Monica
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=seattle">
+                  Seattle
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=sf-peninsula">
+                  SF Peninsula
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=sonoma">
+                  Sonoma
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=toronto">
+                  Toronto
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=washington">
+                  Washington
+                </a>
+              </li>
+                                                                    <li>
+                <a x-on:click.prevent="handleFilter" class="event-filter__link" href="https://www.lsuite.co/events?location=west-hollywood">
+                  West Hollywood
+                </a>
+              </li>
+                      </ul>
+        </div>
+            </div>
+
+</aside>
+
+  
+
+<div class="event-archive__list">
+
+      <ol>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://deputysocial624.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Deputy GC Social</span>
+                  </a>
+                  Deputy GC Social
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 24, 2025 5:30pm EDT</span>
+                <span>New York, NY</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459108924/assets/05705a120b539bd29ab1745fa0baad38.Social-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://latestagepubliccogcdin624.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Late Stage GC Roundtable Dinner: Evolving GC Role</span>
+                  </a>
+                  Late Stage GC Roundtable Dinner: Evolving GC Role
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 24, 2025 6:00pm EDT</span>
+                <span>New York, NY</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459107785/assets/6981b62180dd738b22b3d885a719f268.NYC-DelFrisco-039-s-5.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://lsuitegcdinnerdisc0624sl.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">GC Roundtable Dinner: AI in the Legal World</span>
+                  </a>
+                  GC Roundtable Dinner: AI in the Legal World
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 24, 2025 6:00pm MDT</span>
+                <span>Salt Lake City, UT</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459105779/assets/575c1fdbb5b0b89459178cc9cc57e531.DInner-10-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://latestagepubliccogcdin0624sf.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Late Stage GC Roundtable Dinner</span>
+                  </a>
+                  Late Stage GC Roundtable Dinner
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 24, 2025 6:00pm PDT</span>
+                <span>San Francisco, CA</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459105777/assets/a7d84887258c0c7575dfbea06b31893a.DInner-8-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="http://events.lsuite.co/legalxfinance" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Legal x Finance: Building a Budget Partnership That Actually Works</span>
+                  </a>
+                  Legal x Finance: Building a Budget Partnership That Actually Works
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 25, 2025 1:00pm EDT</span>
+                <span></span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459101408/assets/5469deaac192940510d0792134dbd2e5.Virtual-L-03.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://lsuitegcdinneratl0625.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">GC Roundtable Dinner: Turning Uncertainty Into An Advantage</span>
+                  </a>
+                  GC Roundtable Dinner: Turning Uncertainty Into An Advantage
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 25, 2025 6:00pm EDT</span>
+                <span>Atlanta, GA</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459103850/assets/f76ac76c52b86e64327daf434f712944.DInner-11-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://lsuitegcdinnerden0625.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">GC Roundtable Dinner: Portfolio Management</span>
+                  </a>
+                  GC Roundtable Dinner: Portfolio Management
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 25, 2025 6:00pm MDT</span>
+                <span>Denver, CO</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459103851/assets/665ca2acf33142d5857a1eec9611816b.Crowd-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://deputyocialsfpeninsula0625.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Deputy GCs After Hours</span>
+                  </a>
+                  Deputy GCs After Hours
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 25, 2025 5:30pm PDT</span>
+                <span>Redwood City, CA</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459105781/assets/5af2effd0159a9d8aa6dbfc0678cd668.Cocktails-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://lsuitegcdinnerdiscussionsd0625.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">General Counsel Roundtable Dinner</span>
+                  </a>
+                  General Counsel Roundtable Dinner
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 25, 2025 6:00pm PDT</span>
+                <span>La Jolla, CA</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459105780/assets/17620cb7d1aabf9d27a1c259a5b489d4.Roundtable-2-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="http://events.lsuite.co/seniordeputyjun26" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Senior Deputy Clubhouse</span>
+                  </a>
+                  Senior Deputy Clubhouse
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 26, 2025 12:00pm EDT</span>
+                <span></span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459101408/assets/5469deaac192940510d0792134dbd2e5.Virtual-L-03.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="http://events.lsuite.co/cryptojun26" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Crypto GCs Clubhouse</span>
+                  </a>
+                  Crypto GCs Clubhouse
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 26, 2025 3:30pm EDT</span>
+                <span></span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459118476/assets/2ca95fccf2f79579931d6675a0b962e3.Crypto-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://lsuitegcdinnermia0626.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">GC Dinner: We&#039;ve All Been There</span>
+                  </a>
+                  GC Dinner: We&#039;ve All Been There
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 26, 2025 6:00pm EDT</span>
+                <span>Miami Beach, FL</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459103848/assets/ffa6350afa8cd557798f68f41f5cb200.Roundtable-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://lsuitegcdinneraus0626.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">GC Roundtable Dinner: Delaware - To Redomicile or Not to Redomicile?</span>
+                  </a>
+                  GC Roundtable Dinner: Delaware - To Redomicile or Not to Redomicile?
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jun 26, 2025 6:00pm CDT</span>
+                <span>Austin, TX</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459103849/assets/8c66c91940614ad0b243630752e29d27.DInner-1-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://lsuitedeputydinner710.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Deputy GC Roundtable Dinner</span>
+                  </a>
+                  Deputy GC Roundtable Dinner
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jul 10, 2025 6:00pm EDT</span>
+                <span>Boston, MA</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459108934/assets/65e3e8e7997386a22f7e66b4cc19e41a.DInner-8-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://deputydinnerdiscussion0710.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Litigation Deputy GC Roundtable Dinner</span>
+                  </a>
+                  Litigation Deputy GC Roundtable Dinner
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jul 10, 2025 6:00pm PDT</span>
+                <span>San Francisco, CA</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459106436/assets/8b0650d5622d1d6c76d46e1faa2b8e37.DInner-12-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+                      <li class="event-archive__tease">
+          <article class="event-tease">
+            <header class="event-tease__info">
+              <h3>
+                                  <a href="https://deputydinnerjul10.splashthat.com" rel="noopener noreferrer" target="_blank">
+                    <span class="sr-only">Deputy GC Roundtable Dinner</span>
+                  </a>
+                  Deputy GC Roundtable Dinner
+                              </h3>
+
+              
+              <p class="event-tease__details">
+                <span>Jul 10, 2025 6:00pm PDT</span>
+                <span>Los Angeles, CA</span>
+              </p>
+            </header>
+
+                          <figure class="event-tease__image">
+                <img class="lazy-img lazyload" src="https://d3m889aznlr23d.cloudfront.net/img/events/id/459/459106424/assets/7d490ba9ca9db0a086a6b1f3619215c3.Crowd-HeaderImage.jpg" alt="">
+              </figure>
+                      </article>
+        </li>
+          </ol>
+
+  </div>
+
+  
+</section>
+
+<div class="event-archive__pagination">
+  
+
+
+  
+        
+              
+    
+
+    
+              
+              
+  
+<nav class="pagination" aria-label="Pagination">
+  <ol class="pagination__pages">
+          <li>
+                  <a
+           href=""
+           aria-disabled="true"
+           aria-current="page"
+           aria-label="Current page, page 1"
+           @click.prevent
+           tabindex="-1"
+           disabled
+           class="pagination__current"
+          >
+            1
+          </a>
+              </li>
+          <li>
+                  <a href="https://www.lsuite.co/events/p2" aria-label="Skip to page 2" data-page="2"  x-on:click.prevent="handlePagination">2</a>
+              </li>
+          <li>
+                  <a href="https://www.lsuite.co/events/p3" aria-label="Skip to page 3" data-page="3"  x-on:click.prevent="handlePagination">3</a>
+              </li>
+          <li>
+                  ...
+              </li>
+          <li>
+                  <a href="https://www.lsuite.co/events/p12" aria-label="Skip to page 12" data-page="12"  x-on:click.prevent="handlePagination">12</a>
+              </li>
+          <li>
+                  <a href="https://www.lsuite.co/events/p13" aria-label="Skip to page 13" data-page="13"  x-on:click.prevent="handlePagination">13</a>
+              </li>
+      </ol>
+
+
+      <a class="pagination__next" href="https://www.lsuite.co/events/p2" data-page="2"  x-on:click.prevent="handleNextPage">
+      <svg aria-hidden="true">
+        <use href="#caret-e"></use>
+      </svg>
+
+      <span class="sr-only">Next page</span>
+    </a>
+  </nav>
+</div>
+  </div>
+</article>
+
+<div class="landing-page">
+    <div id="activation-speed-networking" class="content-block content-block--text">
+  <h4>New Member Events</h4>
+<h2>Member Activation &amp; Braintrust Demo</h2>
+</div>
+    <div class="content-block content-block--buttons">
+          
+<a class="btn btn--secondary " href="https://lsuitenewmembercall.splashthat.com/" >
+  <span class="btn__text">For GCs and CLOs</span>
+
+  </a>
+          
+<a class="btn btn--secondary " href="https://thelsuitenewmember.splashthat.com" >
+  <span class="btn__text">For Deputy and Counsel</span>
+
+  </a>
+          
+<a class="btn btn--secondary " href="https://scheduler.zoom.us/alyson-stemas-bzwtg8/link-legal-ops-welcome-call" >
+  <span class="btn__text">For Legal Operations</span>
+
+  </a>
+      </div>
+  
+<section
+    x-data="{ shown: false }"
+  x-intersect.once="shown = true"
+  x-bind:data-visible="shown"
+  class="content-block content-block--teaser content-block--teaser-2 theme-dark mirrored" aria-label="Learn, grow, connect. Repeat." data-theme="dark"
+>
+  <div class="teaser__text">
+    
+    <h2>Learn, grow, connect. Repeat.</h2>
+
+        <div class="teaser__description">
+      <p>All of our events operate under the Chatham House Rule, ensuring high-quality, confidential conversations in a safe and trusted environment.</p>
+    </div>
+    
+          
+<a class="btn btn--primary " href="https://www.lsuite.co/apply" >
+  <span class="btn__text">Join the Community</span>
+
+  </a>
+      </div>
+
+  <div class="teaser__art">
+      <figure class="teaser__art-asset">
+      
+
+        
+  <div class="lazy-img__wrapper ">
+
+    
+      <span class="lazy-img__placeholder" style="padding-top: 133.33%"></span>
+      <img
+        class="lazy-img lazyload "
+        data-srcset="https://the-suite.transforms.svdcdn.com/production/lsuite/Static-page-assets/DSC_1138.jpg?w=1200&amp;h=1800&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713704679&amp;s=190f3f56c6d75491fe9768d66e70341b 1200w,
+                     https://the-suite.transforms.svdcdn.com/production/lsuite/Static-page-assets/DSC_1138.jpg?w=800&amp;h=1200&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713704679&amp;s=ac8e68507d672cc11cd15537360fff88 800w,
+                     https://the-suite.transforms.svdcdn.com/production/lsuite/Static-page-assets/DSC_1138.jpg?w=400&amp;h=600&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713704679&amp;s=b36014fbe67df690e89858dc875aabca 400w,
+                     https://the-suite.transforms.svdcdn.com/production/lsuite/Static-page-assets/DSC_1138.jpg?w=200&amp;h=300&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713704679&amp;s=6fdc0280778b42e5db45d67908841269 200w"
+        data-src="https://the-suite.transforms.svdcdn.com/production/lsuite/Static-page-assets/DSC_1138.jpg?w=1200&amp;h=1800&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713704679&amp;s=190f3f56c6d75491fe9768d66e70341b"
+        data-sizes="(max-width: 768px) 100vw, 41vw"
+        alt=""
+      />
+
+      </div>
+
+          </figure>
+      <figure class="teaser__art-asset">
+      
+
+        
+  <div class="lazy-img__wrapper ">
+
+    
+      <span class="lazy-img__placeholder" style="padding-top: 133.33%"></span>
+      <img
+        class="lazy-img lazyload "
+        data-srcset="https://the-suite.transforms.svdcdn.com/production/lsuite/Brand/L-Suite-gold-logo-with-20px-margin.png?w=1200&amp;h=1800&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713555975&amp;s=f19c388eafbeabbdd4cf45cb24e20b1f 1200w,
+                     https://the-suite.transforms.svdcdn.com/production/lsuite/Brand/L-Suite-gold-logo-with-20px-margin.png?w=800&amp;h=1200&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713555975&amp;s=0b2d028bb7b22e82151109338680f161 800w,
+                     https://the-suite.transforms.svdcdn.com/production/lsuite/Brand/L-Suite-gold-logo-with-20px-margin.png?w=400&amp;h=600&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713555975&amp;s=992aa6ea11f630596ad0233b41c4c522 400w,
+                     https://the-suite.transforms.svdcdn.com/production/lsuite/Brand/L-Suite-gold-logo-with-20px-margin.png?w=200&amp;h=300&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713555975&amp;s=f7cb84eb6db5a3212aa5f1d84264f054 200w"
+        data-src="https://the-suite.transforms.svdcdn.com/production/lsuite/Brand/L-Suite-gold-logo-with-20px-margin.png?w=1200&amp;h=1800&amp;q=82&amp;auto=format&amp;fit=crop&amp;dm=1713555975&amp;s=f19c388eafbeabbdd4cf45cb24e20b1f"
+        data-sizes="(max-width: 768px) 100vw, 41vw"
+        alt=""
+      />
+
+      </div>
+
+          </figure>
+    </div>
+</section>
+</div>
+
+        </main>
+
+      
+
+
+<footer class="site-footer">
+  <div class="site-footer__content">
+    <div class="site-footer__row">
+                      
+        <nav class="site-footer__nav" aria-label="Communities">
+          <h2 class="site-footer__heading" aria-hidden="true">
+            Communities
+          </h2>
+
+          <ul class="site-footer__nav-list">
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/techgc">TechGC</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/pubgc">PubGC</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/fundgc">FundGC</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/deputy">Deputy</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/counsel">Counsel</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://linkforlegal.com/">LINK Legal Ops</a>
+              </li>
+                      </ul>
+        </nav>
+                      
+        <nav class="site-footer__nav" aria-label="Membership">
+          <h2 class="site-footer__heading" aria-hidden="true">
+            Membership
+          </h2>
+
+          <ul class="site-footer__nav-list">
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/membership">Benefits</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/membership/braintrust-platform">Platform</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/events">Events</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://luminateplus.com/home">On-Demand CLE</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://jobs.lsuite.co/">Job Board</a>
+              </li>
+                      </ul>
+        </nav>
+                      
+        <nav class="site-footer__nav" aria-label="Company">
+          <h2 class="site-footer__heading" aria-hidden="true">
+            Company
+          </h2>
+
+          <ul class="site-footer__nav-list">
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/about">Our Story</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/careers">Careers</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/blog">Blog</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://open.spotify.com/show/1gaFsMrqj7UjmJHnRAABMC">Podcast</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.linkedin.com/company/thelsuite/">LinkedIn</a>
+              </li>
+                      </ul>
+        </nav>
+                      
+        <nav class="site-footer__nav" aria-label="Join">
+          <h2 class="site-footer__heading" aria-hidden="true">
+            Join
+          </h2>
+
+          <ul class="site-footer__nav-list">
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/apply">Apply</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/nominate">Nominate a Peer</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/membership/members">Members</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/testimonials">Testimonials</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/membership/faqs">FAQs</a>
+              </li>
+                          <li class="site-footer__nav-item">
+                <a class="site-footer__nav-link" href="https://www.lsuite.co/contact-us">Contact Us</a>
+              </li>
+                      </ul>
+        </nav>
+      
+      <div class="site-footer__form">
+        <h2 class="site-footer__heading">Stay Connected</h2>
+
+        
+  
+
+<div id="mc_embed_shell">
+  <div id="mc_embed_signup">
+    <form
+      id="mc-embedded-subscribe-form"
+      class="validate"
+      name="mc-embedded-subscribe-form"
+      method="post"
+      target="_blank"
+      action="https://techgc.us14.list-manage.com/subscribe/post?u=3a400b9e6a8f113cd5a98dccd&amp;id=78da52ae01&amp;f_id=00a383e1f0"
+    >
+      <div id="mc_embed_signup_scroll">
+        <div class="mc-field-group">
+          <label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label>
+          <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required="" value="" placeholder="Email Address">
+        </div>
+
+        <div id="mce-responses" class="clear">
+          <div class="response" id="mce-error-response" style="display: none;"></div>
+          <div class="response" id="mce-success-response" style="display: none;"></div>
+        </div>
+
+        <div aria-hidden="true" style="position: absolute; left: -5000px;">
+          <input type="text" name="b_3a400b9e6a8f113cd5a98dccd_78da52ae01" tabindex="-1" value="">
+        </div>
+
+        <div class="clear">
+          <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Subscribe">
+        </div>
+      </div>
+    </form>
+  </div>
+  <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+
+  <script type="text/javascript">
+    (function ($) {window.fnames = new Array(); window.ftypes = new Array(); fnames[0] = 'EMAIL'; ftypes[0] = 'email'; fnames[1] = 'FNAME'; ftypes[1] = 'text'; fnames[2] = 'LNAME'; ftypes[2] = 'text'; fnames[3] = 'ADDRESS'; ftypes[3] = 'address'; fnames[4] = 'PHONE'; ftypes[4] = 'phone';}(jQuery)); var $mcj = jQuery.noConflict(true);
+  </script>
+</div>
+      </div>
+    </div>
+
+    <div class="site-footer__row site-footer__legal">
+              <nav class="site-footer__nav" aria-label="Legal">
+                      <a class="site-footer__nav-link" href="https://www.lsuite.co/privacy-policy">
+              Privacy Policy
+            </a>
+                      <a class="site-footer__nav-link" href="https://www.lsuite.co/terms-of-use">
+              Terms of Use
+            </a>
+                  </nav>
+      
+      <p class="site-footer__copyright">©2025. All Rights Reserved.</p>
+    </div>
+  </div>
+
+
+  <svg class="site-footer__logo" width="1440" height="260" aria-hidden="true">
+    <use href="#lsuite-wordmark"></use>
+  </svg>
+
+</footer>
+    </div>
+        <script>
+      window.addEventListener('load', function () {
+        var forms = document.querySelectorAll('[data-freeform]');
+        forms.forEach(function (form) {
+          fetch('/ajax/dynamic-form?form=' + form.dataset.handle).then(function (res) {
+            return res.json();
+          }).then(function (response) {
+            var log = false;
+            var hash = form.querySelector('input[name=formHash]');
+            if (hash) {
+              hash.value = response.hash;
+              log && console.log('updating hash');
+            }
+
+            // Update the Payload if encrypted payloads are enabled
+            var payload = form.querySelector('input[name=freeform_payload]');
+            if (payload) {
+              form.querySelector('input[name=freeform_payload]').value = response.payload;
+                log && console.log('updating payload');
+            }
+
+            // Update the JS Honeypot (ONLY when JS Enhancement setting is ON)
+            var honeypot = response.honeypot;
+            var honeypotInput = form.querySelector('input[name^="' + form.dataset.handle + '"]');
+            if (honeypotInput) {
+              honeypotInput.setAttribute('id', honeypot.name);
+              honeypotInput.setAttribute('name', honeypot.name);
+              honeypotInput.value = honeypot.hash;
+              log && console.log('updating honeypot');
+            }
+
+            // Locate and update the CSRF input
+            var csrf = response.csrf;
+            var csrfInput = form.querySelector('input[name=' + csrf.name + ']');
+            if (csrfInput) {
+              form.querySelector('input[name=' + csrf.name + ']').value = csrf.value;
+              log && console.log('updating csrf');
+            }
+          })
+        })
+      });
+    </script>
+    <span id="blitz-inject-1" class=" blitz-inject" data-blitz-id="1" data-blitz-uri="/_dynamic" data-blitz-params="action=blitz/include/dynamic&amp;index=3822700076" data-blitz-property=""></span>
+    <span id="blitz-inject-2" class=" blitz-inject" data-blitz-id="2" data-blitz-uri="/_dynamic" data-blitz-params="action=blitz/include/dynamic&amp;index=3298468314" data-blitz-property=""></span>
+  <script type="application/ld+json">{"@context":"http://schema.org","@graph":[{"@type":"WebSite","author":{"@id":"#identity"},"copyrightHolder":{"@id":"#identity"},"copyrightYear":"2024","creator":{"@id":"#creator"},"dateCreated":"2024-02-05T05:12:08-08:00","dateModified":"2025-03-26T06:48:25-07:00","datePublished":"2024-02-05T05:12:00-08:00","description":"Get exclusive access to thought-provoking conferences, roundtables, webinars, and more. ","headline":"2025 General Counsel & CLO Events","image":{"@type":"ImageObject","url":"https://the-suite.transforms.svdcdn.com/production/lsuite/Placeholder-images-from-Upstatement/og-image-lsuite.jpg?w=1200&h=630&q=82&auto=format&fit=crop&dm=1712154597&s=11dfd71cc578978e7c9d46cbc97088de"},"inLanguage":"en-us","mainEntityOfPage":"https://www.lsuite.co/events","name":"2025 General Counsel & CLO Events","publisher":{"@id":"#creator"},"url":"https://www.lsuite.co/events"},{"@id":"#identity","@type":"Organization"},{"@id":"#creator","@type":"Organization"},{"@type":"BreadcrumbList","description":"Breadcrumbs list","itemListElement":[{"@type":"ListItem","item":"https://www.lsuite.co","name":"Home","position":1},{"@type":"ListItem","item":"https://www.lsuite.co/events","name":"Events","position":2}],"name":"Breadcrumbs"}]}</script><script src="/assets/cookie-consent-script.js?v=1749767758"></script>
+<script>if (typeof window.fetch === 'function') {
+  document.addEventListener('alpine:init', function () {
+    Alpine.data('eventArchive', function () {
+      var ACTIVE_FILTER_CLASS = 'event-filter__link--active';
+      var ACTIVE_PAGINATION_CLASS = 'pagination__current';
+      var BODY_LOADING_CLASS = 'event-archive-loading';
+      var element = this.$el;
+
+      return {
+        loading: false,
+
+        init() {
+          var _self = this;
+
+          window.addEventListener('popstate', function(e) {
+            if (e.state && e.state.url) {
+              _self.loading = true;
+              window.location = e.state.url;
+            }
+          });
+        },
+
+        fetchEvents(fetchUrl, targetUrl) {
+          var _self = this;
+          window.fetch(fetchUrl, {
+            headers: {'X-Requested-With': 'XMLHttpRequest'}
+          }).then(function(response) {
+            if (response.status === 200) {
+              return response.text();
+            }
+
+            throw new Error('Network response was not ok.');
+          }).then(function(html) {
+            window.scrollTo(0,element.offsetTop);
+            element.innerHTML = html;
+            _self.loading = false;
+            document.body.classList.remove(BODY_LOADING_CLASS);
+          }).catch(function(error) {
+            window.location = targetUrl;
+          });
+        },
+
+        triggerUpdate(event) {
+          var targetHref = event.currentTarget.href;
+          var hasPagination = event.currentTarget.dataset.page;
+          var fetchUrl = 'https://www.lsuite.co/ajax/event-archive';
+
+          if (hasPagination && hasPagination > 1) {
+            fetchUrl += '/p' + hasPagination;
+          }
+
+          fetchUrl += '?entry=32603&route=events';
+
+          var url = new URL(targetHref);
+          var params = new URLSearchParams(url.search);
+          var entriesIterator = params.entries();
+
+          // Iterate over the entries and print them
+          for (var [key, value] of entriesIterator) {
+            fetchUrl += '&' + key + '=' + encodeURIComponent(value);
+          }
+
+          history.pushState({url: targetHref}, null, targetHref);
+
+          this.loading = true;
+          document.body.classList.add(BODY_LOADING_CLASS);
+          this.fetchEvents(fetchUrl, targetHref);
+        },
+
+        handleClearFilter(event) {
+          var parent = event.target.closest('.event-filter-group');
+          if (parent) {
+            parent.querySelectorAll('.' + ACTIVE_FILTER_CLASS).forEach(function(el) {
+              el.classList.remove(ACTIVE_FILTER_CLASS);
+            });
+          }
+
+          this.triggerUpdate(event);
+        },
+
+        handleFilter(event) {
+          if (event.target.classList.contains(ACTIVE_FILTER_CLASS)) {
+            event.target.classList.remove(ACTIVE_FILTER_CLASS);
+          } else {
+            event.target.classList.add(ACTIVE_FILTER_CLASS);
+          }
+
+          this.triggerUpdate(event);
+        },
+
+        handlePagination(event) {
+          var parent = event.target.closest('.pagination__pages');
+          if (parent) {
+            parent.querySelectorAll('.' + ACTIVE_PAGINATION_CLASS).forEach(function(el) {
+              el.classList.remove(ACTIVE_PAGINATION_CLASS);
+            });
+          }
+          event.target.classList.add(ACTIVE_PAGINATION_CLASS);
+
+          this.triggerUpdate(event);
+        },
+
+        handleNextPage(event) {
+          var parent = event.target.closest('.pagination');
+          if (parent) {
+            var pageLinks = Array.from(parent.querySelectorAll('.pagination__pages a'));
+            var activeIndex = pageLinks.findIndex(function(el) {
+              var isActive = el.classList.contains(ACTIVE_PAGINATION_CLASS);
+              if (isActive) {
+                el.classList.remove(ACTIVE_PAGINATION_CLASS);
+              }
+              return isActive;
+            });
+
+            if (activeIndex > -1 && pageLinks[activeIndex + 1]) {
+              pageLinks[activeIndex + 1].classList.add(ACTIVE_PAGINATION_CLASS);
+            }
+          }
+          this.triggerUpdate(event);
+        }
+      }
+    });
+  });
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+addInjectScriptEventListener();
+function addInjectScriptEventListener() {
+    const injectScriptEvent = 'DOMContentLoaded';
+    if (injectScriptEvent === 'load') {
+        window.addEventListener('load', injectElements, { once: true });
+    }
+    else {
+        document.addEventListener(injectScriptEvent, injectElements, { once: true });
+    }
+}
+function injectElements() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!document.dispatchEvent(new CustomEvent('beforeBlitzInjectAll', {
+            cancelable: true,
+        }))) {
+            return;
+        }
+        const elements = document.querySelectorAll('.blitz-inject:not(.blitz-inject--injected)');
+        const injectElements = {};
+        const promises = [];
+        elements.forEach(element => {
+            var _a;
+            const injectElement = {
+                element: element,
+                id: element.getAttribute('data-blitz-id'),
+                uri: element.getAttribute('data-blitz-uri'),
+                params: element.getAttribute('data-blitz-params'),
+                property: element.getAttribute('data-blitz-property'),
+            };
+            if (document.dispatchEvent(new CustomEvent('beforeBlitzInject', {
+                cancelable: true,
+                detail: injectElement,
+            }))) {
+                const url = injectElement.uri + (injectElement.params ? (injectElement.uri.indexOf('?') !== -1 ? '&' : '?') + injectElement.params : '');
+                injectElements[url] = (_a = injectElements[url]) !== null && _a !== void 0 ? _a : [];
+                injectElements[url].push(injectElement);
+            }
+        });
+        for (const url in injectElements) {
+            promises.push(replaceUrls(url, injectElements[url]));
+        }
+        yield Promise.all(promises);
+        document.dispatchEvent(new CustomEvent('afterBlitzInjectAll'));
+    });
+}
+function replaceUrls(url, injectElements) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch(url);
+        if (response.status >= 300) {
+            return null;
+        }
+        const responseText = yield response.text();
+        let responseJson;
+        if (url.indexOf('blitz/csrf/json') !== -1) {
+            responseJson = JSON.parse(responseText);
+        }
+        injectElements.forEach(injectElement => {
+            var _a;
+            if (injectElement.property) {
+                injectElement.element.innerHTML = (_a = responseJson[injectElement.property]) !== null && _a !== void 0 ? _a : '';
+            }
+            else {
+                injectElement.element.innerHTML = responseText;
+            }
+            injectElement.element.classList.add('blitz-inject--injected');
+            document.dispatchEvent(new CustomEvent('afterBlitzInject', {
+                detail: injectElement,
+            }));
+        });
+    });
+};
+;</script></body>
+</html>
+<!-- Cached by Blitz on 2025-06-24T10:52:48-07:00 --><!-- Served by Blitz on 2025-06-24T10:55:19-07:00 -->

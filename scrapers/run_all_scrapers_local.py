@@ -31,6 +31,10 @@ def run_all_scrapers(target_scrapers: List[str] = None):
         ("fordham", "fordham_scraper", "FordhamScraper", {"community_id": "com_fordham"}),
         ("lawyers_alliance", "lawyers_alliance_scraper", "LawyersAllianceScraper", {"community_id": "com_lawyers_alliance"}),
         ("nyiac", "nyiac_scraper", "NYIACScraper", {"community_id": "com_nyiac"}),
+        ("lawline", "lawline_scraper", "LawlineScraper", {}),
+        ("lsuite", "lsuite_scraper", "LSuiteScraper", {}),
+        ("barkergilmore", "barkergilmore_scraper", "BarkerGilmoreScraper", {}),
+        ("qcba", "qcba_scraper", "QCBAScraper", {}),
         ("acc", "acc_scraper", "ACCScraper", {"community_id": "com_acc_nyc"}),
     ]
     

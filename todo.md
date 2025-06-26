@@ -50,6 +50,21 @@ A list of tasks and features for the legal events aggregator project.
 -   **Blocked 🔴 (1)**:
     -   `barkergilmore`: Requires authentication.
 
+### Scrapers Requiring Browser Automation 🌐
+
+The following scrapers require a headless browser (like Playwright or Pyppeteer) to correctly render dynamic content or bypass anti-scraping measures.
+
+-   **`acc_scraper`**: Blocked by an Auth0 login page.
+-   **`barkergilmore_scraper`**: Although marked as blocked by authentication, the initial issue is that event content is not found in static HTML, suggesting it's dynamically loaded.
+-   **`lawyers_alliance_scraper`**: Event data is loaded dynamically via JavaScript.
+-   **`lawline_scraper`**: The target API returns an empty response, likely due to an expired session cookie that needs to be acquired through a browser session.
+-   **`lsuite_scraper`**: Event elements are not found by BeautifulSoup, indicating dynamic, JS-driven rendering.
+-   **`qcba_scraper`**: Event content is loaded dynamically into a `div`, a classic case for browser automation.
+
+### Investigation Needed 🔍
+
+-   **`barkergilmore_scraper` Import Error**: The production environment is reporting `cannot import name 'LgbtBarNyScraper' from 'scrapers.lgbtbarny_scraper.py'` when trying to import the `BarkerGilmoreScraper`. This import statement does not exist in the source file, suggesting a possible caching issue or a misconfigured file in the production environment.
+
 ### Recent Accomplishments
 - [x] **Enabled All Scrapers**: Uncommented and tested all 15 available scrapers.
 - [x] **Fixed Multiple Scraper Bugs**: Resolved `IndentationError` in `hnba_ics_scraper.py` and `nysba_scraper.py`, and an `AttributeError` in `lawyers_alliance_scraper.py`.
@@ -246,7 +261,7 @@ A list of tasks and features for the legal events aggregator project.
   - [ ] Legal Services NYC
   - [ ] National Lawyers Guild - NYC Chapter
   - [x] Barker Gilmore - https://barkergilmore.com/gc-advantage-webinars/
-  - [ ] The L Suite - https://www.lsuite.co/events
+  - [x] The L Suite - https://www.lsuite.co/events
   - [ ] Major, Lindsey & Africa - https://www.mlaglobal.com/en/insights#94c43f95-2882-4674-904e-3546d67aa716facet=Content%20Type:Webinars
   - [ ] Law.com - https://www.law.com/events/
   - [ ] Morgan Lewis - https://www.morganlewis.com/events/global-public-company-academy

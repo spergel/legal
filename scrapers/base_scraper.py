@@ -20,6 +20,10 @@ logger = logging.getLogger(__name__)
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 load_dotenv(os.path.join(PROJECT_ROOT, '.env.local'))
 
+class ScraperException(Exception):
+    """Custom exception for scraper-related errors."""
+    pass
+
 class BaseScraper(ABC):
     """Base class for all scrapers."""
     

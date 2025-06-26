@@ -265,7 +265,8 @@ def parse_location(raw_location):
         return {
             "name": "",
             "address": "",
-            "type": "Online"
+            "is_online": True,
+            "venue": ""
         }
     
     # Handle Luma URL-based locations
@@ -276,7 +277,8 @@ def parse_location(raw_location):
             return {
                 "name": loc_details.get('venue_name', 'Event Location'),
                 "address": loc_details.get('address', raw_location),
-                "type": loc_details.get('type', 'Offline'),
+                "is_online": loc_details.get('type', 'Offline') == 'Online',
+                "venue": loc_details.get('venue_name', ''),
                 "room": loc_details.get('room', ''),
                 "additional_info": loc_details.get('additional_info', '')
             }
@@ -284,7 +286,8 @@ def parse_location(raw_location):
         return {
             "name": "Luma Event",
             "address": raw_location,
-            "type": "Offline"
+            "is_online": False,
+            "venue": "Luma Event"
         }
     
     # Handle other URL-based locations
@@ -292,7 +295,8 @@ def parse_location(raw_location):
         return {
             "name": "Online Event",
             "address": raw_location,
-            "type": "Online"
+            "is_online": True,
+            "venue": "Online"
         }
     
     # Split address lines
@@ -304,7 +308,8 @@ def parse_location(raw_location):
         return {
             "name": parts[0],
             "address": parts[0],
-            "type": "Offline"
+            "is_online": False,
+            "venue": parts[0]
         }
     
     # Try to intelligently determine venue name vs address
@@ -324,7 +329,8 @@ def parse_location(raw_location):
     return {
         "name": name,
         "address": address,
-        "type": "Offline"
+        "is_online": False,
+        "venue": name
     }
 
 def clean_description(desc: Optional[str]) -> str:
@@ -366,75 +372,61 @@ def extract_speakers(desc):
     return []
 
 def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
-    """Converts a raw ICS event dictionary into our Event model."""
+    """Converts a raw ICS event dict into our Event model."""
     try:
-        # Get event name
-        summary = ics_event.get('summary', '').strip()
-        if not summary:
-            return None
+        # Generate a unique ID
+        uid = ics_event.get('uid', f"{ics_event.get('summary')}_{ics_event.get('start')}")
+        event_id = f"ics_{community_id}_{hashlib.md5(uid.encode()).hexdigest()[:12]}"
 
-        # Get description
-        description = ics_event.get('description', '')
-        if isinstance(description, str):
-            description = description.strip()
+        # Basic event details
+        name = ics_event.get('summary')
+        description = clean_description(ics_event.get('description'))
 
-        # Get location
-        location = ics_event.get('location', '')
-        if isinstance(location, str):
-            location = location.strip()
-
-        # Extract URL
-        url = ics_event.get('url', '')
-        if not url and isinstance(description, str):
-            urls = re.findall(r'https?://[^\s<>"\'`]+', description)
-            if urls:
-                url = urls[0]
+        # Check for None before using replace
+        raw_location = ics_event.get('location')
+        if raw_location:
+            raw_location = raw_location.replace('\\', '')
+            
+        location_info = parse_location(raw_location)
+        price_info = parse_price(description)
+        tags = EventCategorizer.get_tags(name, description) if description else []
         
-        # Normalize and clean location
-        location_details = parse_location(location or "")
+        # Handle timezone-aware and naive datetimes
+        start_date = ics_event.get('start')
+        if start_date and start_date.tzinfo is None:
+            start_date = pytz.utc.localize(start_date)
+            
+        end_date = ics_event.get('end')
+        if end_date and end_date.tzinfo is None:
+            end_date = pytz.utc.localize(end_date)
 
-        # Categorize event
-        categories = EventCategorizer.categorize_event(summary, description)
-        tags = EventCategorizer.get_tags(summary, description)
-        event_type = EventCategorizer.get_event_type(summary, description)
-
-        # Generate external ID
-        hash_input = f"{summary}-{ics_event.get('start')}-{ics_event.get('end')}-{location_details['name']}"
-        external_id = hashlib.sha256(hash_input.encode('utf-8')).hexdigest()
-
-        # Check if the event is likely a placeholder or private event
-        summary_lower = summary.lower() if summary else ''
-        description_lower = description.lower() if isinstance(description, str) else ''
+        # Remove status if it exists, as our model doesn't use it
+        ics_event.pop('status', None)
         
-        private_keywords = ['private event', 'invite only', 'invitation only', 'members only']
-        if any(keyword in summary_lower or keyword in description_lower for keyword in private_keywords):
-            logging.info(f"Skipping potentially private event: {summary}")
-            return None
-
-        # Create event object
+        # Construct the Event object
         event_data = {
-            "id": external_id,
-            "name": summary,
-            "description": clean_description(description),
-            "startDate": ics_event.get('start'),
-            "endDate": ics_event.get('end'),
-            "locationId": None, # Set to None for now
-            "url": url,
+            "id": event_id,
+            "name": name,
+            "description": description,
+            "startDate": start_date.isoformat() if start_date else None,
+            "endDate": end_date.isoformat() if end_date else None,
             "communityId": community_id,
-            "category": categories,
-            "tags": tags,
-            "event_type": event_type,
-            "price": parse_price(description),
+            "price": price_info,
+            "url": ics_event.get('url'),
+            "tags": tags or [],
             "metadata": {
-                "organizer": ics_event.get('organizer'),
-                "geo": ics_event.get('geo'),
-                "speakers": extract_speakers(description),
-                "raw_location": location,
-                "locationName": location_details['name'], # Keep location name in metadata
-                "original_description": ics_event.get('description')
+                "source": "ICS Feed",
+                "raw_ics_event": ics_event,
+                "location": location_info['name'] if location_info else None,
+                "is_online": location_info['is_online'] if location_info else False,
+                "address": location_info['address'] if location_info else None,
+                "venue_name": location_info.get('venue') if location_info else None,
+                "price_details": price_info
             }
         }
+        
         return Event(**event_data)
+
     except Exception as e:
         logging.error(f"Error converting ICS event: {e}")
         return None

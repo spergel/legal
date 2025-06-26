@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+Scraper for The L Suite events: https://www.lsuite.co/events
+"""
+
 import requests
 from bs4 import BeautifulSoup
 import logging
@@ -9,70 +14,82 @@ import hashlib
 from .base_scraper import BaseScraper
 from .models import Event
 
+logger = logging.getLogger(__name__)
+
 class LSuiteScraper(BaseScraper):
+    """Scraper for The L Suite events."""
+    
     def __init__(self, community_id: str = "com_lsuite"):
         super().__init__(community_id)
         self.url = "https://www.lsuite.co/events"
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
         }
 
     def get_events(self) -> List[Event]:
+        """Fetch and parse events from The L Suite website."""
+        logger.info(f"Fetching events from {self.url}")
         events = []
+        
         try:
             response = requests.get(self.url, headers=self.headers)
             response.raise_for_status()
-            soup = BeautifulSoup(response.content, 'html.parser')
+            soup = BeautifulSoup(response.content, 'html5lib')
+            
+            event_cards = soup.select('a.event-card')
+            logger.info(f"Found {len(event_cards)} event cards.")
 
-            with open("lsuite_events_debug.html", "w", encoding="utf-8") as f:
-                f.write(str(soup.prettify()))
-
-            for card in soup.select('a.event-card'):
+            for card in event_cards:
                 try:
-                    name_tag = card.select_one('h3')
-                    name = name_tag.get_text(strip=True) if name_tag else "No name found"
-                    
-                    url = "https://www.lsuite.co" + card['href']
+                    name_tag = card.select_one('h4')
+                    name = name_tag.get_text(strip=True) if name_tag else "No Title"
 
-                    date_tag = card.select_one('time')
-                    date_str = date_tag['datetime'] if date_tag else None
-                    
-                    start_datetime_obj = datetime.fromisoformat(date_str) if date_str else None
+                    url = card.get('href')
+                    if url and not url.startswith('http'):
+                        url = f"https://www.lsuite.co{url}"
 
-                    location_tag = card.select_one('.text-grey-700')
-                    location = location_tag.get_text(strip=True) if location_tag else "Virtual"
+                    date_tag = card.select_one('p.event-card__date')
+                    date_str = date_tag.get_text(strip=True) if date_tag else ""
                     
-                    if not name or not start_datetime_obj:
-                        continue
+                    # Assuming date is in a format like "Month Day, Year"
+                    # We will need a robust date parsing method. For now, let's just extract it.
+                    # A proper implementation will require parsing 'date_str' into a datetime object.
+                    
+                    description_tag = card.select_one('p:not(.event-card__date)')
+                    description = description_tag.get_text(strip=True) if description_tag else "No description."
+                
+                    # ID generation
+                    event_id = f"lsuite-{hashlib.sha256(url.encode('utf-8')).hexdigest()[:10]}"
 
-                    hash_input = f"{name}-{start_datetime_obj}"
-                    event_id = f"lsuite-{hashlib.md5(hash_input.encode('utf-8')).hexdigest()}"
+                    # Placeholder for start/end dates until parsing is implemented
+                    start_date_iso = "NEEDS_PARSING"
 
                     event = Event(
                         id=event_id,
                         name=name,
-                        startDate=start_datetime_obj.isoformat(),
+                        description=description,
                         url=url,
+                        startDate=start_date_iso,
                         communityId=self.community_id,
-                        locationId=location,
-                        description=f"Event at {location}",
+                        metadata={'raw_date': date_str}
                     )
                     events.append(event)
                 except Exception as e:
-                    logging.error(f"Error parsing L Suite event card: {e}")
-                    continue
-        
-        except requests.exceptions.RequestException as e:
-            logging.error(f"Error fetching L Suite page: {e}")
-        except Exception as e:
-            logging.error(f"An error occurred in L Suite scraper: {e}")
-            
+                    logger.error(f"Error parsing an event card: {e}")
+
+        except requests.RequestException as e:
+            logger.error(f"Error fetching page {self.url}: {e}")
+
         return events
 
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
+def main():
+    """Main function to run the scraper for testing."""
     scraper = LSuiteScraper()
-    scraped_events = scraper.get_events()
-    print(f"Scraped {len(scraped_events)} events from L Suite.")
-    for event in scraped_events:
-        print(event.to_dict()) 
+    events = scraper.get_events()
+    logger.info(f"Scraped {len(events)} events.")
+    for event in events:
+        print(event.to_dict())
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    main() 

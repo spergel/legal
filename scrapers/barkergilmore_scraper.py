@@ -32,6 +32,10 @@ class BarkerGilmoreScraper(BaseScraper):
         try:
             response = self.session.get(self.webinars_url, timeout=30)
             response.raise_for_status()
+
+            with open("barkergilmore_debug.html", "w", encoding="utf-8") as f:
+                f.write(response.text)
+
             soup = BeautifulSoup(response.text, 'html.parser')
 
             event_containers = soup.select('div.fusion-posts-container article.post')
