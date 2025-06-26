@@ -238,8 +238,8 @@ def get_luma_events(ics_url):
                 events.append({
                     "uid": getattr(event, 'uid', ''),
                     "summary": event_name,
-                    "start": event.begin.datetime,
-                    "end": event.end.datetime,
+                    "start": event.begin.datetime.isoformat() if event.begin.datetime else None,
+                    "end": event.end.datetime.isoformat() if event.end.datetime else None,
                     "location": location,
                     "description": description,
                     "organizer": getattr(event, 'organizer', ''),
@@ -391,14 +391,9 @@ def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
         price_info = parse_price(description)
         tags = EventCategorizer.get_tags(name, description) if description else []
         
-        # Handle timezone-aware and naive datetimes
-        start_date = ics_event.get('start')
-        if start_date and start_date.tzinfo is None:
-            start_date = pytz.utc.localize(start_date)
-            
-        end_date = ics_event.get('end')
-        if end_date and end_date.tzinfo is None:
-            end_date = pytz.utc.localize(end_date)
+        # Handle datetime strings (now ISO format from earlier conversion)
+        start_date = ics_event.get('start')  # Already ISO string
+        end_date = ics_event.get('end')      # Already ISO string
 
         # Remove status if it exists, as our model doesn't use it
         ics_event.pop('status', None)
@@ -408,8 +403,8 @@ def convert_ics_event(ics_event: dict, community_id: str) -> Optional[Event]:
             "id": event_id,
             "name": name,
             "description": description,
-            "startDate": start_date.isoformat() if start_date else None,
-            "endDate": end_date.isoformat() if end_date else None,
+            "startDate": start_date,  # Already ISO string
+            "endDate": end_date,      # Already ISO string
             "communityId": community_id,
             "price": price_info,
             "url": ics_event.get('url'),
