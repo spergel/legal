@@ -43,7 +43,7 @@ class ScraperManagerDB:
 
         # Lazy import and instantiate scrapers
         scraper_configs = [
-            ("aabany_rss", "aabany_rss_scraper", "AabanyRssScraper", "com_aabany_rss"),
+            # ("aabany_rss", "aabany_rss_scraper", "AabanyRssScraper", "com_aabany_rss"),  # Temporarily disabled due to date parsing issues
             ("brooklynbar", "brooklynbar_scraper", "BrooklynBarScraper", "com_brooklynbar"),
             ("nysba", "nysba_scraper", "NYSBAScraper", "com_nysba"),
             ("hnba_ics", "hnba_ics_scraper", "HNBAICSScraper", "com_hnba_ics"),

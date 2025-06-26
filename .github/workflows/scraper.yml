@@ -44,8 +44,15 @@ jobs:
       run: |
         python -m scrapers.cron_handler_db 
         
-    - name: Run database cleanup
+    - name: Run database cleanup  
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
       run: |
-        python -m scrapers.cleanup_events 
+        python -m scrapers.cleanup_events
+        
+    - name: Clean up corrupted timestamps
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      run: |
+        cd scripts
+        node cleanup-corrupted-timestamps.js 
