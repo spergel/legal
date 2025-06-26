@@ -4,7 +4,7 @@ import requests
 import argparse
 from datetime import datetime, timezone
 from typing import List, Dict, Any
-from models import Event
+from .models import Event
 import sys
 
 # Setup paths
@@ -60,7 +60,8 @@ class ScraperManagerDB:
         
         for name, module_name, class_name, community_id in scraper_configs:
             try:
-                module = __import__(module_name, fromlist=[class_name])
+                # Use relative imports when running as module
+                module = __import__(f".{module_name}", package="scrapers", fromlist=[class_name])
                 klass = getattr(module, class_name)
                 self.scrapers[name] = klass(community_id)
             except Exception as e:
