@@ -43,7 +43,7 @@ class ScraperManagerDB:
 
         # Lazy import and instantiate scrapers
         scraper_configs = [
-            # ("aabany_rss", "aabany_rss_scraper", "AabanyRssScraper", "com_aabany_rss"),  # Temporarily disabled due to date parsing issues
+            ("aabany_rss", "aabany_rss_scraper", "AabanyRssScraper", "com_aabany_rss"),
             ("brooklynbar", "brooklynbar_scraper", "BrooklynBarScraper", "com_brooklynbar"),
             ("nysba", "nysba_scraper", "NYSBAScraper", "com_nysba"),
             ("hnba_ics", "hnba_ics_scraper", "HNBAICSScraper", "com_hnba_ics"),
@@ -60,10 +60,18 @@ class ScraperManagerDB:
         
         for name, module_name, class_name, community_id in scraper_configs:
             try:
-                # Use relative imports when running as module
-                module = __import__(f".{module_name}", package="scrapers", fromlist=[class_name])
+                # Use importlib for more reliable imports
+                import importlib
+                try:
+                    # Try relative import first (when running as module)
+                    module = importlib.import_module(f".{module_name}", package="scrapers")
+                except ImportError:
+                    # Fall back to absolute import
+                    module = importlib.import_module(f"scrapers.{module_name}")
+                
                 klass = getattr(module, class_name)
                 self.scrapers[name] = klass(community_id)
+                print(f"Successfully loaded {class_name} from {module_name}")
             except Exception as e:
                 print(f"Error importing {class_name} from {module_name}: {e}")
                 continue

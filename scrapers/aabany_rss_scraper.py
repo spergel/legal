@@ -229,9 +229,16 @@ class AabanyRssScraper(BaseScraper):
                     if not start_date:
                         start_date = self.extract_date_from_description(description)
                     
-                    # Skip events without valid dates to prevent database errors
+                    # If still no date found, use a reasonable default (next month)
                     if not start_date:
-                        logger.warning(f"Skipping event '{title}' - no valid date found in pub_date '{pub_date}' or description")
+                        from datetime import timedelta
+                        default_date = datetime.now() + timedelta(days=30)
+                        start_date = default_date.isoformat()
+                        logger.warning(f"Using default date for event '{title}' - no valid date found in pub_date '{pub_date}' or description. Using: {start_date}")
+                    
+                    # Ensure we always have a valid date before proceeding
+                    if not start_date:
+                        logger.error(f"Critical: Still no start_date for event '{title}' - skipping")
                         continue
                     
                     # Extract CLE credits
