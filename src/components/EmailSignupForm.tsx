@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 
 export default function EmailSignupForm() {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -25,14 +26,15 @@ export default function EmailSignupForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, name: name.trim() || undefined }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         toast.success(data.message || 'Successfully subscribed to legal event updates!');
-        setEmail(''); // Clear input on success
+        setEmail(''); // Clear inputs on success
+        setName('');
       } else {
         toast.error(data.error || 'Subscription failed. Please try again.');
       }
@@ -57,6 +59,14 @@ export default function EmailSignupForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter your name (optional)"
+          disabled={isLoading}
+        />
+        
+        <Input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -64,6 +74,7 @@ export default function EmailSignupForm() {
           disabled={isLoading}
           icon={<Mail className="w-4 h-4" />}
           helperText="We'll never share your email with anyone else"
+          required
         />
         
         <Button

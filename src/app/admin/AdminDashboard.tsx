@@ -5,21 +5,19 @@ import Link from 'next/link';
 import EventDialog from '@/components/EventDialog';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-interface AdminDashboardProps {
-  pending: any[];
-  allEvents: any;
-  currentTab: string;
-  searchParams: any;
-}
-
 interface CleanupStats {
   pastEvents: number;
   oldCancelledEvents: number;
   oldDeniedEvents: number;
 }
 
-export default function AdminDashboard({ pending, allEvents, currentTab, searchParams }: AdminDashboardProps) {
+export default function AdminDashboard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [pending, setPending] = useState<any[]>([]);
+  const [allEvents, setAllEvents] = useState<any>({ events: [] });
+  const [currentTab, setCurrentTab] = useState('pending');
+  const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editingEvent, setEditingEvent] = useState<any>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,11 +26,50 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
   const [cleanupStats, setCleanupStats] = useState<CleanupStats | null>(null);
   const [isCleanupLoading, setIsCleanupLoading] = useState(false);
   const [cleanupResult, setCleanupResult] = useState<string | null>(null);
-  const selectedEventId = searchParams.viewEvent;
+  const selectedEventId = searchParams.get('viewEvent');
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchEvents();
+    const tab = searchParams.get('tab') || 'pending';
+    setCurrentTab(tab);
+  }, [searchParams]);
+
+  const fetchEvents = async () => {
+    try {
+      setIsLoading(true);
+      // Fetch pending and all events
+      const [pendingRes, allRes] = await Promise.all([
+        fetch('/api/events/pending'),
+        fetch('/api/events/all')
+      ]);
+      
+      if (pendingRes.ok) {
+        const pendingData = await pendingRes.json();
+        setPending(pendingData);
+      }
+      
+      if (allRes.ok) {
+        const allData = await allRes.json();
+        setAllEvents(allData);
+      }
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleCloseDialog = () => {
     const params = new URLSearchParams(window.location.search);
     params.delete('viewEvent');
+    router.replace(`/admin?${params.toString()}`);
+  };
+
+  const handleTabChange = (tab: string) => {
+    setCurrentTab(tab);
+    const params = new URLSearchParams(window.location.search);
+    params.set('tab', tab);
     router.replace(`/admin?${params.toString()}`);
   };
 
@@ -127,48 +164,59 @@ export default function AdminDashboard({ pending, allEvents, currentTab, searchP
   const cancelledEvents = allEvents.events.filter((event: any) => event.status === 'cancelled');
   const featuredEvents = allEvents.events.filter((event: any) => event.status === 'featured');
 
+  if (isLoading) {
+    return (
+      <div className="max-w-6xl mx-auto mt-12 p-6 bg-[#f6ecd9] border border-[#c8b08a] rounded-lg">
+        <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#5b4636]"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto mt-12 p-6 bg-[#f6ecd9] border border-[#c8b08a] rounded-lg">
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
       
       {/* Tabs */}
       <div className="flex space-x-4 mb-6 border-b border-[#c8b08a]">
-        <Link 
-          href="/admin?tab=pending" 
+        <button 
+          onClick={() => handleTabChange('pending')}
           className={`pb-2 px-4 ${currentTab === 'pending' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
         >
           Pending Events ({pending.length})
-        </Link>
-        <Link 
-          href="/admin?tab=all" 
+        </button>
+        <button 
+          onClick={() => handleTabChange('all')}
           className={`pb-2 px-4 ${currentTab === 'all' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
         >
           All Events ({allEvents.events.length})
-        </Link>
-        <Link 
-          href="/admin?tab=cancelled" 
+        </button>
+        <button 
+          onClick={() => handleTabChange('cancelled')}
           className={`pb-2 px-4 ${currentTab === 'cancelled' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
         >
           Cancelled Events ({cancelledEvents.length})
-        </Link>
-        <Link 
-          href="/admin?tab=featured" 
+        </button>
+        <button 
+          onClick={() => handleTabChange('featured')}
           className={`pb-2 px-4 ${currentTab === 'featured' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
         >
           Featured Events ({featuredEvents.length})
-        </Link>
-        <Link 
-          href="/admin?tab=cleanup" 
+        </button>
+        <button 
+          onClick={() => handleTabChange('cleanup')}
           className={`pb-2 px-4 ${currentTab === 'cleanup' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
         >
           Cleanup
-        </Link>
-        <Link 
-          href="/admin?tab=stats" 
+        </button>
+        <button 
+          onClick={() => handleTabChange('stats')}
           className={`pb-2 px-4 ${currentTab === 'stats' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
         >
           Statistics
-        </Link>
+        </button>
       </div>
 
       {/* Content */}

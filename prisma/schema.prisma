@@ -13,10 +13,7 @@ generator client {
   // output   = "../src/generated/prisma" // removed for default output
 }
 
-generator py_client {
-  provider      = "prisma-client-py"
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
-}
+
 
 datasource db {
   provider = "postgresql"
@@ -143,4 +140,42 @@ model UserEvent {
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@unique([userId, eventId]) // Prevent duplicate starrings
+}
+
+// Newsletter subscription model
+model NewsletterSubscriber {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  name          String?
+  isActive      Boolean  @default(true)
+  preferences   Json?    // Store subscription preferences (categories, frequency, etc.)
+  subscribedAt  DateTime @default(now())
+  unsubscribedAt DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Newsletter campaigns model
+model Newsletter {
+  id          String          @id @default(cuid())
+  title       String
+  subject     String
+  content     String          // HTML content
+  status      NewsletterStatus @default(DRAFT)
+  createdBy   String          // Email of creator
+  createdAt   DateTime        @default(now())
+  scheduledAt DateTime?       // When to send
+  sentAt      DateTime?       // When it was actually sent
+  recipients  Int?            // Number of recipients
+  opens       Int?            // Number of opens
+  clicks      Int?            // Number of clicks
+  metadata    Json?           // Additional metadata
+}
+
+enum NewsletterStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  CANCELLED
 }

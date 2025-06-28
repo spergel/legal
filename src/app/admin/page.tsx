@@ -1,93 +1,79 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import Link from 'next/link';
+'use client';
+
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
+import { useState } from 'react';
 import AdminDashboard from './AdminDashboard';
-import { 
-  getPendingEvents, 
-  updateEventStatus,
-  getAllEventsForAdmin 
-} from '@/lib/data-loader';
-import { EventStatus } from '@/types';
+import NewsletterDashboard from '@/components/NewsletterDashboard';
+import { Mail, Settings, BarChart3 } from 'lucide-react';
 
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean);
+export default function AdminPage() {
+  const { data: session, status } = useSession();
+  const [activeTab, setActiveTab] = useState('events');
 
-// Helper function to convert lowercase status to proper enum value
-function normalizeStatus(status: string): EventStatus {
-  const statusMap: Record<string, EventStatus> = {
-    'pending': 'PENDING',
-    'approved': 'APPROVED',
-    'denied': 'DENIED',
-    'featured': 'FEATURED',
-    'cancelled': 'CANCELLED',
-    'archived': 'ARCHIVED'
-  };
-  
-  return statusMap[status.toLowerCase()] || 'PENDING';
-}
+  const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean);
 
-export default async function AdminPage({ searchParams }: any) {
-  const session = await getServerSession(authOptions);
-  if (!session || !ADMIN_EMAILS.includes(session.user?.email as string)) {
+  if (status === 'loading') {
     return (
-      <div className="max-w-xl mx-auto mt-12 p-6 bg-[#f6ecd9] border border-[#c8b08a] rounded-lg text-center">
-        <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-        <p className="mb-4">You do not have access to this page.</p>
-        <Link href="/" className="text-[#5b4636] underline">Back to Home</Link>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
-  // Handle actions
-  if (searchParams?.approve) {
-    const pending = await getPendingEvents();
-    const event = pending[Number(searchParams.approve)];
-    if (event) {
-      await updateEventStatus(event.id, 'APPROVED', session.user?.email as string, 'Approved via admin dashboard');
-  }
-  }
-  
-  if (searchParams?.deny) {
-    const pending = await getPendingEvents();
-    const event = pending[Number(searchParams.deny)];
-    if (event) {
-      await updateEventStatus(event.id, 'DENIED', session.user?.email as string, 'Denied via admin dashboard');
-  }
-  }
-  
-  if (searchParams?.updateStatus) {
-    const normalizedStatus = normalizeStatus(searchParams.status);
-    await updateEventStatus(
-      searchParams.eventId, 
-      normalizedStatus, 
-      session.user?.email as string,
-      `Status updated to ${normalizedStatus} via admin dashboard`
-    );
+  if (!session || !ADMIN_EMAILS.includes(session.user?.email as string)) {
+    redirect('/');
   }
 
-  // Get data from database
-  const pending = await getPendingEvents();
-  const allEvents = await getAllEventsForAdmin();
-  const currentTab = searchParams.tab || 'pending';
+  const tabs = [
+    { key: 'events', label: 'Event Management', icon: BarChart3 },
+    { key: 'newsletter', label: 'Newsletter', icon: Mail }
+  ];
 
-  // Transform data to match expected format
-  const transformedAllEvents = {
-    events: allEvents.map((event: any) => ({
-      ...event,
-      status: event.status.toLowerCase(),
-      photo: event.photo || null
-    }))
-  };
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="border-b border-gray-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center">
+              <Settings className="w-6 h-6 text-gray-600 mr-3" />
+              <h1 className="text-xl font-semibold text-gray-900">Admin Dashboard</h1>
+            </div>
+            <div className="text-sm text-gray-600">
+              Logged in as {session.user?.email}
+            </div>
+          </div>
+        </div>
+      </div>
 
-  const transformedPending = pending.map((event: any) => ({
-    ...event,
-    status: event.status.toLowerCase(),
-    photo: event.photo || null
-  }));
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="mb-6">
+          <nav className="flex space-x-8">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    activeTab === tab.key
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 mr-2" />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
 
-  return <AdminDashboard 
-    pending={transformedPending} 
-    allEvents={transformedAllEvents} 
-    currentTab={currentTab}
-    searchParams={searchParams}
-  />;
+        <div className="bg-white rounded-lg shadow-sm">
+          {activeTab === 'events' && <AdminDashboard />}
+          {activeTab === 'newsletter' && <NewsletterDashboard />}
+        </div>
+      </div>
+    </div>
+  );
 } 

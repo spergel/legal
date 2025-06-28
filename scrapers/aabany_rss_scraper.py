@@ -1,6 +1,6 @@
 import logging
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 
 import feedparser
@@ -78,6 +78,8 @@ class AabanyRssScraper(BaseScraper):
                             if dt < datetime.now():
                                 dt = dt.replace(year=current_year + 1)
                         
+                        # Make timezone-aware (assume UTC)
+                        dt = dt.replace(tzinfo=timezone.utc)
                         return dt.isoformat()
                     except ValueError:
                         continue
@@ -221,6 +223,8 @@ class AabanyRssScraper(BaseScraper):
                         if pub_date:
                             # Parse RSS date format: "Sat, 21 Jun 2025 13:00:00 GMT"
                             dt = datetime.strptime(pub_date, "%a, %d %b %Y %H:%M:%S GMT")
+                            # Convert to timezone-aware datetime and format as ISO-8601
+                            dt = dt.replace(tzinfo=timezone.utc)
                             start_date = dt.isoformat()
                     except ValueError:
                         logger.warning(f"Could not parse date: {pub_date}")
@@ -232,7 +236,7 @@ class AabanyRssScraper(BaseScraper):
                     # If still no date found, use a reasonable default (next month)
                     if not start_date:
                         from datetime import timedelta
-                        default_date = datetime.now() + timedelta(days=30)
+                        default_date = datetime.now(timezone.utc) + timedelta(days=30)
                         start_date = default_date.isoformat()
                         logger.warning(f"Using default date for event '{title}' - no valid date found in pub_date '{pub_date}' or description. Using: {start_date}")
                     

@@ -88,9 +88,9 @@ class ScraperManagerDB:
         events_data = []
         for event in events:
             event_dict = event.to_dict()
-            # Add scraper metadata
+            # Add scraper metadata (only scraper_name is processed by the API)
             event_dict['scraper_name'] = scraper_name
-            event_dict['scraped_at'] = datetime.now(timezone.utc).isoformat()
+            # Note: scraped_at is not part of Prisma schema, so we don't include it
             events_data.append(event_dict)
         
         payload = {
@@ -113,6 +113,14 @@ class ScraperManagerDB:
                     print(f"  - Created: {result['created']}")
                 if 'updated' in result:
                     print(f"  - Updated: {result['updated']}")
+                
+                # Debug: print first few results if no events were created/updated
+                if result.get('created', 0) == 0 and result.get('updated', 0) == 0:
+                    print("  - Debugging first few results:")
+                    if 'results' in result:
+                        for i, r in enumerate(result['results'][:3]):
+                            print(f"    [{i}]: {r}")
+                
                 return True
             else:
                 print(f"Error sending events from {scraper_name}: {response.status_code} - {response.text}")

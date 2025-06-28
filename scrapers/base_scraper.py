@@ -5,10 +5,16 @@ import requests
 import json
 import os
 from datetime import datetime, timezone
-from .models import Event
+try:
+    from .models import Event
+except ImportError:
+    from models import Event
 from dotenv import load_dotenv
 import time
-from .categorization_helper import EventCategorizer
+try:
+    from .categorization_helper import EventCategorizer
+except ImportError:
+    from categorization_helper import EventCategorizer
 
 # Configure logging
 logging.basicConfig(

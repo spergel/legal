@@ -14,9 +14,17 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
 sys.path.append(PROJECT_ROOT)
 
-from scrapers.base_scraper import BaseScraper
-from scrapers.models import Event
-from scrapers.categorization_helper import EventCategorizer
+try:
+    from .base_scraper import BaseScraper
+    from .models import Event
+    from .categorization_helper import EventCategorizer
+except ImportError:
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    from base_scraper import BaseScraper
+    from models import Event
+    from categorization_helper import EventCategorizer
 
 logger = logging.getLogger(__name__)
 
@@ -38,19 +46,61 @@ class BarkerGilmoreScraper(BaseScraper):
 
             soup = BeautifulSoup(response.text, 'html.parser')
 
-            event_containers = soup.select('div.fusion-posts-container article.post')
+            # Try multiple selectors for event containers
+            selectors = [
+                'div.fusion-posts-container article.post',
+                'article.post',
+                '.fusion-blog-layout',
+                '.fusion-portfolio',
+                'article',
+                '.webinar-item',
+                '.event-item'
+            ]
+            
+            event_containers = []
+            for selector in selectors:
+                containers = soup.select(selector)
+                if containers:
+                    event_containers = containers
+                    logger.info(f"Found {len(containers)} containers with selector: {selector}")
+                    break
+            
             if not event_containers:
-                logger.info("No event containers found on BarkerGilmore website.")
+                logger.info("No event containers found on BarkerGilmore website with any selector.")
                 return events
 
             for container in event_containers:
                 try:
-                    title_tag = container.select_one('h2.blog-shortcode-post-title a')
+                    # Try multiple title selectors
+                    title_selectors = [
+                        'h2.blog-shortcode-post-title a',
+                        'h2 a',
+                        'h3 a',
+                        'a.fusion-post-title',
+                        '.entry-title a',
+                        'h2',
+                        'h3',
+                        '.title',
+                    ]
+                    
+                    title_tag = None
+                    for t_selector in title_selectors:
+                        title_tag = container.select_one(t_selector)
+                        if title_tag:
+                            break
+                    
                     if not title_tag:
                         continue
                     
                     name = title_tag.get_text(strip=True)
-                    url = title_tag['href']
+                    url = title_tag.get('href') if title_tag.name == 'a' else container.select_one('a')['href'] if container.select_one('a') else None
+                    
+                    if not url:
+                        continue
+                        
+                    # Make URL absolute if needed
+                    if not url.startswith('http'):
+                        url = self.base_url + url if url.startswith('/') else self.base_url + '/' + url
 
                     date_str = None
                     meta_info_tag = container.select_one('p.fusion-single-line-meta')
@@ -71,14 +121,16 @@ class BarkerGilmoreScraper(BaseScraper):
                     startDate = None
                     if date_str:
                         try:
-                            # Check if date is in the future
+                            # Parse date - don't skip past events, just note them
                             event_date = datetime.strptime(date_str, '%b %d, %Y')
-                            if event_date < datetime.now():
-                                continue
                             startDate = event_date.isoformat()
                         except ValueError:
                             logger.warning(f"Could not parse date '{date_str}' for event: {name}")
-                            continue
+                            # Use current date as fallback
+                            startDate = datetime.now().isoformat()
+                    else:
+                        # Use current date as fallback if no date found
+                        startDate = datetime.now().isoformat()
 
                     description_tag = container.select_one('div.fusion-post-content-container p')
                     short_description = description_tag.get_text(strip=True) if description_tag else ""

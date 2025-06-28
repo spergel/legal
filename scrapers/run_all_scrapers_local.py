@@ -12,6 +12,17 @@ import argparse
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Type
 
+# Fix for relative imports when running as a script
+if __name__ == "__main__":
+    # Add parent directory to path for package imports
+    parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if parent_dir not in sys.path:
+        sys.path.insert(0, parent_dir)
+    
+    # Set package context for relative imports
+    if __package__ is None:
+        __package__ = "scrapers"
+
 def run_all_scrapers(target_scrapers: List[str] = None):
     """Run all available scrapers and save results to JSON files."""
     
@@ -35,7 +46,19 @@ def run_all_scrapers(target_scrapers: List[str] = None):
         ("lsuite", "lsuite_scraper", "LSuiteScraper", {}),
         ("barkergilmore", "barkergilmore_scraper", "BarkerGilmoreScraper", {}),
         ("qcba", "qcba_scraper", "QCBAScraper", {}),
-        ("acc", "acc_scraper", "ACCScraper", {"community_id": "com_acc_nyc"}),
+        ("acc", "acc_scraper", "AccScraper", {}),
+        # Law Schools
+        ("cardozo_law", "cardozo_law_scraper", "CardozoLawScraper", {}),
+        ("brooklyn_law", "brooklyn_law_scraper", "BrooklynLawScraper", {}),
+        ("columbia_law", "columbia_law_scraper", "ColumbiaLawScraper", {}),
+        ("stjohns_law", "stjohns_law_scraper", "StJohnsLawScraper", {}),
+        ("nyls", "nyls_scraper", "NYLSScraper", {}),
+        # Non-School Legal Organizations  
+        ("nycla", "nycla_scraper", "NyclaScaper", {}),
+        ("nyipla", "nyipla_scraper", "NyiplaScaper", {}),
+        ("federal_bar_council", "federal_bar_council_scraper", "FederalBarCouncilScraper", {}),
+        ("pli", "pli_scraper", "PliScraper", {}),
+        ("bronx_bar", "bronx_bar_scraper", "BronxBarScraper", {}),
     ]
     
     run_list = scraper_configs

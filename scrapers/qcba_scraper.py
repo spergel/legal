@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 """
 Scraper for Queens County Bar Association events: https://members.qcba.org/qcba-events-and-education-calendar
+
+NOTE: This scraper currently finds 0 events because QCBA uses GrowthZone to dynamically load
+events via JavaScript. The website shows events like:
+- Meet the Judge Series
+- CLE: AI and the Legal Profession  
+- Golf, Tennis & Pickleball Outing
+
+REQUIRES BROWSER AUTOMATION: Playwright or Selenium needed to wait for JavaScript content to load.
 """
 
 import logging
@@ -8,8 +16,15 @@ from typing import List
 import requests
 from bs4 import BeautifulSoup
 import hashlib
-from .base_scraper import BaseScraper
-from .models import Event
+try:
+    from .base_scraper import BaseScraper
+    from .models import Event
+except ImportError:
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    from base_scraper import BaseScraper
+    from models import Event
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +52,17 @@ class QCBAScraper(BaseScraper):
 
             soup = BeautifulSoup(response.content, 'html.parser')
             
+            # Events are loaded dynamically by GrowthZone via JavaScript
+            # Static HTML scraping won't work - need browser automation
+            
+            # Future implementation with browser automation would target:
+            # - Event titles: Look for h5 elements with event names
+            # - Dates: Look for date/time patterns like "July 9", "1:00 PM - 2:00 PM"  
+            # - Registration links: Look for "Register" buttons/links
+            # - Event details: Look for event descriptions
+            
             logger.info("HTML content saved to qcba_debug.html for analysis.")
+            logger.warning("QCBA events are loaded dynamically via JavaScript. Current scraper finds 0 events. Requires browser automation (Playwright/Selenium) to access live content.")
 
         except requests.RequestException as e:
             logger.error(f"Error fetching page {self.url}: {e}")

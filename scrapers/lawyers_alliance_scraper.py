@@ -8,9 +8,17 @@ import os
 import time
 import re
 import hashlib
-from .base_scraper import BaseScraper
-from .models import Event
-from .categorization_helper import EventCategorizer
+try:
+    from .base_scraper import BaseScraper
+    from .models import Event
+    from .categorization_helper import EventCategorizer
+except ImportError:
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    from base_scraper import BaseScraper
+    from models import Event
+    from categorization_helper import EventCategorizer
 from dotenv import load_dotenv
 import feedparser
 
@@ -29,7 +37,7 @@ class LawyersAllianceScraper(BaseScraper):
     
     def __init__(self, community_id: str):
         super().__init__(community_id)
-        self.url = "https://www.lawyersalliance.org/events/list"
+        self.url = "https://www.lawyersalliance.org/cle-events"
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -57,26 +65,82 @@ class LawyersAllianceScraper(BaseScraper):
 
             soup = BeautifulSoup(response.content, 'html.parser')
 
-            for item in soup.select('article.event-item'):
+            # Try multiple possible event selectors
+            event_selectors = [
+                'article.event-item',  # Original selector
+                'div.event-item',      # Alternative
+                'div.product-item',    # Might be used for CLE events
+                'div.item',            # Generic item
+                'tr',                  # Table rows
+                'div.event',           # Simple event class
+            ]
+            
+            items_found = []
+            for selector in event_selectors:
+                items = soup.select(selector)
+                if items:
+                    items_found = items
+                    logger.info(f"Found {len(items)} items with selector: {selector}")
+                    break
+            
+            if not items_found:
+                logger.warning("No event items found with any selector")
+                # Let's try to find anything that looks like an event
+                potential_events = soup.find_all(text=re.compile(r'(workshop|webinar|training|seminar|CLE|event)', re.I))
+                logger.info(f"Found {len(potential_events)} potential event text matches")
+                
+            for item in items_found:
                 try:
-                    title_tag = item.select_one('h1.item-title a')
+                    # Try multiple title selectors
+                    title_tag = None
+                    for title_selector in ['h1.item-title a', 'h2 a', 'h3 a', 'a', 'h1', 'h2', 'h3']:
+                        title_tag = item.select_one(title_selector)
+                        if title_tag:
+                            break
+                    
                     if not title_tag:
                         continue
                     
                     name = title_tag.get_text(strip=True)
-                    url = "https://www.lawyersalliance.org" + title_tag['href']
-
-                    date_tag = item.select_one('p.item-date')
-                    if not date_tag:
+                    if not name:
                         continue
+                        
+                    # Get URL
+                    if title_tag.name == 'a' and title_tag.get('href'):
+                        href = title_tag['href']
+                        if href.startswith('/'):
+                            url = "https://www.lawyersalliance.org" + href
+                        elif href.startswith('http'):
+                            url = href
+                        else:
+                            url = "https://www.lawyersalliance.org/" + href
+                    else:
+                        url = "https://www.lawyersalliance.org/cle-events"
+
+                    # Try multiple date selectors
+                    date_tag = None
+                    for date_selector in ['p.item-date', '.date', '.event-date', 'time']:
+                        date_tag = item.select_one(date_selector)
+                        if date_tag:
+                            break
                     
-                    date_str = date_tag.get_text(strip=True)
+                    if date_tag:
+                        date_str = date_tag.get_text(strip=True)
+                        start_datetime_obj = self.parse_date(date_str)
+                    else:
+                        # Use current date as fallback
+                        start_datetime_obj = datetime.now()
                     
-                    start_datetime_obj = self.parse_date(date_str)
                     if not start_datetime_obj:
-                        continue
+                        start_datetime_obj = datetime.now()
 
-                    description_tag = item.select_one('div.item-content')
+                    # Try multiple description selectors
+                    description_tag = None
+                    for desc_selector in ['div.item-content', '.description', '.content', 'p']:
+                        description_tag = item.select_one(desc_selector)
+                        if description_tag:
+                            break
+                    
                     description = description_tag.get_text(strip=True) if description_tag else "No description available."
 
                     event_id = f"lawyersalliance-{hashlib.sha256(url.encode('utf-8')).hexdigest()[:10]}"

@@ -10,7 +10,8 @@ class Event:
     name: str
     description: Optional[str] = None
     startDate: str = ""  # ISO format - will be converted to DateTime in Prisma
-    endDate: Optional[str] = None  # ISO format - will be converted to DateTime in Prisma
+    endDate: str = ""  # ISO format - will be converted to DateTime in Prisma, required field
+    locationName: str = "TBD"  # Required field in Prisma, default to "TBD"
     url: Optional[str] = None
     locationId: Optional[str] = None
     communityId: Optional[str] = None
@@ -25,14 +26,14 @@ class Event:
     def to_dict(self) -> Dict[str, Any]:
         """Convert the event to a dictionary compatible with Prisma schema."""
         return {
-            "id": self.id,
+            "externalId": self.id,  # Use externalId for API compatibility
             "name": self.name,
             "description": self.description or "",
             "startDate": self.startDate,
-            "endDate": self.endDate,
+            "endDate": self.endDate or self.startDate,  # Use startDate as endDate if no endDate provided
+            "locationName": self.locationName,  # Required field
             "url": self.url,
-            "locationId": self.locationId,
-            "communityId": self.communityId,
+            # Note: locationId and communityId are handled as relations in Prisma, not direct fields
             "image": self.image,
             "price": self.price,
             "metadata": self.metadata,

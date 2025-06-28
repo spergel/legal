@@ -5,8 +5,15 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-from scrapers.base_scraper import BaseScraper, ScraperException
-from scrapers.models import Event
+try:
+    from .base_scraper import BaseScraper, ScraperException
+    from .models import Event
+except ImportError:
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    from base_scraper import BaseScraper, ScraperException
+    from models import Event
 
 log = logging.getLogger(__name__)
 
