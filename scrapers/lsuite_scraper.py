@@ -70,8 +70,8 @@ class LSuiteScraper(BaseScraper):
                     url = None
                     if url_link:
                         url = url_link.get('href')
-                        if url and not url.startswith('http'):
-                            url = f"https://www.lsuite.co{url}"
+                    if url and not url.startswith('http'):
+                        url = f"https://www.lsuite.co{url}"
 
                     # Get date information
                     details_tag = article.select_one('p.event-tease__details')

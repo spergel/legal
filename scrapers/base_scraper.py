@@ -6,13 +6,13 @@ import json
 import os
 from datetime import datetime, timezone
 try:
-    from .models import Event
+from .models import Event
 except ImportError:
     from models import Event
 from dotenv import load_dotenv
 import time
 try:
-    from .categorization_helper import EventCategorizer
+from .categorization_helper import EventCategorizer
 except ImportError:
     from categorization_helper import EventCategorizer
 

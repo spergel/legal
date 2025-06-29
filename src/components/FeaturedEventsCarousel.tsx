@@ -130,7 +130,7 @@ export default function FeaturedEventsCarousel() {
               )}
               {currentEvent.price && (currentEvent.price.type?.toLowerCase() === 'free' || currentEvent.price.amount === 0) ? (
                 <p className="text-lg text-green-300 font-semibold">💰 FREE</p>
-              ) : currentEvent.price && (
+              ) : currentEvent.price && currentEvent.price.amount != null && (
                 <p className="text-lg">💰 {currentEvent.price.currency}{currentEvent.price.amount.toFixed(2)}</p>
               )}
             </div>

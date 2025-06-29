@@ -17,8 +17,8 @@ import requests
 from bs4 import BeautifulSoup
 import hashlib
 try:
-    from .base_scraper import BaseScraper
-    from .models import Event
+from .base_scraper import BaseScraper
+from .models import Event
 except ImportError:
     import sys
     import os

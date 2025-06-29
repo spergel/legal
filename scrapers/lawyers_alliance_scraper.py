@@ -9,9 +9,9 @@ import time
 import re
 import hashlib
 try:
-    from .base_scraper import BaseScraper
-    from .models import Event
-    from .categorization_helper import EventCategorizer
+from .base_scraper import BaseScraper
+from .models import Event
+from .categorization_helper import EventCategorizer
 except ImportError:
     import sys
     import os
@@ -104,7 +104,7 @@ class LawyersAllianceScraper(BaseScraper):
                     name = title_tag.get_text(strip=True)
                     if not name:
                         continue
-                        
+                    
                     # Get URL
                     if title_tag.name == 'a' and title_tag.get('href'):
                         href = title_tag['href']
@@ -125,7 +125,7 @@ class LawyersAllianceScraper(BaseScraper):
                             break
                     
                     if date_tag:
-                        date_str = date_tag.get_text(strip=True)
+                    date_str = date_tag.get_text(strip=True)
                         start_datetime_obj = self.parse_date(date_str)
                     else:
                         # Use current date as fallback

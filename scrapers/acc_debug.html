@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html>
+  <head>    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+      <meta name="ulp-version" content="1.56.0">
+    
+    
+    
+    <meta name="robots" content="noindex, nofollow">
+    
+    
+    <link rel="stylesheet" href="https://cdn.auth0.com/ulp/react-components/1.133.0/css/main_wcag_compliant.cdn.min.css">
+    <style id="custom-styles-container">
+      
+        
+
+body {
+  background: #025674;
+  font-family: ulp-font, -apple-system, BlinkMacSystemFont, Roboto, Helvetica, sans-serif;
+}
+.cc4fa989a {
+  background: #025674;
+}
+.ca6e57f7c.c61bcf5e8 {
+  background: #D00E17;
+}
+.ca6e57f7c.c74b43c38 {
+  background: #0A8852;
+}
+.c184782b7 {
+  background-color: #c6093b;
+  color: #ffffff;
+}
+.c184782b7 a,
+.c184782b7 a:visited {
+  color: #ffffff;
+}
+.c701929ab {
+  background-color: #0A8852;
+}
+.c0e78b8ad {
+  background-color: #D00E17;
+}
+@supports (mask-image: url('/static/img/branding-generic/copy-icon.svg')) {
+  @supports not (-ms-ime-align: auto) {
+    .cc7717e76.c31300ad6::before {
+      background-color: #D00E17;
+    }
+  }
+}
+.input.cd11574a4 {
+  border-color: #D00E17;
+}
+.error-cloud {
+  background-color: #D00E17;
+}
+.error-fatal {
+  background-color: #D00E17;
+}
+.error-local {
+  background-color: #D00E17;
+}
+#alert-trigger {
+  background-color: #D00E17;
+}
+
+
+
+      
+    </style>
+    <style>
+    /* By default, hide features for javascript-disabled browsing */
+    /* We use !important to override any css with higher specificity */
+    /* It is also overriden by the styles in <noscript> in the header file */
+    .no-js {
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+  </style>
+  <noscript>
+    <style>
+      /* We use !important to override the default for js enabled */
+      /* If the display should be other than block, it should be defined specifically here */
+      .js-required { display: none !important; }
+      .no-js {
+        clip: auto;
+        clip-path: none;
+        height: auto;
+        overflow: auto;
+        position: static;
+        white-space: normal;
+        width: var(--prompt-width);
+      }
+    </style>
+  </noscript>
+    
+<title>Login to Association of Corporate Counsel</title>
+
+    <style type="text/css">
+        @import url("https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i");
+
+      @keyframes shake {
+  0% {
+    transform: translate(0) translateY(-50%) scale(1);
+  }
+  20% {
+    transform: translate(3em) translateY(-50%) scale(1);
+	}
+  40% {
+    transform: translate(-3em) translateY(-50%) scale(1);
+  }
+  60% {
+    transform: translate(3em) translateY(-50%) scale(1);
+  }
+  80% {
+    transform: translate(-3em) translateY(-50%) scale(1);
+  }
+  100% {
+    transform: translate(0) translateY(-50%) scale(1);
+  }
+}
+      
+      .shake {
+  animation: shake 0.5s infinite;
+}
+      
+        html, body {
+            height: 100%;
+        }
+		
+		
+		.ulp-input-error-message {
+		
+		    color: #fff;
+    background-color: #c6093b;
+    padding: 1.5em;
+    border-radius: 0.5em;
+		}
+		
+		.ulp-input-error-message a{
+		color: #fff;
+		text-decoration: underline;
+		}
+
+        body {
+            overflow: hidden;
+            font-family: "Roboto", sans-serif;
+            font-size: 100%;
+            font-size: 1em;
+            margin: 0;
+            padding: 0;
+            background-color: #024f6a;
+        }
+
+        body:before {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            background: linear-gradient(to right, rgba(2,79,106,1) 0%,rgba(1,46,62,0.2) 34%,rgba(1,46,62,0.03) 57%,rgba(1,46,62,0.2) 75%,rgba(0,10,14,1) 100%);
+        }
+		
+		form {
+		    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+		}
+		
+		form>div:nth-child(2) {
+		width: 100%;
+    order: 2;
+		}
+		
+		form>p {
+		order: 4;
+		}
+		
+		form>div:nth-child(4) {
+		width: 30%;
+    order: 3;
+		}
+		
+		form>p a{
+		color: #666;
+		font-weight: 400 !important;
+		}
+		
+		header>div:nth-child(4) {
+		display: none;
+		}
+
+        body:after {
+            content: '';
+            display: block;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            z-index: 2;
+            opacity: .9;
+            background: linear-gradient(135deg, rgba(2,86,116,1) 0%,rgba(114,60,87,1) 11%,rgba(206,38,63,1) 20%,rgba(244,206,212,0) 51%,rgba(255,255,255,0) 60%,rgba(65,83,89,0) 90%,rgba(1,25,33,0.4) 100%);
+        }
+
+        h1 {
+            font-size: 2rem !important;
+            margin: 0 0 .75rem !important;
+			text-align: left !important;
+			margin-bottom: 0 !important;
+			font-weight: bold !important;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 0 0 .75rem;
+        }
+
+        .login-stage {
+            position: fixed;
+            overflow: hidden;
+            z-index: 24;
+            height: 100%;
+            width: 100%;
+        }
+
+        .login-stage:after {
+            content: '';
+            display: block;
+            position: absolute;
+            z-index: 4;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background-color: #f3f3f3;
+        }
+		
+		.login {
+		width: 100%;
+		}
+		
+		.login>section {
+		width: 100%;
+		}
+		
+		.login>section>div {
+		    box-shadow: none;
+		}
+
+        .login-wr {
+            position: absolute;
+            max-width: 600px;
+            max-height: 90%;
+            margin: auto;
+            left: 0;
+            right: 0;
+            z-index: 5;
+            overflow: auto;
+            top: 50%;
+            transform: translateY(-50%) scale(1);
+            width: 100%;
+            width: calc(100% - 3rem);
+        }
+
+        .login-box {
+            background-color: #fff;
+            
+        }
+
+        .login .brand {
+            max-width: 100%;
+            width: 275px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .login .brand img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        #error-message {
+            display: none;
+            font-size: .875rem;
+            background-color: #c6093b;
+            color: #fff;
+            padding: .5rem 1rem;
+            text-align: center;
+            border-radius: 4px;
+            margin: 1rem 0 1.25rem;
+        }
+
+        #error-message h2 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin: 0 0 .25rem;
+        }
+
+        #error-message a {
+            color: #fff;
+        }
+
+        .login-form {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .login-form .form-group label {
+            display: inline-block;
+            font-size: .875rem;
+            margin-bottom: .5rem;
+        }
+
+        .login-form .form-group input {
+            border: 0;
+            padding: .75rem 1rem .75rem 45px;
+            width: 100%;
+            box-sizing: border-box;
+           font-size: 0.875rem;
+		   -webkit-appearance: none;
+		   
+        }
+      
+      @media (max-width: 768px) {
+        .login-form .form-group input {
+          font-size: 1rem;
+        }
+      }
+
+        .login-form .form-group .input-wrap {
+            position: relative;
+            border: 1px solid #999;
+        }
+
+        .login-form .form-group .input-wrap:after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            width: 24px;
+            height: 24px;
+            opacity: .33;
+            pointer-events: none;
+            transition: .3s;
+        }
+
+        .login-form .form-group:hover .input-wrap:after, .login-form .form-group .input-wrap:focus-within:after {
+            opacity: .65;
+        }
+
+        .login-form .form-group .input-wrap.user:after {
+            background-image: url('https://www.acc.com/sites/default/files/2021-08/icon-user.png');
+            background-size: 100% 100%;
+        }
+
+        .login-form .form-group .input-wrap.password:after {
+            background-image: url('https://www.acc.com/sites/default/files/2021-08/icon-lock.png');
+            background-size: 100% 100%;
+        }
+
+        .login-form .submit-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .login-form .submit-group .password-reset {
+            order: 2;
+        }
+
+        .login-form .submit-group .password-reset a {
+            text-decoration-color: transparent;
+            color: #666;
+            transition: .3s;
+        }
+
+        .login-form .submit-group .password-reset a:hover {
+            color: #333;
+            text-decoration-color: #333;
+        }
+
+        .login-form .submit-group button {
+            font-weight: 700;
+            color: #fff;
+            order: 1;
+            font-size: 1rem;
+            padding: .75rem 2rem;
+            border: 0;
+            cursor: pointer;
+            background-color: #c6093b;
+            transition: .3s;
+        }
+
+        .login-form .submit-group button:hover {
+            background-color: #95072c;
+        }
+
+        .button {
+            margin-top: .5rem;
+            font-weight: 700;
+            display: inline-block;
+            padding: .75rem 2rem;
+            background-color: #c6093b;
+            color: #fff;
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        .button:hover {
+            background-color: #95072c;
+        }
+
+        .small {
+            text-align: center;
+            font-size: .875rem;
+        }
+        
+        p a {
+            color: #c6093b;
+            transition: .3s;
+        }
+
+        p a:hover {
+            color: #0d0116;
+        }
+		
+		.captcha-container .captcha-challenge img {
+		    transform: translateX(-8px);
+		}
+		
+		.captcha-container .captcha-challenge button {
+		    transform: translateY(-19px);
+		}
+		
+		.captcha-container input.captcha-control {
+		    padding-left: 10px;
+            border: 1px solid #999;
+		}
+    </style>
+    
+  </head>
+
+<body>
+    <div class="login-stage">
+        <div class="login-wr">
+            <div class="login-box"><main class="_widget login">
+  <section class="c632a3195 _prompt-box-outer c79a13b10">
+    <div class="c57de6c2e c4b3b7449">
+      
+    
+      <div class="c8e92fb51">
+        <header class="c27aceda0 c9a8144a4">
+          <div title="Association of Corporate Counsel" id="custom-prompt-logo" style="width: auto !important; height: 60px !important; position: static !important; margin: auto !important; padding: 0 !important; background-color: transparent !important; background-position: center !important; background-size: contain !important; background-repeat: no-repeat !important"></div>
+        
+          <img class="c3887f9f8 c8f5e1db5" id="prompt-logo-center" src="https://www.acc.com/sites/default/files/2021-08/acc-logo.png" alt="Association of Corporate Counsel">
+        
+          
+            <h1 class="c71113106 cb97e64be">Login</h1>
+          
+        
+          <div class="c106f1e73 c652a22aa">
+            
+              <p class="c56397319 cf27a8f55">Log in to Association of Corporate Counsel to continue to ACC Website.</p>
+            
+          </div>
+        </header>
+      
+        <div class="cb6bd426c c96def8da">
+          
+        
+          
+            
+              <form method="POST" class="c1780a182 c0da5d303" data-form-primary="true" data-disable-html-validations="true">
+                
+              
+                <input type="hidden" name="state" value="hKFo2SB6WVZmTy1JY01DdG1GQjBOTWo5akxDMVRxT3BZeFdjNKFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIGFsYjgtcm9HQXgwSVJXQkJkaXNtZlBad050T0xzWXpZo2NpZNkgbUQ1YUxkTHlUR2dBT1RnYmNQN2ZiRzJYdDRMTEJnMmU">
+              
+                
+              
+                <div class="cae2f2d94 cf5193826">
+                  <div class="cd9d7704b">
+                    
+                  
+                    
+                      
+                        <div class="input-wrapper _input-wrapper">
+                          <div class="cc7717e76 c26879cf2 text c3de81d2a ulp-field" data-action-text="" data-alternate-action-text="">
+                            <label aria-hidden="true" class="cdeb9a03d cc1f1bd1e c3ec0c97d" for="username">
+                              Email address*
+                            </label>
+                          
+                            <input class="input c0d665dd4 c152f1465" inputMode="email" name="username" id="username" type="text" aria-label="Email address" aria-required="true" value="" required autoComplete="email" autoCapitalize="none" spellCheck="false" autoFocus>
+                          </div>
+                        
+                          
+                        
+                          
+                            <div id="error-cs-email-required" class="ulp-error-info aria-error-check" data-ulp-validation-function="ulpRequiredFunction" data-ulp-validation-event-listeners="blur,change,input,focus" data-ulp-validation-target="username">Please enter an email address</div>
+                          
+                        
+                          
+                            <div id="error-cs-email-invalid" class="ulp-error-info aria-error-check" data-ulp-validation-function="ulpEmailValidationFunction" data-ulp-validation-event-listeners="blur,change,input,focus" data-ulp-validation-target="username">Email is not valid.</div>
+                          
+                        
+                          
+                            <div id="error-cs-pattern-mismatch" class="ulp-error-info aria-error-check" data-ulp-validation-function="ulpPatternCheckFunction" data-ulp-validation-event-listeners="blur,change,input,focus" data-ulp-validation-target="username">The username has invalid characters.</div>
+                          
+                        
+                          
+                        </div>
+                      
+                    
+                  
+                    
+                      <div class="input-wrapper _input-wrapper">
+                        <div class="cc7717e76 c26879cf2 password c14e32b4a ulp-field" data-action-text="" data-alternate-action-text="">
+                          <label aria-hidden="true" class="cdeb9a03d cc1f1bd1e ca7810d87" for="password">
+                            Password*
+                          </label>
+                        
+                          <input class="input c0d665dd4 c91e53ecb" name="password" id="password" type="password" aria-label="Password" aria-required="true" required autoComplete="current-password" autoCapitalize="none" spellCheck="false">
+                        
+                          
+                            <button type="button" role="switch" aria-checked="false" aria-label="Show password" class="ca670d475 ulp-button-icon js-required c28c3f332 _button-icon" data-action="toggle">
+                              <span aria-hidden="true" class="password-icon-tooltip show-password-tooltip">Show password</span>
+                            
+                              <span aria-hidden="true" class="password-icon-tooltip hide-password-tooltip hide">Hide password</span>
+                            
+                              <span class="c1cc7bc5e password js-required" aria-hidden="true"></span>
+                            </button>
+                          
+                        </div>
+                      
+                        
+                          <div id="error-cs-password-required" class="ulp-error-info aria-error-check" data-ulp-validation-function="ulpRequiredFunction" data-ulp-validation-event-listeners="blur,change,input,focus" data-ulp-validation-target="password">Password is required</div>
+                        
+                      
+                        
+                      
+                        
+                      
+                        
+                          <div id="error-cs-pattern-mismatch" class="ulp-error-info aria-error-check" data-ulp-validation-function="ulpPatternCheckFunction" data-ulp-validation-event-listeners="blur,change,input,focus" data-ulp-validation-target="password">The username has invalid characters.</div>
+                        
+                      
+                        
+                      </div>
+                    
+                  
+                    
+                  </div>
+                </div>
+              
+                
+                  
+                    <p class="c5cb58e0e c89e4667e">
+                      
+                        <a class="c8b0f7dde c36e8f209 cf0ac3566" href="/u/login/password-reset-start/NetForum-Connection?state=hKFo2SB6WVZmTy1JY01DdG1GQjBOTWo5akxDMVRxT3BZeFdjNKFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIGFsYjgtcm9HQXgwSVJXQkJkaXNtZlBad050T0xzWXpZo2NpZNkgbUQ1YUxkTHlUR2dBT1RnYmNQN2ZiRzJYdDRMTEJnMmU">Forgot your password?</a>
+                      
+                    </p>
+                  
+                
+              
+                
+              
+                <div class="cdd809dcd">
+                  
+                    <button type="submit" name="action" value="default" class="ca670d475 c184782b7 c28c3f332 caeaffbdb c8fb42dd9" data-action-button-primary="true">Login</button>
+                  
+                </div>
+              </form>
+            
+          
+        
+          
+        
+          
+            <div class="ulp-alternate-action  _alternate-action __s16nu9">
+              <p class="c56397319 cf27a8f55 c07a5b401">Are you not a member but would still like to take advantage of our products and educational offerings?
+                <a class="c8b0f7dde cf0ac3566" href="/u/signup?state=hKFo2SB6WVZmTy1JY01DdG1GQjBOTWo5akxDMVRxT3BZeFdjNKFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIGFsYjgtcm9HQXgwSVJXQkJkaXNtZlBad050T0xzWXpZo2NpZNkgbUQ1YUxkTHlUR2dBT1RnYmNQN2ZiRzJYdDRMTEJnMmU">Create an account with ACC</a>
+              </p>
+            </div>
+          
+        
+          
+        
+          
+        
+          
+        </div>
+      </div>
+    </div>
+  
+    
+  </section>
+</main>
+<script id="client-scripts">
+window.ulpFlags = {"enable_ulp_wcag_compliance":true,"enable_ulp_rtl_support":false};!function(){var e,t,r,n,S,A,F,T,k,L,a,q,P,N,j,R,O,i,o,c={exports:function(e,t){return"object"==typeof e.ulpFlags&&null!==e.ulpFlags?e.ulpFlags:{}}}.exports(window,document),u=((e={}).exports=function(r,a){var n={},i={};function c(e,t){if(e.classList)return e.classList.add(t);var r=e.className.split(" ");-1===r.indexOf(t)&&(r.push(t),e.className=r.join(" "))}function o(e,t,r,n){return e.addEventListener(t,r,n)}function u(e){return"string"==typeof e}function l(e,t){return u(e)?a.querySelector(e):e.querySelector(t)}function s(e,t){if(e.classList)return e.classList.remove(t);var r=e.className.split(" "),n=r.indexOf(t);-1!==n&&(r.splice(n,1),e.className=r.join(" "))}function f(e,t){return e.getAttribute(t)}function d(e,t,r){return e.setAttribute(t,r)}function p(e){return e.remove()}var e=["text","number","email","password","tel","url"],t="select,textarea,"+e.map(function(e){return'input[type="'+e+'"]'}).join(",");return{addClass:c,toggleClass:function(e,t,r){if(!0===r||!1===r)return n=e,a=t,!0!==r?s(n,a):c(n,a);var n,a;if(e.classList)return e.classList.toggle(t);var i=e.className.split(" "),o=i.indexOf(t);-1!==o?i.splice(o,1):i.push(t),e.className=i.join(" ")},hasClass:function(e,t){return e.classList?e.classList.contains(t):-1!==e.className.split(" ").indexOf(t)},addClickListener:function(e,t){return o(e,"click",t)},addEventListener:o,getAttribute:f,hasAttribute:function(e,t){return e.hasAttribute(t)},getElementById:function(e){return a.getElementById(e)},getParent:function(e){return e.parentNode},isString:u,loadScript:function(e,t){var r=a.createElement("script");for(var n in t)n.startsWith("data-")?r.dataset[n.replace("data-","")]=t[n]:r[n]=t[n];r.src=e,a.body.appendChild(r)},removeScript:function(e){a.querySelectorAll('script[src="'+e+'"]').forEach(function(e){e.remove()})},poll:function(e){var i=e.interval||2e3,t=e.url||r.location.href,o=e.condition||function(){return!0},c=e.onSuccess||function(){},u=e.onError||function(){};return setTimeout(function n(){var a=new XMLHttpRequest;return a.open("GET",t),a.setRequestHeader("Accept","application/json"),a.onload=function(){if(200===a.status){var e="application/json"===a.getResponseHeader("Content-Type").split(";")[0]?JSON.parse(a.responseText):a.responseText;return o(e)?c():setTimeout(n,i)}if(429!==a.status)return u({status:a.status,responseText:a.responseText});var t=1e3*Number.parseInt(a.getResponseHeader("X-RateLimit-Reset")),r=t-(new Date).getTime();return setTimeout(n,i<r?r:i)},a.send()},i)},querySelector:l,querySelectorAll:function(e,t){var r=u(e)?a.querySelectorAll(e):e.querySelectorAll(t);return Array.prototype.slice.call(r)},removeClass:s,removeElement:p,setAttribute:d,removeAttribute:function(e,t){return e.removeAttribute(t)},swapAttributes:function(e,t,r){var n=f(e,t),a=f(e,r);d(e,r,n),d(e,t,a)},setGlobalFlag:function(e,t){n[e]=!!t},getGlobalFlag:function(e){return!!n[e]},setSubmittedForm:function(e,t){i[e]=t},getSubmittedForm:function(e){return i[e]},preventFormSubmit:function(e){e.stopPropagation(),e.preventDefault()},matchMedia:function(e){return"function"!=typeof r.matchMedia&&r.matchMedia(e).matches},dispatchEvent:function(e,t,r){var n;"function"!=typeof Event?(n=a.createEvent("Event")).initCustomEvent(t,r,!1):n=new Event(t,{bubbles:r}),e.dispatchEvent(n)},timeoutPromise:function(e,a){return new Promise(function(t,r){var n=setTimeout(function(){r(new Error("timeoutPromise: promise timed out"))},e);a.then(function(e){clearTimeout(n),t(e)},function(e){clearTimeout(n),r(e)})})},createMutationObserver:function(e){return"undefined"==typeof MutationObserver?null:new MutationObserver(e)},consoleWarn:function(){(console.warn||console.log).apply(console,arguments)},getConfigJson:function(e){try{var t=l(e);if(!t)return null;var r=t.value;return r?JSON.parse(r):null}catch(e){return null}},getCSSVariable:function(e){return getComputedStyle(a.documentElement).getPropertyValue(e)},removeAndTrimString:function(e,t){var r=new RegExp(t,"g"),n=e.replace(r,"");return n=n.replace(/\s+/g,"  ").trim()},htmlEncode:function(e){var t=a.createTextNode(e),r=a.createElement("span");return r.appendChild(t),r.innerHTML||""},cleanServerErrorMessage:function(e,t){0<e.length&&0<t.length&&t.forEach(function(e){p(e)})},setTimeout:setTimeout,globalWindow:r,SUPPORTED_INPUT_TYPES:e,ELEMENT_TYPE_SELECTOR:t,RUN_INIT:!0}},e.exports)(window,document),l=function(){var e={};function h(e){if(!("string"==typeof e||e instanceof String)){var t=typeof e;throw null===e?t="null":"object"===t&&(t=e.constructor.name),new TypeError("Expected a string but received a "+t)}}function v(e,t){var r,n;h(e),n="object"==typeof t?(r=t.min||0,t.max):(r=t,arguments[2]);var a=encodeURI(e).split(/%..|./).length-1;return r<=a&&(void 0===n||a<=n)}function m(e,t){for(var r in void 0===e&&(e={}),t)void 0===e[r]&&(e[r]=t[r]);return e}var g={require_tld:!0,allow_underscores:!1,allow_trailing_dot:!1,allow_numeric_tld:!1,allow_wildcard:!1,ignore_max_length:!1},t="(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])",r="("+t+"[.]){3}"+t,n=new RegExp("^"+r+"$"),a="(?:[0-9a-fA-F]{1,4})",i=new RegExp("^((?:"+a+":){7}(?:"+a+"|:)|(?:"+a+":){6}(?:"+r+"|:"+a+"|:)|(?:"+a+":){5}(?::"+r+"|(:"+a+"){1,2}|:)|(?:"+a+":){4}(?:(:"+a+"){0,1}:"+r+"|(:"+a+"){1,3}|:)|(?:"+a+":){3}(?:(:"+a+"){0,2}:"+r+"|(:"+a+"){1,4}|:)|(?:"+a+":){2}(?:(:"+a+"){0,3}:"+r+"|(:"+a+"){1,5}|:)|(?:"+a+":){1}(?:(:"+a+"){0,4}:"+r+"|(:"+a+"){1,6}|:)|(?::((?::"+a+"){0,5}:"+r+"|(?::"+a+"){1,7}|:)))(%[0-9a-zA-Z-.:]{1,})?$");function b(e,t){return void 0===t&&(t=""),h(e),(t=String(t))?"4"===t?n.test(e):"6"===t&&i.test(e):b(e,4)||b(e,6)}var w={allow_display_name:!1,allow_underscores:!1,require_display_name:!1,allow_utf8_local_part:!0,require_tld:!0,blacklisted_chars:"",ignore_max_length:!1,host_blacklist:[],host_whitelist:[]},_=/^([^\x00-\x1F\x7F-\x9F\cX]+)</i,x=/^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~]+$/i,E=/^[a-z\d]+$/,y=/^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f]))*$/i,C=/^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\u00A1-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$/i,S=/^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*$/i,A=254;function o(e,t){if(h(e),(t=m(t,w)).require_display_name||t.allow_display_name){var r=e.match(_);if(r){var n=r[1];if(e=e.replace(n,"").replace(/(^<|>$)/g,""),n.endsWith(" ")&&(n=n.slice(0,-1)),!function(e){var t=e.replace(/^"(.+)"$/,"$1");if(!t.trim())return!1;if(/[\.";<>]/.test(t)){if(t===e)return!1;if(t.split('"').length!==t.split('\\"').length)return!1}return!0}(n))return!1}else if(t.require_display_name)return!1}if(!t.ignore_max_length&&e.length>A)return!1;var a=e.split("@"),i=a.pop(),o=i.toLowerCase();if(t.host_blacklist.includes(o))return!1;if(0<t.host_whitelist.length&&!t.host_whitelist.includes(o))return!1;var c=a.join("@");if(t.domain_specific_validation&&("gmail.com"===o||"googlemail.com"===o)){var u=(c=c.toLowerCase()).split("+")[0];if(!v(u.replace(/\./g,""),{min:6,max:30}))return!1;for(var l=u.split("."),s=0;s<l.length;s++)if(!E.test(l[s]))return!1}if(!(!1!==t.ignore_max_length||v(c,{max:64})&&v(i,{max:254})))return!1;if(!function(e,t){h(e),(t=m(t,g)).allow_trailing_dot&&"."===e[e.length-1]&&(e=e.substring(0,e.length-1)),!0===t.allow_wildcard&&0===e.indexOf("*.")&&(e=e.substring(2));var r=e.split("."),n=r[r.length-1];if(t.require_tld){if(r.length<2)return!1;if(!t.allow_numeric_tld&&!/^([a-z\u00A1-\u00A8\u00AA-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]{2,}|xn[a-z0-9-]{2,})$/i.test(n))return!1;if(/\s/.test(n))return!1}return!(!t.allow_numeric_tld&&/^\d+$/.test(n))&&r.every(function(e){return!(63<e.length&&!t.ignore_max_length||!/^[a-z_\u00a1-\uffff0-9-]+$/i.test(e)||/[\uff01-\uff5e]/.test(e)||/^-|-$/.test(e)||!t.allow_underscores&&/_/.test(e))})}(i,{require_tld:t.require_tld,ignore_max_length:t.ignore_max_length,allow_underscores:t.allow_underscores})){if(!t.allow_ip_domain)return!1;if(!b(i)){if(!i.startsWith("[")||!i.endsWith("]"))return!1;var f=i.slice(1,-1);if(0===f.length||!b(f))return!1}}if('"'===c[0])return c=c.slice(1,c.length-1),t.allow_utf8_local_part?S.test(c):y.test(c);for(var d=t.allow_utf8_local_part?C:x,p=(l=c.split("."),0);p<l.length;p++)if(!d.test(l[p]))return!1;return!t.blacklisted_chars||-1===c.search(new RegExp("["+t.blacklisted_chars+"]+","g"))}return e.exports=function(e,t){return{ulpRequiredFunction:function(e,t){return!t||!!e.value},ulpEmailValidationFunction:function(e,t){return!t||!e.value||!!o(e.value)},ulpPatternCheckFunction:function(e,t){return!t||!e.value||function(e){if("password"===e.name)return!0;var t=e.getAttribute("pattern");return!t||null!==e.value.match(t)}(e)}}},e.exports}()(window,document);((t={}).exports=function(n,e,o,c,u,l,s,f,t){function d(e){"Escape"==e.code&&document.activeElement.blur()}t.enable_ulp_wcag_compliance&&e("div.cc7717e76.password").forEach(function(e){var a,i,t=n(e,"input"),r=n(e,'[data-action="toggle"]');o(e,(a=t,i=r,function(e){if(e.target.classList.contains("ulp-button-icon")){if(a.type="password"===a.type?"text":"password",i){i.ariaChecked="false"===i.ariaChecked?"true":"false";var t=i.querySelector(".show-password-tooltip"),r=i.querySelector(".hide-password-tooltip");t&&s(t,"hide"),r&&s(r,"hide")}var n=f(a);"text"===a.type?u(n,"show"):l(n,"show")}})),c(r,"keyup",d)})},t.exports)(u.querySelector,u.querySelectorAll,u.addClickListener,u.addEventListener,u.addClass,u.removeClass,u.toggleClass,u.getParent,c),((r={}).exports=function(n,e,o,c,u,l,s,t){t.enable_ulp_wcag_compliance||e("div.cc7717e76.password").forEach(function(e){var a,i,t=n(e,"input"),r=n(e,'[data-action="toggle"]');o(e,(a=t,i=r,function(e){if(e.target.classList.contains("ulp-button-icon")){if(a.type="password"===a.type?"text":"password",i){var t=i.querySelector(".show-password-tooltip"),r=i.querySelector(".hide-password-tooltip");t&&l(t,"hide"),r&&l(r,"hide")}var n=s(a);"text"===a.type?c(n,"show"):u(n,"show")}}))})},r.exports)(u.querySelector,u.querySelectorAll,u.addClickListener,u.addClass,u.removeClass,u.toggleClass,u.getParent,c),{exports:function(e,n,a,t){var r=e(".c8c1b6b48"),i=e("#alert-trigger"),o=e(".c8dd55173"),c=e(".c9c418a58"),u=!1;i&&c&&r&&t(r,function(e){var t=e.target===i,r=c.contains(e.target);return t&&!u?(n(o,"show"),void(u=!0)):t&&u||u&&!r?(a(o,"show"),void(u=!1)):void 0})}}.exports(u.querySelector,u.addClass,u.removeClass,u.addClickListener),(S="recaptcha_v2",A="recaptcha_enterprise",F="hcaptcha",T="friendly_captcha",k="arkose",L="auth0_v2",(n={}).exports=function(i,o,a,c,u,l,s,f,e){if(!e.enable_ulp_rtl_support){var d=500,p=3,h=0,v=a("div[data-captcha-sitekey]"),m=a(".ulp-captcha-client-error"),t=a("div[data-captcha-sitekey] input");v&&function(){var e="captchaCallback_"+Math.floor(1000001*Math.random()),t=_(),r={async:!0,defer:!0},n=function(e,t,r,n){switch(_()){case S:return"https://www.recaptcha.net/recaptcha/api.js?render=explicit&hl="+e+"&onload="+t;case A:return"https://www.recaptcha.net/recaptcha/enterprise.js?render=explicit&hl="+e+"&onload="+t;case F:return"https://js.hcaptcha.com/1/api.js?render=explicit&hl="+e+"&onload="+t;case T:return"https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.14/widget.min.js";case k:return"https://"+r+".arkoselabs.com/v2/"+n+"/api.js";case L:return"https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload="+t}}(w(),e,v.getAttribute("data-captcha-client-subdomain"),x());if(t===k||t===L){r["data-callback"]=e,r.onerror=function(){if(h<p)return o(n),i(n,r),void h++;o(n),y("BYPASS_CAPTCHA")};var a=function(e){var t,r;t=e,r=function(e){setTimeout(function(){t.run()},d),e.preventDefault()},E().addEventListener("submit",r),t.setConfig({onCompleted:function(e){y(e.token),E().submit()},onError:function(e){return fetch("https://status.arkoselabs.com/api/v2/status.json").then(function(e){return e.json()}).then(function(e){var t=e.status.indicator;return"none"===t}).catch(function(e){return!1}).then(function(e){if(e&&h<p)return t.reset(),new Promise(function(e){setTimeout(function(){e(t.run())},d),h++});y("BYPASS_CAPTCHA"),E().removeEventListener("submit",r)})}})};t===L&&(a=function(){C()}),window[e]=a}else window[e]=function(){delete window[e],C()},t===T&&(c(b(),"frc-captcha"),s(b(),"data-sitekey",x()),r.onload=window[e]);i(n,r)}()}function g(){switch(_()){case S:return window.grecaptcha;case A:return window.grecaptcha.enterprise;case F:return window.hcaptcha;case T:return window.friendlyChallenge;case k:return window.arkose;case L:return window.turnstile}}function b(){return a(function(){switch(_()){case S:case A:return"#ulp-recaptcha";case F:return"#ulp-hcaptcha";case T:return"#ulp-friendly-captcha";case k:return"#ulp-arkose";case L:return"#ulp-auth0-v2-captcha"}}())}function w(){return v.getAttribute("data-captcha-lang")}function _(){return v.getAttribute("data-captcha-provider")}function x(){return v.getAttribute("data-captcha-sitekey")}function E(){return a('form[data-form-primary="true"]')}function y(e){return t.value=e}function C(){var e=g(),t=l("--ulp-captcha-widget-theme")||"light";if(_()===T)"dark"===t&&c(a(".frc-captcha"),"dark"),(n=e.autoWidget).opts.language=w(),n.opts.doneCallback=function(e){y(e)};else{var r={sitekey:x(),theme:t,"expired-callback":function(){y(""),c(v,"c31300ad6"),e.reset(n)},callback:function(e){y(e),u(v,"c31300ad6")}};_()===L&&(r.language=w(),r.retry="never",r.size="flexible",r["response-field"]=!1,r["error-callback"]=function(e){return console.error("ERROR: Auth Challenge Error Code",e),y(""),h<p?(h++,g().reset(n)):(m.innerHTML=m.innerHTML.replace("#{errorCode}",f(e)),c(v,"c31300ad6"),u(m,"hide")),!0});var n=e.render(b(),r)}}},n.exports)(u.loadScript,u.removeScript,u.querySelector,u.addClass,u.removeClass,u.getCSSVariable,u.setAttribute,u.htmlEncode,c),(q="recaptcha_v2",P="recaptcha_enterprise",N="hcaptcha",j="friendly_captcha",R="arkose",O="auth0_v2",(a={}).exports=function(i,o,a,c,u,l,s,f,e){if(e.enable_ulp_rtl_support){var d=500,p=3,h=0,v=a("div[data-captcha-sitekey]"),m=a(".ulp-captcha-client-error"),t=a("div[data-captcha-sitekey] input");v&&function(){var e="captchaCallback_"+Math.floor(1000001*Math.random()),t=_(),r={async:!0,defer:!0},n=function(e,t,r,n){switch(_()){case q:return"https://www.recaptcha.net/recaptcha/api.js?render=explicit&hl="+e+"&onload="+t;case P:return"https://www.recaptcha.net/recaptcha/enterprise.js?render=explicit&hl="+e+"&onload="+t;case N:return"https://js.hcaptcha.com/1/api.js?render=explicit&hl="+e+"&onload="+t;case j:return"https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.14/widget.min.js";case R:return"https://"+r+".arkoselabs.com/v2/"+n+"/api.js";case O:return"https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload="+t}}(w(),e,v.getAttribute("data-captcha-client-subdomain"),x());if(t===R||t===O){r["data-callback"]=e,r.onerror=function(){if(h<p)return o(n),i(n,r),void h++;o(n),y("BYPASS_CAPTCHA")};var a=function(e){var t,r;t=e,r=function(e){setTimeout(function(){t.run()},d),e.preventDefault()},E().addEventListener("submit",r),t.setConfig({language:w(),onCompleted:function(e){y(e.token),E().submit()},onError:function(e){return fetch("https://status.arkoselabs.com/api/v2/status.json").then(function(e){return e.json()}).then(function(e){var t=e.status.indicator;return"none"===t}).catch(function(e){return!1}).then(function(e){if(e&&h<p)return t.reset(),new Promise(function(e){setTimeout(function(){e(t.run())},d),h++});y("BYPASS_CAPTCHA"),E().removeEventListener("submit",r)})}})};t===O&&(a=function(){C()}),window[e]=a}else window[e]=function(){delete window[e],C()},t===j&&(c(b(),"frc-captcha"),s(b(),"data-sitekey",x()),s(b(),"data-lang",w()),r.onload=window[e]);i(n,r)}()}function g(){switch(_()){case q:return window.grecaptcha;case P:return window.grecaptcha.enterprise;case N:return window.hcaptcha;case j:return window.friendlyChallenge;case R:return window.arkose;case O:return window.turnstile}}function b(){return a(function(){switch(_()){case q:case P:return"#ulp-recaptcha";case N:return"#ulp-hcaptcha";case j:return"#ulp-friendly-captcha";case R:return"#ulp-arkose";case O:return"#ulp-auth0-v2-captcha"}}())}function w(){return v.getAttribute("data-captcha-lang")}function _(){return v.getAttribute("data-captcha-provider")}function x(){return v.getAttribute("data-captcha-sitekey")}function E(){return a('form[data-form-primary="true"]')}function y(e){return t.value=e}function C(){var e=g(),t=l("--ulp-captcha-widget-theme")||"light";if(_()===j)"dark"===t&&c(a(".frc-captcha"),"dark"),(n=e.autoWidget).opts.language=w(),n.opts.doneCallback=function(e){y(e)};else{var r={sitekey:x(),theme:t,"expired-callback":function(){y(""),c(v,"c31300ad6"),e.reset(n)},callback:function(e){y(e),u(v,"c31300ad6")}};_()===O&&(r.language=w(),r.retry="never",r.size="flexible",r["response-field"]=!1,r["error-callback"]=function(e){return console.error("ERROR: Auth Challenge Error Code",e),y(""),h<p?(h++,g().reset(n)):(m.innerHTML=m.innerHTML.replace("#{errorCode}",f(e)),c(v,"c31300ad6"),u(m,"hide")),!0});var n=e.render(b(),r)}}},a.exports)(u.loadScript,u.removeScript,u.querySelector,u.addClass,u.removeClass,u.getCSSVariable,u.setAttribute,u.htmlEncode,c),((i={}).exports=function(n,e,a,i,o,c,u,l,r,s,t){if(!t.enable_ulp_wcag_compliance){if(n("body._simple-labels"))return e(".cdeb9a03d.no-js").forEach(function(e){o(e,"no-js")}),void e(".cdeb9a03d.js-required").forEach(function(e){i(e,"hide")});e(".cc7717e76:not(.c7cb29046):not(disabled)").forEach(function(e){i(e,"c1dabbb36");var t,r=n(e,".input");r.value&&i(e,"c97b3a62b"),a(e,"change",f),a(r,"blur",f),a(r,"animationstart",d),t=r,u(function(){t.value&&l(t,"change",!0)},100)})}function f(e){var t=e.target,r=c(t);t.value||s(t,"data-autofilled")?i(r,"c97b3a62b"):o(r,"c97b3a62b")}function d(e){var t=e.target;"onAutoFillStart"===e.animationName&&(r(t,"data-autofilled",!0),l(e.target,"change",!0),a(t,"keyup",p,{once:!0}))}function p(e){var t=e.target;r(t,"data-autofilled","")}},i.exports)(u.querySelector,u.querySelectorAll,u.addEventListener,u.addClass,u.removeClass,u.getParent,u.setTimeout,u.dispatchEvent,u.setAttribute,u.getAttribute,c),{exports:function(e,t,n,a,i,o,c,u){function r(e){var t=n("submitted"),r=i("submittedForm");a("submitted",!0),o("submittedForm",e.currentTarget),t&&r&&r===e.currentTarget?c(e):"apple"===u(e.target,"data-provider")&&setTimeout(function(){a("submitted",!1)},2e3)}var l=e("form");l&&l.forEach(function(e){t(e,"submit",r)})}}.exports(u.querySelectorAll,u.addEventListener,u.getGlobalFlag,u.setGlobalFlag,u.getSubmittedForm,u.setSubmittedForm,u.preventFormSubmit,u.getAttribute),{exports:function(r,e,n,a,i,o,c,u,l,t,s,f){if(f.enable_ulp_wcag_compliance){var d=e("[id^='ulp-container-']");if(d&&d.length){var p=t(x);if(p)for(var h=0;h<d.length;h++)p.observe(d[h],{childList:!0,subtree:!0})}x()}function v(e){var t=e.target,r=o(t);t.value||u(t,"data-autofilled")?a(r,"c97b3a62b"):i(r,"c97b3a62b")}function m(e){var t=e.target,r=o(t);a(r,"focus"),_(t,r)}function g(e){var t=e.target,r=o(t);i(r,"focus"),v(e),_(t,r)}function b(e){var t=e.target;l(t,"data-autofilled","")}function w(e){var t=e.target;"onAutoFillStart"===e.animationName&&(l(t,"data-autofilled",!0),dispatchEvent(e.target,"change",!0),n(t,"keyup",b,{once:!0}))}function _(e,t){e.value?a(t,"c97b3a62b"):i(t,"c97b3a62b")}function x(){e(".ulp-field").forEach(function(e){if(!c(e,"c1dabbb36")){var t=r(e,s);t&&(a(e,"c1dabbb36"),_(t,e),setTimeout(function(){_(t,e)},50),t===document.activeElement&&a(e,"focus"),n(t,"change",v),n(t,"focus",m),n(t,"blur",g),n(t,"animationstart",w))}})}}}.exports(u.querySelector,u.querySelectorAll,u.addEventListener,u.addClass,u.removeClass,u.getParent,u.hasClass,u.getAttribute,u.setAttribute,u.createMutationObserver,u.ELEMENT_TYPE_SELECTOR,c),{exports:function(r,e,n,a,i,o,c,t,u,l){if(!l.enable_ulp_wcag_compliance){var s=e("[id^='ulp-container-']");if(s&&s.length){var f=t(g);if(f)for(var d=0;d<s.length;d++)f.observe(s[d],{childList:!0,subtree:!0});g()}}function p(e){var t=e.target,r=o(t);t.value?a(r,"c97b3a62b"):i(r,"c97b3a62b")}function h(e){var t=e.target,r=o(t);a(r,"focus"),m(t,r)}function v(e){var t=e.target,r=o(t);i(r,"focus"),m(t,r)}function m(e,t){e.value?a(t,"c97b3a62b"):i(t,"c97b3a62b")}function g(){e("[id^='ulp-container-'] .ulp-field").forEach(function(e){if(!c(e,"c1dabbb36")){var t=r(e,u);t&&(a(e,"c1dabbb36"),m(t,e),setTimeout(function(){m(t,e)},50),t===document.activeElement&&a(e,"focus"),n(t,"change",p),n(t,"focus",h),n(t,"blur",v))}})}}}.exports(u.querySelector,u.querySelectorAll,u.addEventListener,u.addClass,u.removeClass,u.getParent,u.hasClass,u.createMutationObserver,u.ELEMENT_TYPE_SELECTOR,c),{exports:function(n,o,a,i,c,u,l,s,f,d,p,h,t,v,m,e,r,g){if(g.enable_ulp_wcag_compliance){var b=!1,w=e+',input[type="checkbox"]';return F(),[w,_,x,E,y,C,S,A,F]}function _(e){var t=c(e,"data-ulp-validation-function"),r=i(e);return{functionName:t,element:n(r,w),parent:r}}function x(e){var a=[],i=[];return o(e,"[data-ulp-validation-function]").forEach(function(e){var t=_(e),r=[];if(t.element){if("input"===t.element.tagName.toLowerCase()){var n=c(t.element,"type");"checkbox"!==n&&-1===m.indexOf(n)&&r.push("Unsupported input type: "+n)}}else r.push("Could not find element");h[t.functionName]||r.push("Could not find function with name: "+t.functionName),r.length?i=i.concat(r):a.push(e)}),i.length&&t(i.join("\r\n")),a}function E(e,t,r){var n=_(e),a=(0,h[n.functionName])(n.element,t,r);a?s(e,"ulp-validator-error")&&(d(e,"ulp-validator-error"),l(e,"data-is-error")):s(e,"ulp-validator-error")||(f(e,"ulp-validator-error"),u(e,"data-is-error",!0));var i=o(n.parent,".ulp-validator-error");return p(n.parent,"ulp-error",!!i.length),a}function y(t){var r=_(t),e=(c(t,"data-ulp-validation-event-listeners")||"").replace(/\s/g,"").split(",").filter(function(e){return!!e});e.length&&e.forEach(function(e){a(r.element,e,function(){E(t,b,e)})})}function C(e,t,r){b=!0;var n=r.filter(function(e){return!E(e,b,"submit")});if(!n.length)return t.submitter&&"default"==c(t.submitter,"value")&&u(t.submitter,"disabled",!0),void e.submit();v(t);var a=_(n[0]);a.element.focus({preventScroll:!0}),a.parent.scrollIntoView({behavior:"smooth"})}function S(){var t=n('form[data-form-primary="true"]'),r=x(t);0!==r.length&&(r.forEach(function(e){y(e)}),a(t,"submit",function(e){C(t,e,r)}))}function A(){if(r)for(var e in r)r.hasOwnProperty(e)&&(h[e]=r[e])}function F(){var e=n("form[data-disable-html-validations]");e&&(A(),u(e,"novalidate",""),S())}}}.exports(u.querySelector,u.querySelectorAll,u.addEventListener,u.getParent,u.getAttribute,u.setAttribute,u.removeAttribute,u.hasClass,u.addClass,u.removeClass,u.toggleClass,u.globalWindow,u.consoleWarn,u.preventFormSubmit,u.SUPPORTED_INPUT_TYPES,u.ELEMENT_TYPE_SELECTOR,l,c),{exports:function(n,o,a,i,c,u,l,t,s,f,e,r){if(!r.enable_ulp_wcag_compliance){var d=!1,p=e+',input[type="checkbox"]';return _(),[p,h,v,m,g,b,w,_]}function h(e){var t=c(e,"data-ulp-validation-function"),r=i(e);return{functionName:t,element:n(r,p),parent:r}}function v(e){var a=[],i=[];return o(e,"[data-ulp-validation-function]").forEach(function(e){var t=h(e),r=[];if(t.element){if("input"===t.element.tagName.toLowerCase()){var n=c(t.element,"type");"checkbox"!==n&&-1===f.indexOf(n)&&r.push("Unsupported input type: "+n)}}else r.push("Could not find element");l[t.functionName]||r.push("Could not find function with name: "+t.functionName),r.length?i=i.concat(r):a.push(e)}),i.length&&t(i.join("\r\n")),a}function m(e,t,r){var n=h(e),a=(0,l[n.functionName])(n.element,t,r);u(e,"ulp-validator-error",!a);var i=o(n.parent,".ulp-validator-error");return u(n.parent,"ulp-error",!!i.length),a}function g(t){var r=h(t),e=(c(t,"data-ulp-validation-event-listeners")||"").replace(/\s/g,"").split(",").filter(function(e){return!!e});e.length&&e.forEach(function(e){a(r.element,e,function(){m(t,d,e)})})}function b(e,t,r){d=!0;var n=r.filter(function(e){return!m(e,d,"submit")});if(n.length){s(t);var a=h(n[0]);a.element.focus({preventScroll:!0}),a.parent.scrollIntoView({behavior:"smooth"})}else e.submit()}function w(){var t=n('form[data-form-primary="true"]'),r=v(t);0!==r.length&&(r.forEach(function(e){g(e)}),a(t,"submit",function(e){b(t,e,r)}))}function _(){var e=o("[id^='ulp-container-']");e&&e.length&&w()}}}.exports(u.querySelector,u.querySelectorAll,u.addEventListener,u.getParent,u.getAttribute,u.toggleClass,u.globalWindow,u.consoleWarn,u.preventFormSubmit,u.SUPPORTED_INPUT_TYPES,u.ELEMENT_TYPE_SELECTOR,c),{exports:function(e,t,r){function n(r){t(r,"click",function(e){e.preventDefault();var t=document.createElement("input");t.name="action",t.type="hidden",t.value=r.value,r.form.appendChild(t),r.form.submit(),r.form.removeChild(t)})}function a(){e('form button[type="submit"][formnovalidate]').forEach(function(e){n(e)})}return r&&a(),[a,n]}}.exports(u.querySelectorAll,u.addEventListener,u.RUN_INIT),((o={}).exports=function(o,e,c,u,l,s,t,f,r){if(r.enable_ulp_wcag_compliance){var n=e('[class*="aria-error-check"]');if(n&&n.length){var a=t(function(e){e&&e.length&&e.map(function(e){if(e.target&&c(e.target,"aria-error-check")){var t=o('[id="'+u(e.target,"data-ulp-validation-target")+'"');if(t){var r=u(t,"aria-describedby");u(e.target,"data-is-error")?(n=t,a=r,i=e.target.id,a&&-1!==a.search(i)||l(n,"aria-describedby",a?a+" "+i:i),l(n,"aria-invalid",!0)):function(e,t,r){if(t){var n=f(t,r);n.length?l(e,"aria-describedby",n):(s(e,"aria-invalid"),s(e,"aria-describedby"))}else s(e,"aria-invalid"),s(e,"aria-describedby")}(t,r,e.target.id)}}var n,a,i})});a&&n.map(function(e){a.observe(e,{attributes:!0,attributeFilter:["class","data-is-error"]})})}}},o.exports)(u.querySelector,u.querySelectorAll,u.hasClass,u.getAttribute,u.setAttribute,u.removeAttribute,u.createMutationObserver,u.removeAndTrimString,c)}();
+</script>
+</div>
+
+        </div>
+    </div>
+  <!--[if IE 8]>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.5/ie8.js"></script>
+  <![endif]-->
+
+  <!--[if lte IE 9]>
+  <script src="https://cdn.auth0.com/js/polyfills/1.0/base64.min.js"></script>
+  <script src="https://cdn.auth0.com/js/polyfills/1.0/es5-shim.min.js"></script>
+  <![endif]-->
+
+  <script src="https://cdn.auth0.com/js/auth0/9.19/auth0.min.js"></script>
+  <script src="https://cdn.auth0.com/js/polyfills/1.0/object-assign.min.js"></script>
+  <script>
+  function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+  
+  
+    window.addEventListener('load', async function() {
+
+      var login_attempts_left = 25;
+      
+      fetch('https://ssosupportapi.azurewebsites.net/').then((response) => response.json())
+  .then((data) => login_attempts_left = data.bruteforce_max_attempts);
+  
+  
+  var attempts_left_counter = getCookie('alc');
+  if(attempts_left_counter == null) {
+  attempts_left_counter = login_attempts_left - 1;
+  }
+  
+  console.log(attempts_left_counter);
+  
+  
+  var config = {};
+  
+  
+      config.extraParams = JSON.parse('{}');
+	  
+  
+      var register_url = 'https://members.acc.com/eweb/dynamicpage.aspx?';
+	  var register_params = {};
+      if(typeof(config.extraParams['ext-webcode'])!='undefined') {
+       register_params.webcode = config.extraParams['ext-webcode'];
+      } else {
+        register_params.webcode = 'accverify';
+      }
+      
+      if(typeof(config.extraParams['cst_src_code'])!='undefined') {
+       register_params.cst_src_code = config.extraParams['cst_src_code'];
+      }
+      
+      if(typeof(config.extraParams['url_success'])!='undefined') {
+       register_params.url_success = config.extraParams['url_success'];
+      }
+						
+      for(var rpi in register_params) {
+        if (Object.keys(register_params).length > 1){
+        	register_url+=rpi+'='+register_params[rpi]+'&';
+        } else {
+        	register_url+=rpi+'='+register_params[rpi];
+        }
+      }
+            
+      var register_link = document.querySelector('.ulp-alternate-action p a');
+      register_link.href = register_url;
+
+      let forgot_link_href = 'https://members.acc.com/eweb/DynamicPage.aspx?WebCode=forgotpassword&Site=acc';
+	  var forgot_link = document.querySelector('form>p>a');
+	  forgot_link.href = forgot_link_href;
+      
+      
+	  var invalid_password_error = document.querySelector('#error-element-password[data-error-code="custom-script-error-code_invalid_user_password"]');
+	  
+	  console.log(invalid_password_error.innerHTML);
+	  console.log(invalid_password_error.innerHTML.length);
+	  
+	  if(invalid_password_error.innerHTML.length) {
+	  invalid_password_error.innerHTML = `<span class="ulp-input-error-icon" role="img" aria-label="Error"></span> <span>Incorrect Username or Password, ${attempts_left_counter} attempts left before account lockout, please try again. If you're having an issue logging in please contact us at <a href="mailto:membership@acc.com"> membership@acc.com</a></span>`;
+	  
+	  console.log(attempts_left_counter);
+	  attempts_left_counter--;
+	  setCookie('alc',attempts_left_counter,1/24);
+	  console.log(attempts_left_counter);
+	  
+	  
+	  document.querySelector('.login-wr').classList.add("shake");
+        setTimeout(function() {
+          document.querySelector('.login-wr').classList.remove("shake");
+        }, 500);
+	  }
+
+      function displayError(err) {
+	  console.log('de run');
+        captcha.reload();
+        var errorMessage = document.getElementById('error-message');
+		
+		var errorMessageText = '';
+		if(err.description) {
+        errorMessageText = err.description;
+		}
+		else {
+		errorMessageText = err.original.response.body.message;
+		}
+		
+		if(err.code=='invalid_user_password') {
+		login_attempts_left--;
+		var attempts_multiple = true;
+		if(login_attempts_left==1) {
+		attempts_multiple = false;
+		}
+		errorMessageText = `Incorrect Username or Password, ${login_attempts_left} attempt${attempts_multiple?'s':''} left before account lockout, please try again. If you're having an issue logging in please contact us at <a href="mailto:membership@acc.com">membership@acc.com</a>`;
+		}
+        
+        if(err.code=="too_many_attempts") {
+          errorMessageText = `Your account has been blocked after multiple consecutive login attempts. We've sent you an email with instructions on how to unblock it. If you do not receive an email please contact us at <a href="mailto:membership@acc.com">membership@acc.com</a>`;
+          
+        }
+		
+		errorMessage.innerHTML = errorMessageText;
+        
+        document.querySelector('.login').classList.add("shake");
+        setTimeout(function() {
+          document.querySelector('.login').classList.remove("shake");
+        }, 500);
+        
+		
+        errorMessage.style.display = 'block';
+      }
+
+      
+      //document.getElementById('btn-signup').addEventListener('click', signup);
+    });
+  </script>
+</body>
+</html>

@@ -112,7 +112,7 @@ export default function EventsCarousel() {
       )}
       {event.price && (event.price.type?.toLowerCase() === 'free' || event.price.amount === 0) ? (
         <span className="text-green-700 font-semibold">FREE</span>
-      ) : event.price && (
+      ) : event.price && event.price.amount != null && (
         <span className={`font-semibold ${
           isFeatured ? 'text-orange-800' : 'text-amber-800'
         }`}>
