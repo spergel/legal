@@ -25,13 +25,21 @@ export default function StarButton({ eventId, className = '' }: StarButtonProps)
     }
   }, [eventId, session]);
 
-  const handleStarToggle = async () => {
+  const handleStarToggle = async (e: React.MouseEvent) => {
+    // Prevent event bubbling to parent elements
+    e.stopPropagation();
+    e.preventDefault();
+    
     if (!session?.user) {
       toast.error('Please sign in to star events');
       return;
     }
 
+    // Optimistic UI update - immediately update the visual state
+    const previousState = isStarred;
+    setIsStarred(!isStarred);
     setIsLoading(true);
+
     try {
       const response = await fetch(`/api/events/${eventId}/star`, {
         method: 'POST',
@@ -42,13 +50,18 @@ export default function StarButton({ eventId, className = '' }: StarButtonProps)
 
       if (response.ok) {
         const data = await response.json();
+        // Confirm the state matches what the server returned
         setIsStarred(data.starred);
-        toast.success(data.starred ? 'Event starred!' : 'Event unstarred');
+        // Show subtle success feedback (no toast spam)
       } else {
+        // Revert on error
+        setIsStarred(previousState);
         toast.error('Failed to update star status');
       }
     } catch (error) {
       console.error('Error toggling star:', error);
+      // Revert on error
+      setIsStarred(previousState);
       toast.error('Failed to update star status');
     } finally {
       setIsLoading(false);
@@ -70,13 +83,9 @@ export default function StarButton({ eventId, className = '' }: StarButtonProps)
       } ${className}`}
       aria-label={isStarred ? 'Unstar event' : 'Star event'}
     >
-      {isLoading ? (
-        <div className="w-5 h-5 animate-spin rounded-full border-2 border-yellow-500 border-t-transparent" />
-      ) : (
-        <Star 
-          className={`w-5 h-5 ${isStarred ? 'fill-current' : ''}`}
-        />
-      )}
+      <Star 
+        className={`w-5 h-5 transition-all duration-200 ${isStarred ? 'fill-current scale-110' : ''} ${isLoading ? 'opacity-70' : ''}`}
+      />
     </button>
   );
 } 

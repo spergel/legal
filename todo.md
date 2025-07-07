@@ -420,4 +420,4 @@ The following scrapers require a headless browser (like Playwright or Pyppeteer)
     - [ ] Law school collaborations
     - [ ] Legal tech integration
     - [ ] CLE provider partnerships
-    - [ ] Professional organization connections
+    - [ ] Professional organization connectionsg
