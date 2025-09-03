@@ -241,8 +241,21 @@ export default function AdminDashboard() {
       }
   };
 
-  const updateEventStatus = async (eventId: string, newStatus: string): Promise<void> => {
-    console.log(`🔄 Updating event ${eventId} to status: ${newStatus}`);
+  // Map operation types to status values
+  const getStatusFromOperation = (operation: string): string => {
+    const statusMap: Record<string, string> = {
+      'approve': 'approved',
+      'deny': 'denied',
+      'feature': 'featured',
+      'cancel': 'cancelled',
+      'archive': 'archived'
+    };
+    return statusMap[operation] || operation;
+  };
+
+  const updateEventStatus = async (eventId: string, operation: string): Promise<void> => {
+    const newStatus = getStatusFromOperation(operation);
+    console.log(`🔄 Updating event ${eventId} to status: ${newStatus} (from operation: ${operation})`);
     
     try {
       const response = await fetch(`/api/events/${eventId}`, {
