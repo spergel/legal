@@ -20,7 +20,7 @@ export default async function AdminPage() {
     console.log('❌ Admin access denied:', {
       userEmail: session?.user?.email,
       adminEmails: ADMIN_EMAILS,
-      isAdmin: ADMIN_EMAILS.includes(session.user.email || '')
+      isAdmin: session?.user?.email ? ADMIN_EMAILS.includes(session.user.email) : false
     });
     redirect('/');
   }
