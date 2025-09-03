@@ -1,0 +1,33 @@
+<svg width="300" height="600" viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="600" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2"/>
+  
+  <!-- Ad Border -->
+  <rect x="10" y="10" width="280" height="580" fill="none" stroke="#6c757d" stroke-width="1" stroke-dasharray="5,5"/>
+  
+  <!-- Ad Label -->
+  <rect x="0" y="0" width="80" height="25" fill="#28a745"/>
+  <text x="40" y="17" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">SIDEBAR</text>
+  
+  <!-- Placeholder Icon -->
+  <circle cx="150" cy="150" r="40" fill="#dee2e6" stroke="#adb5bd" stroke-width="2"/>
+  <text x="150" y="158" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="32" font-weight="bold">📢</text>
+  
+  <!-- Placeholder Text -->
+  <text x="150" y="220" text-anchor="middle" fill="#495057" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Sidebar Advertisement</text>
+  <text x="150" y="245" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="12">Perfect for sponsored content</text>
+  <text x="150" y="265" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="12">and partner promotions</text>
+  
+  <!-- Call to Action -->
+  <rect x="75" y="300" width="150" height="40" fill="#007bff" rx="5"/>
+  <text x="150" y="325" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Advertise Here</text>
+  
+  <!-- Benefits -->
+  <text x="150" y="380" text-anchor="middle" fill="#495057" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Benefits:</text>
+  <text x="150" y="405" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="12">• High visibility</text>
+  <text x="150" y="425" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="12">• Targeted audience</text>
+  <text x="150" y="445" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="12">• Professional appearance</text>
+  
+  <!-- Size Label -->
+  <text x="150" y="580" text-anchor="middle" fill="#adb5bd" font-family="Arial, sans-serif" font-size="10">300x600</text>
+</svg>

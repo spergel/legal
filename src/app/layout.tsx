@@ -94,6 +94,10 @@ export default async function RootLayout({
                   <BookOpen className="w-4 h-4" />
                   Resources
                 </Link>
+                <Link href="/ads" className="text-lg font-semibold hover:underline underline-offset-4 decoration-[#e2c799] transition-colors duration-200 flex items-center gap-1">
+                  <DollarSign className="w-4 h-4" />
+                  Advertise
+                </Link>
                 <Link href="/about" className="text-lg font-semibold hover:underline underline-offset-4 decoration-[#e2c799] transition-colors duration-200 flex items-center gap-1">
                   <Info className="w-4 h-4" />
                   About

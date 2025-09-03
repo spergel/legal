@@ -116,7 +116,14 @@ export default function AdBanner({ position, size, className = '' }: AdBannerPro
             className="w-full h-full object-cover rounded"
             onError={(e) => {
               // Fallback to placeholder if image fails to load
-              e.currentTarget.src = '/placeholder-ad.jpg';
+              const target = e.currentTarget;
+              if (size === 'banner') {
+                target.src = '/placeholder-ad-banner.svg';
+              } else if (size === 'sidebar') {
+                target.src = '/placeholder-ad-sidebar.svg';
+              } else {
+                target.src = '/placeholder-ad.svg';
+              }
             }}
           />
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">

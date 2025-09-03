@@ -1,0 +1,22 @@
+<svg width="728" height="90" viewBox="0 0 728 90" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="728" height="90" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2"/>
+  
+  <!-- Ad Border -->
+  <rect x="10" y="10" width="708" height="70" fill="none" stroke="#6c757d" stroke-width="1" stroke-dasharray="5,5"/>
+  
+  <!-- Ad Label -->
+  <rect x="0" y="0" width="80" height="25" fill="#007bff"/>
+  <text x="40" y="17" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">BANNER</text>
+  
+  <!-- Placeholder Icon -->
+  <circle cx="100" cy="55" r="25" fill="#dee2e6" stroke="#adb5bd" stroke-width="2"/>
+  <text x="100" y="62" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="20" font-weight="bold">📢</text>
+  
+  <!-- Placeholder Text -->
+  <text x="150" y="45" text-anchor="start" fill="#495057" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Advertisement Space</text>
+  <text x="150" y="65" text-anchor="start" fill="#6c757d" font-family="Arial, sans-serif" font-size="12">Your banner ad could be here - 728x90</text>
+  
+  <!-- Size Label -->
+  <text x="650" y="80" text-anchor="end" fill="#adb5bd" font-family="Arial, sans-serif" font-size="10">728x90</text>
+</svg>

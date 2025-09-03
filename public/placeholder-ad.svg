@@ -1,0 +1,22 @@
+<svg width="300" height="250" viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="250" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2"/>
+  
+  <!-- Ad Border -->
+  <rect x="10" y="10" width="280" height="230" fill="none" stroke="#6c757d" stroke-width="1" stroke-dasharray="5,5"/>
+  
+  <!-- Ad Label -->
+  <rect x="0" y="0" width="80" height="25" fill="#007bff"/>
+  <text x="40" y="17" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">AD SPACE</text>
+  
+  <!-- Placeholder Icon -->
+  <circle cx="150" cy="100" r="30" fill="#dee2e6" stroke="#adb5bd" stroke-width="2"/>
+  <text x="150" y="108" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="24" font-weight="bold">📢</text>
+  
+  <!-- Placeholder Text -->
+  <text x="150" y="150" text-anchor="middle" fill="#495057" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Advertisement</text>
+  <text x="150" y="170" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="12">Your ad could be here</text>
+  
+  <!-- Size Label -->
+  <text x="150" y="220" text-anchor="middle" fill="#adb5bd" font-family="Arial, sans-serif" font-size="10">300x250</text>
+</svg>
