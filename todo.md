@@ -125,10 +125,14 @@ The following scrapers require a headless browser (like Playwright or Pyppeteer)
 - [x] Database-backed user and admin roles (Prisma, PlanetScale/MySQL)
 - [x] Event submission form (with image upload)
 - [x] Event moderation dashboard for admins
+- [x] Event status management (pending, approved, denied, featured, cancelled, archived)
+- [x] Featured events carousel on homepage
 - [x] ICS and RSS export (all, filtered, or saved events)
 - [x] Bookmark/save events (localStorage, future: sync to user)
 - [x] Custom calendar/RSS feeds by tag/org
 - [x] Generic, rebrandable UI and codebase
+- [x] Newsletter system with Mailchimp integration
+- [x] Event categorization and tagging system
 
 ## User Authentication & Roles
 - [x] Google sign-in (NextAuth.js)
@@ -141,14 +145,21 @@ The following scrapers require a headless browser (like Playwright or Pyppeteer)
 - [x] User event submission (form + API)
 - [x] Image upload for events
 - [x] Admin dashboard for event approval/denial
+- [x] Event editing by admin (with photo management)
+- [x] Event status management:
+  - [x] Pending (default for submitted events)
+  - [x] Approved (approved events)
+  - [x] Denied (rejected events)
+  - [x] Featured (promoted events) ✅ **IMPLEMENTED**
+  - [x] Cancelled (with status tracking) ✅ **IMPLEMENTED**
+  - [x] Archived (historical events) ✅ **IMPLEMENTED**
+- [x] Featured events carousel on homepage
+- [x] Event search and filtering in admin
+- [x] Database cleanup tools for old events
+- [x] Event statistics and analytics
 - [ ] Filter out non-public/invite-only events from main views
 - [ ] Email notifications for event status (optional)
-- [ ] Event editing/deletion by submitter or admin
-- [ ] Event status management:
-  - [ ] Scraped (default for web-scraped events)
-  - [ ] Featured (promoted events)
-  - [ ] Cancelled (with optional reason)
-  - [ ] Archived (historical events)
+- [ ] Event editing/deletion by submitter (currently admin-only)
 
 ## Export & Communication
 - [x] ICS export (all, filtered, or saved events)
@@ -161,14 +172,17 @@ The following scrapers require a headless browser (like Playwright or Pyppeteer)
 - [x] Responsive design
 - [x] Custom calendar subscribe widget (tags/orgs)
 - [x] Bookmarking UI (star/heart)
-- [ ] User dashboard (view/edit submitted events, bookmarks)
-- [ ] Admin dashboard improvements:
-  - [ ] Search and filter events
-  - [ ] Bulk actions (approve/deny/feature/cancel)
-  - [ ] Event status management
-  - [ ] Analytics overview
+- [x] Admin dashboard with comprehensive features:
+  - [x] Search and filter events
+  - [x] Event status management (approve/deny/feature/cancel/archive)
+  - [x] Event editing with photo management
+  - [x] Event statistics and analytics
+  - [x] Database cleanup tools
+  - [x] Newsletter management
+  - [ ] User dashboard (view/edit submitted events, bookmarks)
   - [ ] User management
   - [ ] System settings
+  - [ ] Bulk actions (approve/deny/feature/cancel)
 
 ## Scraping & Data
 - [x] Modular scraper system (Python, outputs JSON)
@@ -191,6 +205,20 @@ The following scrapers require a headless browser (like Playwright or Pyppeteer)
 - [ ] API for mobile app
 
 ## Phase 1: Core Features (Current Focus)
+- [x] Event Management System ✅ **IMPLEMENTED**
+  - [x] Event submission and moderation
+  - [x] Event status management (pending, approved, denied, featured, cancelled, archived)
+  - [x] Featured events carousel
+  - [x] Event editing and photo management
+  - [x] Event search and filtering
+  - [x] Database cleanup tools
+
+- [x] Newsletter System ✅ **IMPLEMENTED**
+  - [x] Mailchimp integration
+  - [x] Newsletter dashboard
+  - [x] Subscriber management
+  - [x] Campaign creation and sending
+
 - [ ] CLE Credit System
   - [ ] CLE credit tracking per event
   - [ ] Credit type categorization (Ethics, Skills, etc.)
@@ -212,7 +240,7 @@ The following scrapers require a headless browser (like Playwright or Pyppeteer)
   - [ ] Capacity tracking
 
 - [ ] Basic Monetization
-  - [ ] Featured event listings
+  - [x] Featured event listings ✅ **IMPLEMENTED**
   - [ ] Organization profiles
   - [ ] Basic sponsorship options
   - [ ] Payment processing integration
@@ -220,22 +248,27 @@ The following scrapers require a headless browser (like Playwright or Pyppeteer)
   - [ ] Basic analytics
 
 ## Admin Panel
-- [ ] Admin Dashboard
+- [x] Admin Dashboard ✅ **IMPLEMENTED**
+  - [x] Event moderation queue (pending, approved, denied, featured, cancelled, archived)
+  - [x] Event search and filtering
+  - [x] Event editing with photo management
+  - [x] Event statistics and analytics
+  - [x] Database cleanup tools
+  - [x] Newsletter management (separate dashboard)
   - [ ] User management
-  - [ ] Event moderation queue
-  - [ ] Analytics and statistics
   - [ ] System settings
   - [ ] Log viewer
   - [ ] Audit trail
   - [ ] Backup management
   - [ ] API key management
 
-- [ ] Content Management
+- [x] Content Management ✅ **IMPLEMENTED**
+  - [x] Event status management (approve, deny, feature, cancel, archive)
+  - [x] Featured events management
+  - [x] Newsletter management
+  - [x] Event categorization system
   - [ ] Bulk event operations
-  - [ ] Event categorization
-  - [ ] Featured events management
   - [ ] Resource management
-  - [ ] Newsletter management
   - [ ] Tag management
   - [ ] Location management
   - [ ] Organization profiles
@@ -421,3 +454,91 @@ The following scrapers require a headless browser (like Playwright or Pyppeteer)
     - [ ] Legal tech integration
     - [ ] CLE provider partnerships
     - [ ] Professional organization connectionsg
+
+## Business Development & Launch Tasks
+
+### Planning & Strategy
+- [x] Define purpose of the site (Priority 1) ✅ Start with NY
+- [ ] Identify key features (Priority 1)
+  - [ ] Search/filter events
+  - [ ] Email newsletter signup
+  - [ ] Social media integration
+  - [ ] Advertising spots
+  - [ ] Event submission form
+  - [ ] Calendar view and/or map integration
+- [x] Research competitors (Priority 1) ✅ None!
+- [x] Project roadmap and timeline (Priority 1) ✅
+- [ ] Identify event sources (Priority 1) - Initial list completed; need to research additional
+
+### Development
+- [x] Onboard developer (Priority 1) ✅ **COMPLETED** - Josh is onboarded
+- [x] Decide webhost (Priority 1) ✅ **COMPLETED** - Using Vercel/Next.js
+- [x] Design wireframes and layout (Priority 1) ✅ **COMPLETED** - Professional design implemented
+- [x] Build website: front-end (Priority 1) ✅ **COMPLETED** - Responsive UI with Tailwind CSS
+- [x] Build website: back-end (Priority 1) ✅ **COMPLETED** - Next.js API routes, Prisma database
+- [x] Integrate newsletter/email marketing tools (Priority 2) ✅ **COMPLETED** - Mailchimp integration
+- [ ] Set up analytics and tracking (Priority 1)
+  - [ ] Google Analytics 4
+  - [ ] Meta Pixel
+  - [ ] Event click tracking
+  - [ ] UTM parameters
+- [ ] Test performance (Priority 2)
+- [ ] Launch beta for feedback (Priority 3)
+- [ ] Monitor bounce rate
+
+### Content Creation
+- [x] Content strategy (Priority 1) ✅ **COMPLETED** - Newsletter system implemented
+- [x] Voice and tone (Priority 1) ✅ **COMPLETED** - Professional legal events focus
+- [x] SEO keywords (Priority 2) ✅ **COMPLETED** - Basic SEO implemented
+- [x] Draft About page (Priority 2) ✅ **COMPLETED** - Professional about page
+- [ ] Draft T&Cs (Priority 2)
+- [ ] Content calendar (Priority 3) - Newsletter, social media
+- [ ] Monitor open rate and click rate (Priority 3)
+
+### Marketing and Social Media
+- [ ] Logo (Priority 1)
+- [ ] Aesthetics (Priority 1)
+- [ ] LinkedIn account (Priority 2)
+- [ ] Instagram account (Priority 3)
+- [ ] X account (Priority 2)
+- [ ] Design profile images and banners (Priority 2)
+- [ ] Plan initial campaign (Priority 2) - "Coming soon", first featured events
+- [ ] Create a subscriber magnet (Priority 3)
+- [ ] Collect emails pre-launch (Priority 2)
+- [ ] Plan email marketing (Priority 3)
+- [ ] Launch digital ads (Priority 3) - Track ROI with UTM codes and landing pages
+
+### Monetization
+- [ ] Create ad inventory map (Priority 1)
+  - [ ] Homepage banner
+  - [ ] Sidebar ads
+  - [ ] Sponsored event slots
+  - [ ] Newsletter ad placements
+- [ ] Set up ad tracking infrastructure (Priority 2)
+  - [ ] Google Ad Manager or custom tracking
+  - [ ] Impression and clickthrough reporting
+  - [ ] UTM parameters for sponsored links
+- [ ] Create a media kit (Priority 2)
+  - [ ] Audience demographics
+  - [ ] Monthly traffic/subscriber numbers
+  - [ ] Ad formats and sizes
+  - [ ] Pricing tiers
+- [ ] Establish ad policies (Priority 2)
+- [ ] Establish process for replacing ads (Priority 3)
+- [ ] Set initial ad rates (Priority 2) - Flat monthly rate, flat per-email rate
+- [ ] Identify potential advertisers (Priority 2)
+- [ ] Create CRM (Priority 2)
+- [ ] Draft outreach templates (Priority 2)
+  - [ ] Intro pitch
+  - [ ] "Why advertise with us" one-pager
+- [ ] Track performance of paid ads (Priority 3)
+
+### Admin and Legal
+- [x] Domain name (Priority 1) ✅ lawyerevents.net - GoDaddy
+- [x] Set up business email (Priority 2) ✅ lawyerevents@gmail.com
+- [ ] Agreement with Josh (Priority 1)
+- [ ] T&Cs (Priority 3) - Liability disclaimers
+- [ ] Privacy policy (Priority 3)
+- [ ] Cookie compliance (Priority 3)
+- [ ] Create and track budget (Priority 2)
+- [ ] Bank account (Priority 3) - Confirm can use Chase, Zelle and PayPal

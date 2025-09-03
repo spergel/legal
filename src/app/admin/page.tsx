@@ -5,7 +5,8 @@ import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import AdminDashboard from './AdminDashboard';
 import NewsletterDashboard from '@/components/NewsletterDashboard';
-import { Mail, Settings, BarChart3 } from 'lucide-react';
+import AdManagementDashboard from '@/components/AdManagementDashboard';
+import { Mail, Settings, BarChart3, DollarSign } from 'lucide-react';
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -27,7 +28,8 @@ export default function AdminPage() {
 
   const tabs = [
     { key: 'events', label: 'Event Management', icon: BarChart3 },
-    { key: 'newsletter', label: 'Newsletter', icon: Mail }
+    { key: 'newsletter', label: 'Newsletter', icon: Mail },
+    { key: 'ads', label: 'Ad Management', icon: DollarSign }
   ];
 
   return (
@@ -72,6 +74,7 @@ export default function AdminPage() {
         <div className="bg-white rounded-lg shadow-sm">
           {activeTab === 'events' && <AdminDashboard />}
           {activeTab === 'newsletter' && <NewsletterDashboard />}
+          {activeTab === 'ads' && <AdManagementDashboard />}
         </div>
       </div>
     </div>
