@@ -10,6 +10,7 @@ from .base_scraper import BaseScraper
 from .models import Event
 import feedparser
 from dotenv import load_dotenv
+from .academic_event_filter import academic_filter
 
 # Configure logging
 logging.basicConfig(
@@ -32,12 +33,20 @@ class FordhamScraper(BaseScraper):
         """Get events from the Fordham Law website."""
         events = []
         feed = feedparser.parse(self.rss_url)
+        
+        logger.info(f"Processing {len(feed.entries)} events from Fordham RSS feed")
+        
         for entry in feed.entries:
             try:
                 title = entry.title
                 link = entry.link
                 description = getattr(entry, 'summary', None)
                 start_date = getattr(entry, 'published', None) or getattr(entry, 'updated', None)
+                
+                # Filter out internal academic events using shared filter
+                if academic_filter.is_internal_academic_event(title, description):
+                    continue
+                
                 event = Event(
                     id=f"fordham_{hash(link)}",
                     name=title,
@@ -53,9 +62,13 @@ class FordhamScraper(BaseScraper):
                     tags=None
                 )
                 events.append(event)
+                logger.info(f"Added public event: '{title}'")
+                
             except Exception as e:
-                print(f"Error processing Fordham event: {e}")
+                logger.error(f"Error processing Fordham event: {e}")
                 continue
+        
+        logger.info(f"Filtered to {len(events)} public events from {len(feed.entries)} total events")
         return events
 
 def main():

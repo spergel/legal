@@ -4,6 +4,12 @@ A list of tasks and features for the legal events aggregator project.
 
 ## High Priority
 - [x] Fix failing scrapers to ensure data freshness. ✅ **PROGRESS: 14/19 scrapers working (74% success rate), 396 events**
+- [x] **NEW: Implement academic event filtering system** ✅ **COMPLETED**
+  - [x] Create shared `AcademicEventFilter` utility for all law school scrapers
+  - [x] Filter out internal academic events (class schedules, deadlines, faculty meetings)
+  - [x] Update Fordham Law scraper to use filtering (was picking up 50+ internal events)
+  - [x] Update CUNY Law scraper to use filtering
+  - [x] Comprehensive keyword and pattern matching for internal vs. public events
 - [ ] Set up a robust CI/CD pipeline for automated scraping and deployment.
 - [ ] Implement user authentication and profiles.
 - [ ] Add event submission form for users.

@@ -19,6 +19,7 @@ import hashlib
 import re
 from .categorization_helper import EventCategorizer
 from .calendar_configs import ICS_CALENDARS
+from .academic_event_filter import academic_filter
 import json
 
 # Configure logging
@@ -50,14 +51,20 @@ class CUNYLawICSScraper(BaseScraper):
             events = []
             for ics_event in calendar.events:
                 try:
+                    # Filter out internal academic events
+                    if academic_filter.is_internal_academic_event(ics_event.name, getattr(ics_event, 'description', None)):
+                        logger.info(f"Filtering out internal academic event: '{ics_event.name}'")
+                        continue
+                        
                     event = self._parse_ics_event(ics_event)
                     if event:
                         events.append(event)
+                        logger.info(f"Added public event: '{ics_event.name}'")
                 except Exception as e:
                     logger.warning(f"Failed to parse event '{ics_event.name}': {e}")
                     continue
             
-            logger.info(f"Successfully parsed {len(events)} events from CUNY School of Law")
+            logger.info(f"Successfully parsed {len(events)} public events from CUNY School of Law (filtered from {len(calendar.events)} total events)")
             return events
             
         except requests.RequestException as e:
