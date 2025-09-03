@@ -527,33 +527,33 @@ export default function AdminDashboard() {
                         onChange={() => handleSelectEvent(event.id)}
                         className="w-4 h-4 text-blue-600 rounded mt-1"
                       />
-                      {event.photo && (
-                        <div className="flex-shrink-0">
-                          <img 
-                            src={event.photo} 
-                            alt={event.name}
-                            className="w-20 h-20 object-cover rounded border"
-                          />
-                        </div>
-                      )}
+                    {event.photo && (
+                      <div className="flex-shrink-0">
+                        <img 
+                          src={event.photo} 
+                          alt={event.name}
+                          className="w-20 h-20 object-cover rounded border"
+                        />
+                      </div>
+                    )}
                     </div>
                     
                     <div className="flex-1">
-                      <div className="mb-2">
-                        <Link 
-                          href={`/admin?tab=pending&viewEvent=${event.id}`}
-                          className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
-                        >
-                          {event.name}
-                        </Link>
-                      </div>
-                      <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
-                      <div className="mb-2">
-                        <span className="font-semibold">Submitted by:</span>{' '}
-                        <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
-                          {event.submittedBy}
-                        </a>
-                      </div>
+                  <div className="mb-2">
+                    <Link 
+                      href={`/admin?tab=pending&viewEvent=${event.id}`}
+                      className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
+                    >
+                      {event.name}
+                    </Link>
+                  </div>
+                  <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
+                  <div className="mb-2">
+                    <span className="font-semibold">Submitted by:</span>{' '}
+                    <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
+                      {event.submittedBy}
+                    </a>
+                  </div>
                       <div className="flex gap-2">
                         <button 
                           onClick={() => updateEventStatus(event.id, 'approved')}
@@ -567,12 +567,12 @@ export default function AdminDashboard() {
                         >
                           Deny
                         </button>
-                        <button 
-                          onClick={() => handleEditEvent(event)}
+                    <button 
+                      onClick={() => handleEditEvent(event)}
                           className="px-3 py-1 rounded bg-blue-200 text-blue-900 font-semibold hover:bg-blue-300 transition-colors"
-                        >
-                          Edit
-                        </button>
+                    >
+                      Edit
+                    </button>
                         <Link 
                           href={`/admin?tab=pending&viewEvent=${event.id}`}
                           className="px-3 py-1 rounded bg-purple-200 text-purple-900 font-semibold hover:bg-purple-300 transition-colors"
@@ -580,9 +580,9 @@ export default function AdminDashboard() {
                           View
                         </Link>
                       </div>
+                      </div>
                     </div>
                   </div>
-                </div>
               ))}
             </div>
           )}
@@ -637,42 +637,42 @@ export default function AdminDashboard() {
                       onChange={() => handleSelectEvent(event.id)}
                       className="w-4 h-4 text-blue-600 rounded mt-1"
                     />
-                    {event.photo && (
-                      <div className="flex-shrink-0">
-                        <img 
-                          src={event.photo} 
-                          alt={event.name}
-                          className="w-20 h-20 object-cover rounded border"
-                        />
-                      </div>
-                    )}
+                  {event.photo && (
+                    <div className="flex-shrink-0">
+                      <img 
+                        src={event.photo} 
+                        alt={event.name}
+                        className="w-20 h-20 object-cover rounded border"
+                      />
+                    </div>
+                  )}
                   </div>
                   
                   <div className="flex-1">
-                    <div className="mb-2">
-                      <Link 
-                        href={`/admin?tab=all&viewEvent=${event.id}`}
-                        className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
-                      >
-                        {event.name}
-                      </Link>
-                      <span className={`ml-2 px-2 py-1 rounded text-sm ${
-                        event.status === 'approved' ? 'bg-green-100 text-green-800' :
-                        event.status === 'denied' ? 'bg-red-100 text-red-800' :
-                        event.status === 'featured' ? 'bg-blue-100 text-blue-800' :
-                        event.status === 'cancelled' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {event.status}
-                      </span>
-                    </div>
-                    <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
-                    <div className="mb-2">
-                      <span className="font-semibold">Submitted by:</span>{' '}
-                      <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
-                        {event.submittedBy}
-                      </a>
-                    </div>
+                <div className="mb-2">
+                  <Link 
+                    href={`/admin?tab=all&viewEvent=${event.id}`}
+                    className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
+                  >
+                    {event.name}
+                  </Link>
+                  <span className={`ml-2 px-2 py-1 rounded text-sm ${
+                    event.status === 'approved' ? 'bg-green-100 text-green-800' :
+                    event.status === 'denied' ? 'bg-red-100 text-red-800' :
+                    event.status === 'featured' ? 'bg-blue-100 text-blue-800' :
+                    event.status === 'cancelled' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {event.status}
+                  </span>
+                </div>
+                <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
+                <div className="mb-2">
+                  <span className="font-semibold">Submitted by:</span>{' '}
+                  <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
+                    {event.submittedBy}
+                  </a>
+                </div>
                     <div className="flex gap-2 flex-wrap">
                       <button 
                         onClick={() => updateEventStatus(event.id, event.status === 'featured' ? 'approved' : 'featured')}
@@ -700,12 +700,12 @@ export default function AdminDashboard() {
                       >
                         Archive
                       </button>
-                      <button 
-                        onClick={() => handleEditEvent(event)}
+                  <button 
+                    onClick={() => handleEditEvent(event)}
                         className="px-3 py-1 rounded bg-purple-200 text-purple-900 font-semibold hover:bg-purple-300 transition-colors"
-                      >
-                        Edit
-                      </button>
+                  >
+                    Edit
+                  </button>
                       <Link 
                         href={`/admin?tab=all&viewEvent=${event.id}`}
                         className="px-3 py-1 rounded bg-indigo-200 text-indigo-900 font-semibold hover:bg-indigo-300 transition-colors"
@@ -713,9 +713,9 @@ export default function AdminDashboard() {
                         View
                       </Link>
                     </div>
+                    </div>
                   </div>
                 </div>
-              </div>
             ))}
           </div>
         </div>

@@ -4,8 +4,7 @@ import { Session } from 'next-auth';
 import { useState, useEffect } from 'react';
 import AdminDashboard from './AdminDashboard';
 import NewsletterDashboard from '@/components/NewsletterDashboard';
-import AdManagementDashboard from '@/components/AdManagementDashboard';
-import { Mail, Settings, BarChart3, DollarSign } from 'lucide-react';
+import { Mail, Settings, BarChart3 } from 'lucide-react';
 
 interface AdminPageClientProps {
   session: Session;
@@ -24,8 +23,7 @@ export default function AdminPageClient({ session }: AdminPageClientProps) {
 
   const tabs = [
     { key: 'events', label: 'Event Management', icon: BarChart3 },
-    { key: 'newsletter', label: 'Newsletter', icon: Mail },
-    { key: 'ads', label: 'Ad Management', icon: DollarSign }
+    { key: 'newsletter', label: 'Newsletter', icon: Mail }
   ];
 
   const handleTabClick = (tabKey: string) => {
@@ -76,7 +74,6 @@ export default function AdminPageClient({ session }: AdminPageClientProps) {
         <div className="bg-white rounded-lg shadow-sm">
           {activeTab === 'events' && <AdminDashboard />}
           {activeTab === 'newsletter' && <NewsletterDashboard />}
-          {activeTab === 'ads' && <AdManagementDashboard />}
         </div>
       </div>
     </div>

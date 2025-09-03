@@ -7,7 +7,7 @@ import { authOptions } from '@/lib/auth';
 import AuthNav from '@/components/AuthNav';
 import SessionProviderWrapper from '@/components/SessionProviderWrapper';
 import Toaster from '@/components/Toaster';
-import { Calendar, BookOpen, Info, Plus, Shield, DollarSign } from 'lucide-react';
+import { Calendar, BookOpen, Info, Plus, Shield } from 'lucide-react';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
@@ -94,10 +94,7 @@ export default async function RootLayout({
                   <BookOpen className="w-4 h-4" />
                   Resources
                 </Link>
-                <Link href="/ads" className="text-lg font-semibold hover:underline underline-offset-4 decoration-[#e2c799] transition-colors duration-200 flex items-center gap-1">
-                  <DollarSign className="w-4 h-4" />
-                  Advertise
-                </Link>
+                
                 <Link href="/about" className="text-lg font-semibold hover:underline underline-offset-4 decoration-[#e2c799] transition-colors duration-200 flex items-center gap-1">
                   <Info className="w-4 h-4" />
                   About
