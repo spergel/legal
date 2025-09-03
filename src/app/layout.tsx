@@ -7,7 +7,7 @@ import { authOptions } from '@/lib/auth';
 import AuthNav from '@/components/AuthNav';
 import SessionProviderWrapper from '@/components/SessionProviderWrapper';
 import Toaster from '@/components/Toaster';
-import { Calendar, BookOpen, Info, Plus, Shield } from 'lucide-react';
+import { Calendar, BookOpen, Info, Plus, Shield, DollarSign } from 'lucide-react';
 import Script from 'next/script';
 
 export const metadata: Metadata = {

@@ -30,18 +30,18 @@ export default function AdBanner({ position, size, className = '' }: AdBannerPro
   useEffect(() => {
     // In a real implementation, this would fetch from your ad management system
     // For now, we'll use mock data
-    const mockAd: AdData = {
-      id: 'ad-001',
-      title: 'Featured Legal Event',
-      description: 'Join us for exclusive CLE opportunities',
-      imageUrl: '/placeholder-ad.jpg',
-      linkUrl: 'https://example.com/event',
-      advertiser: 'Legal Events Partner',
-      startDate: '2025-01-01',
-      endDate: '2025-12-31',
-      impressions: 0,
-      clicks: 0,
-    };
+         const mockAd: AdData = {
+       id: 'ad-001',
+       title: 'Featured Legal Event',
+       description: 'Join us for exclusive CLE opportunities',
+       imageUrl: size === 'banner' ? '/placeholder-ad-banner.jpg' : size === 'sidebar' ? '/placeholder-ad-sidebar.jpg' : '/placeholder-ad.jpg',
+       linkUrl: 'https://example.com/event',
+       advertiser: 'Legal Events Partner',
+       startDate: '2025-01-01',
+       endDate: '2025-12-31',
+       impressions: 0,
+       clicks: 0,
+     };
 
     // Simulate API call
     setTimeout(() => {
@@ -114,17 +114,17 @@ export default function AdBanner({ position, size, className = '' }: AdBannerPro
             src={ad.imageUrl}
             alt={ad.title}
             className="w-full h-full object-cover rounded"
-            onError={(e) => {
-              // Fallback to placeholder if image fails to load
-              const target = e.currentTarget;
-              if (size === 'banner') {
-                target.src = '/placeholder-ad-banner.svg';
-              } else if (size === 'sidebar') {
-                target.src = '/placeholder-ad-sidebar.svg';
-              } else {
-                target.src = '/placeholder-ad.svg';
-              }
-            }}
+                         onError={(e) => {
+               // Fallback to placeholder if image fails to load
+               const target = e.currentTarget;
+               if (size === 'banner') {
+                 target.src = '/placeholder-ad-banner.jpg';
+               } else if (size === 'sidebar') {
+                 target.src = '/placeholder-ad-sidebar.jpg';
+               } else {
+                 target.src = '/placeholder-ad.jpg';
+               }
+             }}
           />
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
             <div className="text-xs font-semibold">{ad.title}</div>
