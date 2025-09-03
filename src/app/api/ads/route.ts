@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 
 // GET /api/ads - Get available ads for a position
 export async function GET(request: NextRequest) {
