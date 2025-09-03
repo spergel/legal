@@ -12,7 +12,7 @@ export default function AdminPage() {
   const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState('events');
 
-  const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean);
+  const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean);
 
   if (status === 'loading') {
     return (

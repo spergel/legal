@@ -144,7 +144,7 @@ The following scrapers require a headless browser (like Playwright or Pyppeteer)
 - [x] Google sign-in (NextAuth.js)
 - [x] Prisma adapter for NextAuth.js
 - [x] User roles: 'user' (default), 'admin' (set in DB)
-- [ ] Admin management UI (promote/demote users)
+- [x] Admin management UI (promote/demote users) ✅ **IMPLEMENTED** - Requires ADMIN_EMAILS environment variable
 - [ ] Sync bookmarks to user account (after login)
 
 ## Event Management
