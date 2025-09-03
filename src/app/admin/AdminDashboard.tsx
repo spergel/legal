@@ -518,85 +518,90 @@ export default function AdminDashboard() {
             <p className="text-[#5b4636]">No pending events.</p>
           ) : (
             <div className="space-y-4">
-              {/* Select All Checkbox */}
-              <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg">
-                <input
-                  type="checkbox"
-                  checked={selectedEvents.size === pending.length && pending.length > 0}
-                  onChange={handleSelectAll}
-                  className="w-4 h-4 text-blue-600 rounded"
-                />
-                <span className="font-medium">Select All Pending Events</span>
-              </div>
+                             {/* Select All Checkbox */}
+               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                 <span className="font-medium">Select All Pending Events</span>
+                 <input
+                   type="checkbox"
+                   checked={selectedEvents.size === pending.length && pending.length > 0}
+                   onChange={handleSelectAll}
+                   className="w-6 h-6 text-blue-600 rounded"
+                 />
+               </div>
               
               {/* Events List */}
               {pending.map((event: Event, idx: number) => (
-                <div key={event.id || `pending-${idx}`} className="bg-white border border-[#c8b08a] rounded p-4">
-                  <div className="flex gap-4">
-                    <div className="flex items-start space-x-3">
-                      <input
-                        type="checkbox"
-                        checked={selectedEvents.has(event.id)}
-                        onChange={() => handleSelectEvent(event.id)}
-                        className="w-4 h-4 text-blue-600 rounded mt-1"
-                      />
-                    {event.photo && (
-                      <div className="flex-shrink-0">
-                        <img 
-                          src={event.photo} 
-                          alt={event.name}
-                          className="w-20 h-20 object-cover rounded border"
-                        />
-                      </div>
-                    )}
-                    </div>
-                    
-                    <div className="flex-1">
-                  <div className="mb-2">
-                    <Link 
-                      href={`/admin?tab=pending&viewEvent=${event.id}`}
-                      className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
-                    >
-                      {event.name}
-                    </Link>
-                  </div>
-                  <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
-                  <div className="mb-2">
-                    <span className="font-semibold">Submitted by:</span>{' '}
-                    <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
-                      {event.submittedBy}
-                    </a>
-                  </div>
-                      <div className="flex gap-2">
-                        <button 
-                          onClick={() => updateEventStatus(event.id, 'approved')}
-                          className="px-3 py-1 rounded bg-green-200 text-green-900 font-semibold hover:bg-green-300 transition-colors"
-                        >
-                          Approve
-                        </button>
-                        <button 
-                          onClick={() => updateEventStatus(event.id, 'denied')}
-                          className="px-3 py-1 rounded bg-red-200 text-red-900 font-semibold hover:bg-red-300 transition-colors"
-                        >
-                          Deny
-                        </button>
-                    <button 
-                      onClick={() => handleEditEvent(event)}
-                          className="px-3 py-1 rounded bg-blue-200 text-blue-900 font-semibold hover:bg-blue-300 transition-colors"
-                    >
-                      Edit
-                    </button>
-                        <Link 
-                          href={`/admin?tab=pending&viewEvent=${event.id}`}
-                          className="px-3 py-1 rounded bg-purple-200 text-purple-900 font-semibold hover:bg-purple-300 transition-colors"
-                        >
-                          View
-                        </Link>
-                      </div>
-                      </div>
-                    </div>
-                  </div>
-              ))}
+                                 <div key={event.id || `pending-${idx}`} className="bg-white border border-[#c8b08a] rounded p-4">
+                   <div className="flex gap-4">
+                     {event.photo && (
+                       <div className="flex-shrink-0">
+                         <img 
+                           src={event.photo} 
+                           alt={event.name}
+                           className="w-20 h-20 object-cover rounded border"
+                         />
+                       </div>
+                     )}
+                                          <div className="flex-1">
+                       <div className="flex items-start justify-between">
+                         <div className="flex-1">
+                           <div className="mb-2">
+                             <Link 
+                               href={`/admin?tab=pending&viewEvent=${event.id}`}
+                               className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
+                             >
+                               {event.name}
+                             </Link>
+                           </div>
+                           <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
+                           <div className="mb-2">
+                             <span className="font-semibold">Submitted by:</span>{' '}
+                             <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
+                               {event.submittedBy}
+                             </a>
+                           </div>
+                           <div className="flex gap-2">
+                             <button 
+                               onClick={() => updateEventStatus(event.id, 'approved')}
+                               className="px-3 py-1 rounded bg-green-200 text-green-900 font-semibold hover:bg-green-300 transition-colors"
+                             >
+                               Approve
+                             </button>
+                             <button 
+                               onClick={() => updateEventStatus(event.id, 'denied')}
+                               className="px-3 py-1 rounded bg-red-200 text-red-900 font-semibold hover:bg-red-300 transition-colors"
+                             >
+                               Deny
+                             </button>
+                             <button 
+                               onClick={() => handleEditEvent(event)}
+                               className="px-3 py-1 rounded bg-blue-200 text-blue-900 font-semibold hover:bg-blue-300 transition-colors"
+                             >
+                               Edit
+                             </button>
+                             <Link 
+                               href={`/admin?tab=pending&viewEvent=${event.id}`}
+                               className="px-3 py-1 rounded bg-purple-200 text-purple-900 font-semibold hover:bg-purple-300 transition-colors"
+                             >
+                               View
+                             </Link>
+                           </div>
+                         </div>
+                         
+                         {/* Checkbox on the right side */}
+                         <div className="ml-4">
+                           <input
+                             type="checkbox"
+                             checked={selectedEvents.has(event.id)}
+                             onChange={() => handleSelectEvent(event.id)}
+                             className="w-6 h-6 text-blue-600 rounded"
+                           />
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               ))}
             </div>
           )}
         </div>
@@ -628,40 +633,34 @@ export default function AdminDashboard() {
             />
           </div>
           
-          {/* Select All Checkbox */}
-          <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg mb-4">
-            <input
-              type="checkbox"
-              checked={selectedEvents.size === filteredEvents.length && filteredEvents.length > 0}
-              onChange={handleSelectAll}
-              className="w-4 h-4 text-blue-600 rounded"
-            />
-            <span className="font-medium">Select All Filtered Events</span>
-          </div>
+                     {/* Select All Checkbox */}
+           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg mb-4">
+             <span className="font-medium">Select All Filtered Events</span>
+             <input
+               type="checkbox"
+               checked={selectedEvents.size === filteredEvents.length && filteredEvents.length > 0}
+               onChange={handleSelectAll}
+               className="w-6 h-6 text-blue-600 rounded"
+             />
+           </div>
           
           <div className="space-y-4">
-            {filteredEvents.map((event: Event) => (
-              <div key={event.id} className="bg-white border border-[#c8b08a] rounded p-4">
-                <div className="flex gap-4">
-                  <div className="flex items-start space-x-3">
-                    <input
-                      type="checkbox"
-                      checked={selectedEvents.has(event.id)}
-                      onChange={() => handleSelectEvent(event.id)}
-                      className="w-4 h-4 text-blue-600 rounded mt-1"
-                    />
-                  {event.photo && (
-                    <div className="flex-shrink-0">
-                      <img 
-                        src={event.photo} 
-                        alt={event.name}
-                        className="w-20 h-20 object-cover rounded border"
-                      />
-                    </div>
-                  )}
-                  </div>
-                  
-                  <div className="flex-1">
+                         {filteredEvents.map((event: Event) => (
+               <div key={event.id} className="bg-white border border-[#c8b08a] rounded p-4">
+                 <div className="flex gap-4">
+                   {event.photo && (
+                     <div className="flex-shrink-0">
+                       <img 
+                         src={event.photo} 
+                         alt={event.name}
+                         className="w-20 h-20 object-cover rounded border"
+                       />
+                     </div>
+                   )}
+                   
+                   <div className="flex-1">
+                     <div className="flex items-start justify-between">
+                       <div className="flex-1">
                 <div className="mb-2">
                   <Link 
                     href={`/admin?tab=all&viewEvent=${event.id}`}
@@ -725,11 +724,22 @@ export default function AdminDashboard() {
                       >
                         View
                       </Link>
-                    </div>
-                    </div>
-                  </div>
-                </div>
-            ))}
+                       </div>
+                       
+                       {/* Checkbox on the right side */}
+                       <div className="ml-4">
+                         <input
+                           type="checkbox"
+                           checked={selectedEvents.has(event.id)}
+                           onChange={() => handleSelectEvent(event.id)}
+                           className="w-6 h-6 text-blue-600 rounded"
+                         />
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             ))}
           </div>
         </div>
       )}
