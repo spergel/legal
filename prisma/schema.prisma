@@ -97,6 +97,7 @@ model Event {
   communityId String?     // Optional reference to a Community
   community   Community?  @relation(fields: [communityId], references: [id])
   starredBy   UserEvent[] // Many-to-many relationship with users
+  wordpressId String?     // WordPress post ID for integration
   
   // New fields for categorization system
   category    String[]    // Array of categories (e.g., ['CLE', 'Intellectual Property', 'Networking'])

@@ -532,34 +532,34 @@ export default function AdminDashboard() {
               {/* Events List */}
               {pending.map((event: Event, idx: number) => (
                                  <div key={event.id || `pending-${idx}`} className="bg-white border border-[#c8b08a] rounded p-4">
-                   <div className="flex gap-4">
-                     {event.photo && (
-                       <div className="flex-shrink-0">
-                         <img 
-                           src={event.photo} 
-                           alt={event.name}
-                           className="w-20 h-20 object-cover rounded border"
-                         />
-                       </div>
-                     )}
+                  <div className="flex gap-4">
+                    {event.photo && (
+                      <div className="flex-shrink-0">
+                        <img 
+                          src={event.photo} 
+                          alt={event.name}
+                          className="w-20 h-20 object-cover rounded border"
+                        />
+                      </div>
+                    )}
                                           <div className="flex-1">
                        <div className="flex items-start justify-between">
-                         <div className="flex-1">
-                           <div className="mb-2">
-                             <Link 
-                               href={`/admin?tab=pending&viewEvent=${event.id}`}
-                               className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
-                             >
-                               {event.name}
-                             </Link>
-                           </div>
-                           <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
-                           <div className="mb-2">
-                             <span className="font-semibold">Submitted by:</span>{' '}
-                             <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
-                               {event.submittedBy}
-                             </a>
-                           </div>
+                    <div className="flex-1">
+                  <div className="mb-2">
+                    <Link 
+                      href={`/admin?tab=pending&viewEvent=${event.id}`}
+                      className="font-bold text-lg hover:text-[#8b6b4a] transition-colors"
+                    >
+                      {event.name}
+                    </Link>
+                  </div>
+                  <div className="mb-2 text-sm text-[#5b4636]">{event.description}</div>
+                  <div className="mb-2">
+                    <span className="font-semibold">Submitted by:</span>{' '}
+                    <a href={`mailto:${event.submittedBy}`} className="text-blue-600 hover:underline">
+                      {event.submittedBy}
+                    </a>
+                  </div>
                            <div className="flex gap-2">
                              <button 
                                onClick={() => updateEventStatus(event.id, 'approved')}
@@ -573,12 +573,12 @@ export default function AdminDashboard() {
                              >
                                Deny
                              </button>
-                             <button 
-                               onClick={() => handleEditEvent(event)}
+                    <button 
+                      onClick={() => handleEditEvent(event)}
                                className="px-3 py-1 rounded bg-blue-200 text-blue-900 font-semibold hover:bg-blue-300 transition-colors"
-                             >
-                               Edit
-                             </button>
+                    >
+                      Edit
+                    </button>
                              <Link 
                                href={`/admin?tab=pending&viewEvent=${event.id}`}
                                className="px-3 py-1 rounded bg-purple-200 text-purple-900 font-semibold hover:bg-purple-300 transition-colors"
@@ -598,10 +598,10 @@ export default function AdminDashboard() {
                            />
                          </div>
                        </div>
-                     </div>
-                   </div>
-                 </div>
-               ))}
+                      </div>
+                    </div>
+                  </div>
+              ))}
             </div>
           )}
         </div>
@@ -647,20 +647,20 @@ export default function AdminDashboard() {
           <div className="space-y-4">
                          {filteredEvents.map((event: Event) => (
                <div key={event.id} className="bg-white border border-[#c8b08a] rounded p-4">
-                 <div className="flex gap-4">
-                   {event.photo && (
-                     <div className="flex-shrink-0">
-                       <img 
-                         src={event.photo} 
-                         alt={event.name}
-                         className="w-20 h-20 object-cover rounded border"
-                       />
-                     </div>
-                   )}
+                <div className="flex gap-4">
+                  {event.photo && (
+                    <div className="flex-shrink-0">
+                      <img 
+                        src={event.photo} 
+                        alt={event.name}
+                        className="w-20 h-20 object-cover rounded border"
+                      />
+                    </div>
+                  )}
                    
                    <div className="flex-1">
                      <div className="flex items-start justify-between">
-                       <div className="flex-1">
+                  <div className="flex-1">
                 <div className="mb-2">
                   <Link 
                     href={`/admin?tab=all&viewEvent=${event.id}`}
@@ -736,10 +736,10 @@ export default function AdminDashboard() {
                          />
                        </div>
                      </div>
-                   </div>
-                 </div>
-               </div>
-             ))}
+                    </div>
+                  </div>
+                </div>
+            ))}
           </div>
         </div>
       )}
