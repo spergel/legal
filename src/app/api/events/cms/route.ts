@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
       take: Math.min(limit, 100) // Cap at 100 events
     });
 
-    // Format for WordPress consumption
+    // Format for external CMS consumption (WordPress, Squarespace, etc.)
     const formattedEvents = events.map(event => ({
       id: event.id,
       title: event.name,
@@ -80,7 +80,8 @@ export async function GET(request: NextRequest) {
       } : null,
       photo: event.photo,
       url: `https://lawyerevents.net/events/${event.id}`,
-      featured: event.status === 'featured'
+      featured: event.status === 'featured',
+      cms_id: event.wordpressId // Generic CMS ID field
     }));
 
     return NextResponse.json({
@@ -97,7 +98,7 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error fetching events for WordPress:', error);
+    console.error('Error fetching events for external CMS:', error);
     return NextResponse.json(
       { error: 'Failed to fetch events' },
       { status: 500 }
@@ -105,7 +106,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST endpoint for external CMS (WordPress/Squarespace) to submit events back
+// POST endpoint for external CMS (WordPress/Squarespace/etc.) to submit events back
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -119,7 +120,7 @@ export async function POST(request: NextRequest) {
       community_name,
       contact_email,
       photo_url,
-      wordpress_id, // WordPress/Squarespace post ID for reference
+      cms_id, // WordPress/Squarespace/etc. post ID for reference
       cms_type = 'external' // Track which CMS submitted the event
     } = body;
 
@@ -173,8 +174,8 @@ export async function POST(request: NextRequest) {
         communityId,
         submittedBy: contact_email,
         photo: photo_url,
-        status: 'pending', // WordPress submissions start as pending
-        wordpressId: wordpress_id // Store WordPress reference
+        status: 'pending', // External CMS submissions start as pending
+        wordpressId: cms_id // Store CMS reference (works for any CMS)
       },
       include: {
         location: true,
@@ -188,12 +189,13 @@ export async function POST(request: NextRequest) {
       data: {
         id: event.id,
         status: event.status,
-        wordpress_id: wordpress_id
+        cms_id: cms_id,
+        cms_type: cms_type
       }
     });
 
   } catch (error) {
-    console.error('Error creating event from WordPress:', error);
+    console.error('Error creating event from external CMS:', error);
     return NextResponse.json(
       { error: 'Failed to create event' },
       { status: 500 }
