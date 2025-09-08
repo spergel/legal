@@ -8,7 +8,28 @@ function escapeICalText(text: string) {
 
 function eventToICS(event: Event) {
   const description = event.description ? escapeICalText(event.description) : '';
-  return `BEGIN:VEVENT\nUID:${event.id}@eventcalendar\nSUMMARY:${escapeICalText(event.name)}\nDESCRIPTION:${description}\nDTSTART:${new Date(event.startDate).toISOString().replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z')}\n${event.endDate ? `DTEND:${new Date(event.endDate).toISOString().replace(/[-:]/g, '').replace(/\\.\\d{3}Z$/, 'Z')}\n` : ''}URL:${event.url || ''}
+  
+  // Convert dates to proper ICS format with timezone
+  const startDate = new Date(event.startDate);
+  const endDate = event.endDate ? new Date(event.endDate) : null;
+  
+  // Format dates in ICS format (YYYYMMDDTHHMMSSZ for UTC)
+  const formatICSDate = (date: Date) => {
+    return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
+  };
+  
+  // For now, we'll use UTC format since our database stores everything in UTC
+  // In the future, we could add timezone detection based on location
+  const dtstart = formatICSDate(startDate);
+  const dtend = endDate ? formatICSDate(endDate) : '';
+  
+  return `BEGIN:VEVENT
+UID:${event.id}@eventcalendar
+SUMMARY:${escapeICalText(event.name)}
+DESCRIPTION:${description}
+DTSTART:${dtstart}
+${dtend ? `DTEND:${dtend}\n` : ''}URL:${event.url || ''}
+LOCATION:${event.locationName || 'TBD'}
 END:VEVENT`;
 }
 
@@ -50,12 +71,28 @@ export async function GET(req: Request) {
     if (!event) {
       return new NextResponse('Event not found', { status: 404 });
     }
-    ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Event Calendar//EN\nCALSCALE:GREGORIAN\n${eventToICS(event)}\nEND:VCALENDAR`;
+    ics = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Legal Events NYC//EN
+CALSCALE:GREGORIAN
+X-WR-CALNAME:Legal Events NYC
+X-WR-CALDESC:Legal events and CLE programs in New York City
+X-WR-TIMEZONE:America/New_York
+${eventToICS(event)}
+END:VCALENDAR`;
   } else {
     const events = await getAllEvents();
     
     const filteredEvents = filterEvents(events, { orgs, ids, cleOnly });
-    ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Event Calendar//EN\nCALSCALE:GREGORIAN\n${filteredEvents.map(eventToICS).join('\n')}\nEND:VCALENDAR`;
+    ics = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Legal Events NYC//EN
+CALSCALE:GREGORIAN
+X-WR-CALNAME:Legal Events NYC
+X-WR-CALDESC:Legal events and CLE programs in New York City
+X-WR-TIMEZONE:America/New_York
+${filteredEvents.map(eventToICS).join('\n')}
+END:VCALENDAR`;
   }
   return new NextResponse(ics, {
     status: 200,
