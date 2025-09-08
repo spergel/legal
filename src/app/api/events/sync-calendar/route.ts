@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const events = await prisma.event.findMany({
       where: {
         status: {
-          in: ['approved', 'featured']
+          in: ['APPROVED', 'FEATURED']
         }
       },
       include: {
