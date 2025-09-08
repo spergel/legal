@@ -191,11 +191,17 @@ export async function getLocationById(id: string): Promise<Location | null> {
 
 export async function getAllCommunities(): Promise<Community[]> {
   try {
-    return await prisma.community.findMany({
+    const communities = await prisma.community.findMany({
       orderBy: {
         name: 'asc'
       }
     });
+    
+    // Transform to ensure category is always an array
+    return communities.map(community => ({
+      ...community,
+      category: Array.isArray(community.category) ? community.category : []
+    }));
   } catch (error) {
     console.error('Error fetching communities:', error);
     return [];
@@ -204,9 +210,19 @@ export async function getAllCommunities(): Promise<Community[]> {
 
 export async function getCommunityById(id: string): Promise<Community | null> {
   try {
-    return await prisma.community.findUnique({
+    const community = await prisma.community.findUnique({
       where: { id }
     });
+    
+    if (!community) {
+      return null;
+    }
+    
+    // Transform to ensure category is always an array
+    return {
+      ...community,
+      category: Array.isArray(community.category) ? community.category : []
+    };
   } catch (error) {
     console.error('Error fetching community by ID:', error);
     return null;

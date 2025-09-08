@@ -55,12 +55,12 @@ export async function GET(request: NextRequest) {
       <description><![CDATA[${event.description || ''}]]></description>
       <link>https://lawyerevents.net/events/${event.id}</link>
       <guid isPermaLink="true">https://lawyerevents.net/events/${event.id}</guid>
-      <pubDate>${event.createdAt.toUTCString()}</pubDate>
+      <pubDate>${event.submittedAt.toUTCString()}</pubDate>
       <category>Legal Events</category>
       ${event.location ? `<location><![CDATA[${event.location.name}${event.location.address ? ', ' + event.location.address : ''}]]></location>` : ''}
       ${event.community ? `<community><![CDATA[${event.community.name}]]></community>` : ''}
       ${event.startDate ? `<eventDate>${event.startDate.toISOString()}</eventDate>` : ''}
-      ${event.photo ? `<enclosure url="${event.photo}" type="image/jpeg"/>` : ''}
+      ${event.image ? `<enclosure url="${event.image}" type="image/jpeg"/>` : ''}
     </item>`).join('')}
     
   </channel>

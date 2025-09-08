@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     const transformedEvents = events.map((event: any) => ({
       ...event,
       status: event.status.toLowerCase(),
-      photo: event.photo || null
+      photo: event.image || null
     }));
 
     return NextResponse.json(transformedEvents);

@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       status: event.status,
       start_date: event.startDate,
       end_date: event.endDate,
-      created_at: event.createdAt,
+      created_at: event.submittedAt,
       updated_at: event.updatedAt,
       location: event.location ? {
         id: event.location.id,
@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
         name: event.community.name,
         url: event.community.url
       } : null,
-      photo: event.photo,
+      photo: event.image,
       url: `https://lawyerevents.net/events/${event.id}`,
       featured: event.status === 'featured',
       cms_id: event.wordpressId // Generic CMS ID field
@@ -135,31 +135,43 @@ export async function POST(request: NextRequest) {
     // Create or find location
     let locationId = null;
     if (location_name) {
-      const location = await prisma.location.upsert({
-        where: { name: location_name },
-        update: {},
-        create: {
-          name: location_name,
-          address: location_address || '',
-          city: 'New York',
-          state: 'NY',
-          zip: ''
-        }
+      // First try to find existing location
+      let location = await prisma.location.findFirst({
+        where: { name: location_name }
       });
+      
+      if (!location) {
+        // Create new location if not found
+        location = await prisma.location.create({
+          data: {
+            name: location_name,
+            address: location_address || '',
+            city: 'New York',
+            state: 'NY',
+            zip: ''
+          }
+        });
+      }
       locationId = location.id;
     }
 
     // Create or find community
     let communityId = null;
     if (community_name) {
-      const community = await prisma.community.upsert({
-        where: { name: community_name },
-        update: {},
-        create: {
-          name: community_name,
-          url: ''
-        }
+      // First try to find existing community
+      let community = await prisma.community.findFirst({
+        where: { name: community_name }
       });
+      
+      if (!community) {
+        // Create new community if not found
+        community = await prisma.community.create({
+          data: {
+            name: community_name,
+            url: ''
+          }
+        });
+      }
       communityId = community.id;
     }
 
@@ -168,12 +180,13 @@ export async function POST(request: NextRequest) {
       data: {
         name: title,
         description,
-        startDate: start_date ? new Date(start_date) : null,
-        endDate: end_date ? new Date(end_date) : null,
+        startDate: start_date ? new Date(start_date) : new Date(),
+        endDate: end_date ? new Date(end_date) : new Date(),
+        locationName: location_name || 'TBD',
         locationId,
         communityId,
         submittedBy: contact_email,
-        photo: photo_url,
+        image: photo_url,
         status: 'pending', // External CMS submissions start as pending
         wordpressId: cms_id // Store CMS reference (works for any CMS)
       },
