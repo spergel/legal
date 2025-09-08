@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
           description: event.description,
           start: event.startDate,
           end: event.endDate,
-          location: event.location?.name || '',
+          location: event.location?.name || event.locationName || 'Location TBD',
           url: `https://lawyerevents.net/events/${event.id}`,
           status: event.status,
           community: event.community?.name || ''
@@ -98,7 +98,7 @@ function generateICS(events: any[]): string {
       `DTEND:${endStr}`,
       `SUMMARY:${event.name}`,
       `DESCRIPTION:${event.description?.replace(/\n/g, '\\n') || ''}`,
-      `LOCATION:${event.location?.name || ''}`,
+      `LOCATION:${event.location?.name || event.locationName || 'Location TBD'}`,
       `URL:https://lawyerevents.net/events/${event.id}`,
       `STATUS:CONFIRMED`,
       'END:VEVENT'

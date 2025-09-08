@@ -23,13 +23,24 @@ function eventToICS(event: Event) {
   const dtstart = formatICSDate(startDate);
   const dtend = endDate ? formatICSDate(endDate) : '';
   
+  // Get location information
+  const location = event.location?.name || event.locationName || 'Location TBD';
+  
+  // Get community information for context
+  const community = event.community?.name || '';
+  const communityInfo = community ? `\n\nHosted by: ${community}` : '';
+  
+  // Enhanced description with community info
+  const enhancedDescription = description + communityInfo;
+  
   return `BEGIN:VEVENT
 UID:${event.id}@eventcalendar
 SUMMARY:${escapeICalText(event.name)}
-DESCRIPTION:${description}
+DESCRIPTION:${escapeICalText(enhancedDescription)}
 DTSTART:${dtstart}
 ${dtend ? `DTEND:${dtend}\n` : ''}URL:${event.url || ''}
-LOCATION:${event.locationName || 'TBD'}
+LOCATION:${escapeICalText(location)}
+STATUS:CONFIRMED
 END:VEVENT`;
 }
 
