@@ -187,7 +187,7 @@ export async function POST(request: NextRequest) {
         submittedBy: contact_email,
         image: photo_url,
         status: 'PENDING', // WordPress submissions start as pending
-        wordpressId: wordpress_id // Store WordPress reference
+        // wordpressId: wordpress_id // Store WordPress reference (temporarily disabled)
       },
       include: {
         location: true,

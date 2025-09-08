@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
       photo: event.image,
       url: `https://lawyerevents.net/events/${event.id}`,
       featured: event.status === 'FEATURED',
-      cms_id: event.wordpressId // Generic CMS ID field
+      // cms_id: event.wordpressId // Generic CMS ID field (temporarily disabled)
     }));
 
     return NextResponse.json({
@@ -188,7 +188,7 @@ export async function POST(request: NextRequest) {
         submittedBy: contact_email,
         image: photo_url,
         status: 'PENDING', // External CMS submissions start as pending
-        wordpressId: cms_id // Store CMS reference (works for any CMS)
+        // wordpressId: cms_id // Store CMS reference (temporarily disabled)
       },
       include: {
         location: true,
