@@ -95,6 +95,18 @@ END:VCALENDAR`;
     const events = await getAllEvents();
     
     const filteredEvents = filterEvents(events, { orgs, ids, cleOnly });
+    
+    // Deduplicate events by externalId or name+startDate
+    const deduplicatedEvents = filteredEvents.reduce((acc, event) => {
+      const key = event.externalId || `${event.name}-${new Date(event.startDate).toISOString()}`;
+      if (!acc.has(key)) {
+        acc.set(key, event);
+      }
+      return acc;
+    }, new Map()).values();
+    
+    const uniqueEvents = Array.from(deduplicatedEvents);
+    
     ics = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Legal Events NYC//EN
@@ -102,7 +114,7 @@ CALSCALE:GREGORIAN
 X-WR-CALNAME:Legal Events NYC
 X-WR-CALDESC:Legal events and CLE programs in New York City
 X-WR-TIMEZONE:America/New_York
-${filteredEvents.map(eventToICS).join('\n')}
+${uniqueEvents.map(eventToICS).join('\n')}
 END:VCALENDAR`;
   }
   return new NextResponse(ics, {

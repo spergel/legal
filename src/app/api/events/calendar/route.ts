@@ -28,9 +28,20 @@ export async function GET(request: NextRequest) {
       take: 100
     });
 
+    // Deduplicate events by externalId or name+startDate
+    const deduplicatedEvents = events.reduce((acc, event) => {
+      const key = event.externalId || `${event.name}-${event.startDate.toISOString()}`;
+      if (!acc.has(key)) {
+        acc.set(key, event);
+      }
+      return acc;
+    }, new Map()).values();
+    
+    const uniqueEvents = Array.from(deduplicatedEvents);
+
     if (format === 'ics') {
       // Generate ICS (iCalendar) format
-      const icsContent = generateICS(events);
+      const icsContent = generateICS(uniqueEvents);
       
       return new NextResponse(icsContent, {
         status: 200,
@@ -44,7 +55,7 @@ export async function GET(request: NextRequest) {
       // Return JSON format
       return NextResponse.json({
         success: true,
-        data: events.map(event => ({
+        data: uniqueEvents.map(event => ({
           id: event.id,
           title: event.name,
           description: event.description,
