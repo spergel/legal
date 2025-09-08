@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '20');
-    const status = searchParams.get('status') || 'approved,featured';
+    const status = searchParams.get('status') || 'APPROVED,FEATURED';
     const community = searchParams.get('community');
     const location = searchParams.get('location');
     const featured = searchParams.get('featured') === 'true';
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
     }
     
     if (featured) {
-      whereClause.status = 'featured';
+      whereClause.status = 'FEATURED';
     }
 
     const events = await prisma.event.findMany({
@@ -187,7 +187,7 @@ export async function POST(request: NextRequest) {
         communityId,
         submittedBy: contact_email,
         image: photo_url,
-        status: 'pending', // External CMS submissions start as pending
+        status: 'PENDING', // External CMS submissions start as pending
         wordpressId: cms_id // Store CMS reference (works for any CMS)
       },
       include: {

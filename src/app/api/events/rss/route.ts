@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '50');
-    const status = searchParams.get('status') || 'approved,featured';
+    const status = searchParams.get('status') || 'APPROVED,FEATURED';
     const community = searchParams.get('community');
 
     // Build where clause

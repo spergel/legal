@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status') || 'approved,featured';
+    const status = searchParams.get('status') || 'APPROVED,FEATURED';
     const format = searchParams.get('format') || 'ics'; // ics or json
 
     // Build where clause
