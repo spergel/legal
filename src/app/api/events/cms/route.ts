@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
       } : null,
       photo: event.image,
       url: `https://lawyerevents.net/events/${event.id}`,
-      featured: event.status === 'featured',
+      featured: event.status === 'FEATURED',
       cms_id: event.wordpressId // Generic CMS ID field
     }));
 

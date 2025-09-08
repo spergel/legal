@@ -45,7 +45,7 @@ export default function AdminDashboard() {
     const viewEvent = searchParams.get('viewEvent');
     
     if (tab) {
-      setCurrentTab(tab);
+    setCurrentTab(tab);
     }
     
     if (viewEvent) {
@@ -84,8 +84,8 @@ export default function AdminDashboard() {
     switch (currentTab) {
       case 'pending': return pending;
       case 'all': return allEvents;
-      case 'cancelled': return allEvents.filter(e => e.status === 'cancelled');
-      case 'featured': return allEvents.filter(e => e.status === 'featured');
+      case 'cancelled': return allEvents.filter(e => e.status === 'CANCELLED');
+      case 'featured': return allEvents.filter(e => e.status === 'FEATURED');
       default: return [];
     }
   };
@@ -127,13 +127,13 @@ export default function AdminDashboard() {
           onClick={() => handleTabChange('cancelled')}
           className={`pb-2 px-4 ${currentTab === 'cancelled' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
         >
-          Cancelled Events ({allEvents.filter(e => e.status === 'cancelled').length})
+          Cancelled Events ({allEvents.filter(e => e.status === 'CANCELLED').length})
         </button>
         <button 
           onClick={() => handleTabChange('featured')}
           className={`pb-2 px-4 ${currentTab === 'featured' ? 'border-b-2 border-[#5b4636] font-semibold' : ''}`}
         >
-          Featured Events ({allEvents.filter(e => e.status === 'featured').length})
+          Featured Events ({allEvents.filter(e => e.status === 'FEATURED').length})
         </button>
         <button 
           onClick={() => handleTabChange('cleanup')}
@@ -144,7 +144,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Tab Content */}
-      {currentTab === 'pending' && (
+              {currentTab === 'pending' && (
         <PendingEventsTab
           pending={pending}
           selectedEvents={selectedEvents}
@@ -155,9 +155,9 @@ export default function AdminDashboard() {
           onEditEvent={handleEditEvent}
           onRefresh={fetchEvents}
         />
-      )}
-
-      {currentTab === 'all' && (
+              )}
+              
+              {currentTab === 'all' && (
         <AllEventsTab
           allEvents={allEvents}
           selectedEvents={selectedEvents}
@@ -199,17 +199,17 @@ export default function AdminDashboard() {
           {bulkOperations.slice(-3).map((op, index) => (
             <div key={index} className="text-sm">
               {op.type} - {op.status} {op.message && `(${op.message})`}
-            </div>
+              </div>
           ))}
         </div>
       )}
 
       {/* Event Dialog */}
-      <EventDialog
+        <EventDialog 
         event={editingEvent || viewingEvent}
         isOpen={!!(editingEvent || viewingEvent)}
-        onClose={handleCloseDialog}
-      />
+          onClose={handleCloseDialog}
+        />
     </div>
   );
-}
+} 
