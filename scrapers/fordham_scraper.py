@@ -11,6 +11,7 @@ from .models import Event
 import feedparser
 from dotenv import load_dotenv
 from .academic_event_filter import academic_filter
+from email.utils import parsedate_to_datetime
 
 # Configure logging
 logging.basicConfig(
@@ -41,7 +42,19 @@ class FordhamScraper(BaseScraper):
                 title = entry.title
                 link = entry.link
                 description = getattr(entry, 'summary', None)
-                start_date = getattr(entry, 'published', None) or getattr(entry, 'updated', None)
+                start_date_raw = getattr(entry, 'published', None) or getattr(entry, 'updated', None)
+                start_iso = None
+                if isinstance(start_date_raw, str) and start_date_raw:
+                    try:
+                        # RSS dates like 'Mon, 08 Sep 2025 16:30:00 GMT'
+                        dt = parsedate_to_datetime(start_date_raw)
+                        # Ensure UTC ISO without microseconds
+                        if dt.tzinfo is None:
+                            start_iso = dt.replace(tzinfo=None).isoformat() + 'Z'
+                        else:
+                            start_iso = dt.astimezone().isoformat()
+                    except Exception:
+                        start_iso = start_date_raw
                 
                 # Filter out internal academic events using shared filter
                 if academic_filter.is_internal_academic_event(title, description):
@@ -51,7 +64,7 @@ class FordhamScraper(BaseScraper):
                     id=f"fordham_{hash(link)}",
                     name=title,
                     description=description,
-                    startDate=start_date,
+                    startDate=start_iso or start_date_raw,
                     endDate=None,
                     locationId=None,
                     communityId=self.community_id,

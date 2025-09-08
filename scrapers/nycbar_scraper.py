@@ -11,6 +11,7 @@ from .base_scraper import BaseScraper
 from .models import Event
 from .categorization_helper import EventCategorizer
 from dotenv import load_dotenv
+from email.utils import parsedate_to_datetime
 
 logger = logging.getLogger(__name__)
 
@@ -152,6 +153,61 @@ class NYCBarScraper(BaseScraper):
                     # Date (from event-eyebrow or similar)
                     eyebrow_elem = container.find('div', class_='event-eyebrow')
                     date_str = eyebrow_elem.text.strip() if eyebrow_elem else None
+                    start_iso = None
+                    end_iso = None
+                    # Expected format example: "Mon, Sep 8, 2025 | 2-5:05 PM | CLE"
+                    if date_str and '|' in date_str:
+                        try:
+                            parts = [p.strip() for p in date_str.split('|') if p.strip()]
+                            # parts[0]=date, parts[1]=time range
+                            date_part = parts[0]
+                            time_part = parts[1] if len(parts) > 1 else ''
+                            # Parse date portion allowing optional weekday
+                            # Try formats with and without leading weekday
+                            dt_date = None
+                            for fmt in ['%a, %b %d, %Y', '%b %d, %Y']:
+                                try:
+                                    dt_date = datetime.strptime(date_part, fmt)
+                                    break
+                                except ValueError:
+                                    continue
+                            # Parse time range like "2-5:05 PM" or "5:45-9 PM"
+                            if dt_date and time_part:
+                                import re as _re
+                                m = _re.search(r"^(\d{1,2})(?::(\d{2}))?\s*-\s*(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$", time_part, _re.IGNORECASE)
+                                if m:
+                                    sh, sm, eh, em, ampm = m.groups()
+                                    sh = int(sh)
+                                    eh = int(eh)
+                                    sm = int(sm) if sm else 0
+                                    em = int(em) if em else 0
+                                    ampm = ampm.upper()
+                                    # Apply AM/PM to both
+                                    if ampm == 'PM' and sh != 12:
+                                        sh += 12
+                                    if ampm == 'AM' and sh == 12:
+                                        sh = 0
+                                    if ampm == 'PM' and eh != 12:
+                                        eh += 12
+                                    if ampm == 'AM' and eh == 12:
+                                        eh = 0
+                                    start_dt = dt_date.replace(hour=sh, minute=sm, second=0, microsecond=0)
+                                    end_dt = dt_date.replace(hour=eh, minute=em, second=0, microsecond=0)
+                                    start_iso = start_dt.isoformat()
+                                    end_iso = end_dt.isoformat()
+                                else:
+                                    # Fallback: single time like "2:00 PM"
+                                    for t_fmt in ['%I:%M %p', '%I %p']:
+                                        try:
+                                            t = datetime.strptime(time_part, t_fmt)
+                                            start_dt = dt_date.replace(hour=t.hour, minute=t.minute, second=0, microsecond=0)
+                                            start_iso = start_dt.isoformat()
+                                            end_iso = None
+                                            break
+                                        except ValueError:
+                                            continue
+                        except Exception as e:
+                            logger.warning(f"Failed to parse NYC Bar date string '{date_str}': {e}")
                     # Fallback: try to parse date from elsewhere if needed
                     # Description (not available in list, would need to fetch detail page if needed)
                     description = None
@@ -160,8 +216,8 @@ class NYCBarScraper(BaseScraper):
                         id=f"nycbar_{hash(link)}",
                         name=title,
                         description=description,
-                        startDate=date_str,
-                        endDate=None,
+                        startDate=start_iso or date_str,
+                        endDate=end_iso,
                         locationId=None,
                         communityId=self.community_id,
                         image=None,

@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from typing import List, Dict, Any
 from .models import Event
 import sys
+import re
 
 # Setup paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -84,10 +85,51 @@ class ScraperManagerDB:
             
         api_endpoint = f"{self.api_url}/api/admin/upsert-events"
         
-        # Convert events to the format expected by the API
+        # Helper: normalize date strings to ISO-8601 with timezone (Z) when missing
+        def _normalize_iso8601(dt_str: Any) -> Any:
+            if not isinstance(dt_str, str) or not dt_str:
+                return dt_str
+            s = dt_str.strip()
+            # Already ISO-8601 with offset or Z
+            if re.match(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,6})?)?([+-]\d{2}:?\d{2}|Z)$", s):
+                return s
+            # Date only -> midnight UTC
+            if re.match(r"^\d{4}-\d{2}-\d{2}$", s):
+                return f"{s}T00:00:00Z"
+            # "YYYY-MM-DD HH:MM(:SS)?" -> replace space, add seconds if needed, Z
+            m = re.match(r"^(\d{4}-\d{2}-\d{2})\s+(\d{2}):(\d{2})(?::(\d{2}))?$", s)
+            if m:
+                yyyy_mm_dd, hh, mm, ss = m.groups()
+                ss = ss or "00"
+                return f"{yyyy_mm_dd}T{hh}:{mm}:{ss}Z"
+            # "YYYY-MM-DDTHH:MM" -> add seconds + Z
+            if re.match(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$", s):
+                return f"{s}:00Z"
+            # "YYYY-MM-DDTHH:MM:SS" -> add Z
+            if re.match(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$", s):
+                return f"{s}Z"
+            # Fallback: return as-is (per-scraper should fix non-ISO like 'Mon, Sep 8, 2025 | 2-5 PM')
+            return s
+
+        # Convert events to the format expected by the API, with normalization
         events_data = []
         for event in events:
             event_dict = event.to_dict()
+            # Normalize dates to strict ISO-8601 with timezone
+            event_dict['startDate'] = _normalize_iso8601(event_dict.get('startDate'))
+            event_dict['endDate'] = _normalize_iso8601(event_dict.get('endDate') or event_dict.get('startDate'))
+            # Ensure category is a list of strings
+            cat = event_dict.get('category')
+            if isinstance(cat, str):
+                event_dict['category'] = [cat] if cat else []
+            elif cat is None:
+                event_dict['category'] = []
+            # Ensure tags is a list
+            tags = event_dict.get('tags')
+            if isinstance(tags, str):
+                event_dict['tags'] = [tags] if tags else []
+            elif tags is None:
+                event_dict['tags'] = []
             # Add scraper metadata (only scraper_name is processed by the API)
             event_dict['scraper_name'] = scraper_name
             # Note: scraped_at is not part of Prisma schema, so we don't include it
