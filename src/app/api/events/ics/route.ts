@@ -110,7 +110,7 @@ END:VCALENDAR`;
       take: 1000
     });
     
-    const filteredEvents = filterEvents(events, { orgs, ids, cleOnly });
+    const filteredEvents = filterEvents(events as Event[], { orgs, ids, cleOnly });
     
     // Deduplicate events by name+startDate (more reliable than externalId)
     const deduplicatedEvents = filteredEvents.reduce((acc, event) => {
