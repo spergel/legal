@@ -19,10 +19,8 @@ function eventToICS(event: Event) {
     return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
   };
   
-  // For now, we'll use UTC format since our database stores everything in UTC
-  // In the future, we could add timezone detection based on location
   const dtstart = formatICSDate(startDate);
-  const dtend = endDate ? formatICSDate(endDate) : '';
+  const dtend = endDate ? formatICSDate(endDate) : null;
   
   // Get location information
   const location = event.location?.name || event.locationName || 'Location TBD';
@@ -45,39 +43,15 @@ STATUS:CONFIRMED
 END:VEVENT`;
 }
 
-type FilterParams = { 
-  orgs?: string[]; 
-  ids?: string[]; 
-  cleOnly?: boolean;
-};
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const eventId = searchParams.get('eventId');
+  const orgs = searchParams.get('orgs')?.split(',') || [];
+  const ids = searchParams.get('ids')?.split(',') || [];
+  const cleOnly = searchParams.get('cleOnly') === 'true';
 
-function filterEvents(events: Event[], { orgs = [], ids = [], cleOnly }: FilterParams): Event[] {
-  return events.filter((event: Event) => {
-    // If specific orgs or event ids are requested, we use 'OR' logic
-    let idMatch = true;
-    if (orgs.length > 0 || ids.length > 0) {
-      const orgMatch = orgs.length > 0 && !!event.communityId && orgs.includes(event.communityId);
-      const eventIdMatch = ids.length > 0 && ids.includes(event.id);
-      idMatch = orgMatch || eventIdMatch;
-    }
+  let ics: string;
 
-    let cleMatch = true;
-    if (cleOnly) {
-      cleMatch = (event.eventType === 'CLE' || (event.category || []).includes('CLE'));
-    }
-
-    return idMatch && cleMatch;
-  });
-}
-
-export async function GET(req: Request) {
-  const url = new URL(req.url);
-  const eventId = url.searchParams.get('eventId');
-  const orgs = url.searchParams.getAll('org').flatMap(o => o.split(','));
-  const ids = url.searchParams.getAll('id').flatMap(i => i.split(','));
-  const cleOnly = url.searchParams.get('cle_only') === 'true';
-
-  let ics = '';
   if (eventId) {
     const event = await getEventById(eventId);
     if (!event) {
@@ -110,7 +84,24 @@ END:VCALENDAR`;
       take: 1000
     });
     
-    const filteredEvents = filterEvents(events as Event[], { orgs, ids, cleOnly });
+    // Simple filtering (you can expand this)
+    let filteredEvents = events as Event[];
+    
+    if (orgs.length > 0) {
+      filteredEvents = filteredEvents.filter(event => 
+        orgs.some(org => event.community?.name?.toLowerCase().includes(org.toLowerCase()))
+      );
+    }
+    
+    if (ids.length > 0) {
+      filteredEvents = filteredEvents.filter(event => ids.includes(event.id));
+    }
+    
+    if (cleOnly) {
+      filteredEvents = filteredEvents.filter(event => 
+        event.cleCredits && event.cleCredits > 0
+      );
+    }
     
     // Deduplicate events by name+startDate (more reliable than externalId)
     const deduplicatedEvents = filteredEvents.reduce((acc, event) => {
@@ -133,14 +124,15 @@ X-WR-TIMEZONE:America/New_York
 ${uniqueEvents.map(eventToICS).join('\n')}
 END:VCALENDAR`;
   }
+  
   return new NextResponse(ics, {
     status: 200,
     headers: {
       'Content-Type': 'text/calendar; charset=utf-8',
-      'Content-Disposition': `attachment; filename="events${eventId ? `_${eventId}` : ''}.ics"`,
+      'Content-Disposition': `attachment; filename="legal-events-v2.ics"`,
       'Cache-Control': 'no-cache, no-store, must-revalidate', // Prevent caching
       'Pragma': 'no-cache',
       'Expires': '0',
     },
   });
-} 
+}
