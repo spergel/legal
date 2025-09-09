@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       };
     }
 
-    const events = await prisma.event.findMany({
+    const allEvents = await prisma.event.findMany({
       where: whereClause,
       include: {
         location: true,
@@ -35,8 +35,37 @@ export async function GET(request: NextRequest) {
       orderBy: {
         startDate: 'asc'
       },
-      take: Math.min(limit, 100)
+      take: Math.min(limit * 2, 200) // Get more events to account for deduplication
     });
+
+    // Deduplicate events using the same logic as cleanup API
+    const eventGroups = new Map();
+    
+    for (const event of allEvents) {
+      const key = event.externalId || `${event.name}-${new Date(event.startDate).toISOString()}`;
+      
+      if (!eventGroups.has(key)) {
+        eventGroups.set(key, []);
+      }
+      eventGroups.get(key)!.push(event);
+    }
+    
+    // For each group, keep the event with the earliest submittedAt
+    const events: any[] = [];
+    for (const [key, groupEvents] of eventGroups) {
+      if (groupEvents.length === 1) {
+        events.push(groupEvents[0]);
+      } else {
+        // Sort by submittedAt and keep the oldest
+        groupEvents.sort((a: any, b: any) => 
+          new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime()
+        );
+        events.push(groupEvents[0]);
+      }
+    }
+    
+    // Limit to requested amount after deduplication
+    const limitedEvents = events.slice(0, Math.min(limit, 100));
 
     // Generate RSS XML
     const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -49,7 +78,7 @@ export async function GET(request: NextRequest) {
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="https://lawyerevents.net/api/events/rss" rel="self" type="application/rss+xml"/>
     
-    ${events.map(event => `
+    ${limitedEvents.map(event => `
     <item>
       <title><![CDATA[${event.name}]]></title>
       <description><![CDATA[${event.description || ''}]]></description>

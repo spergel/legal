@@ -1,5 +1,6 @@
 import json
 import logging
+import hashlib
 from datetime import datetime
 from typing import List, Optional
 import requests
@@ -61,7 +62,7 @@ class FordhamScraper(BaseScraper):
                     continue
                 
                 event = Event(
-                    id=f"fordham_{hash(link)}",
+                    id=f"fordham_{hashlib.sha256(link.encode('utf-8')).hexdigest()[:10]}",
                     name=title,
                     description=description,
                     startDate=start_iso or start_date_raw,

@@ -1,5 +1,6 @@
 import logging
 import re
+import hashlib
 from datetime import datetime
 from typing import List, Optional
 
@@ -207,7 +208,7 @@ class BrooklynBarScraper(BaseScraper):
                     # Get CLE credits
                     cle_credits = details.get('cle_credits')
                     
-                    event_id_final = div.get('id', f"brooklynbar_{hash(name)}")
+                    event_id_final = div.get('id', f"brooklynbar_{hashlib.sha256(name.encode('utf-8')).hexdigest()[:10]}")
                     
                     # Build metadata with event link and details
                     metadata = {

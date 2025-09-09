@@ -1,5 +1,6 @@
 import json
 import logging
+import hashlib
 from datetime import datetime
 from typing import List, Optional
 import requests
@@ -105,7 +106,7 @@ class NYCBarScraper(BaseScraper):
             categories = EventCategorizer.categorize_event(title, description, base_categories)
             # Create standardized event
             return Event(
-                id=f"nycbar_{hash(registration_url)}",
+                id=f"nycbar_{hashlib.sha256(registration_url.encode('utf-8')).hexdigest()[:10]}",
                 name=title,
                 description=description,
                 startDate=start_date,
@@ -213,7 +214,7 @@ class NYCBarScraper(BaseScraper):
                     description = None
                     # Create event object (minimal for now)
                     event = Event(
-                        id=f"nycbar_{hash(link)}",
+                        id=f"nycbar_{hashlib.sha256(link.encode('utf-8')).hexdigest()[:10]}",
                         name=title,
                         description=description,
                         startDate=start_iso or date_str,

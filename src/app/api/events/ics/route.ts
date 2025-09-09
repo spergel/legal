@@ -110,18 +110,31 @@ END:VCALENDAR`;
       take: 1000
     });
     
-    const filteredEvents = filterEvents(events as Event[], { orgs, ids, cleOnly });
+    const filteredEvents = filterEvents(events as unknown as Event[], { orgs, ids, cleOnly });
     
-    // Deduplicate events by name+startDate (more reliable than externalId)
+    // Deduplicate events using the same logic as cleanup API
     const deduplicatedEvents = filteredEvents.reduce((acc, event) => {
-      const key = `${event.name}-${new Date(event.startDate).toISOString()}`;
+      const key = event.externalId || `${event.name}-${new Date(event.startDate).toISOString()}`;
       if (!acc.has(key)) {
-        acc.set(key, event);
+        acc.set(key, []);
       }
+      acc.get(key)!.push(event);
       return acc;
-    }, new Map()).values();
+    }, new Map());
     
-    const uniqueEvents = Array.from(deduplicatedEvents);
+    // For each group, keep the event with the earliest submittedAt
+    const uniqueEvents: Event[] = [];
+    for (const [key, groupEvents] of deduplicatedEvents) {
+      if (groupEvents.length === 1) {
+        uniqueEvents.push(groupEvents[0]);
+      } else {
+        // Sort by submittedAt and keep the oldest
+        groupEvents.sort((a: Event, b: Event) => 
+          new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime()
+        );
+        uniqueEvents.push(groupEvents[0]);
+      }
+    }
     
     ics = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -138,9 +151,6 @@ END:VCALENDAR`;
     headers: {
       'Content-Type': 'text/calendar; charset=utf-8',
       'Content-Disposition': `attachment; filename="events${eventId ? `_${eventId}` : ''}.ics"`,
-      'Cache-Control': 'no-cache, no-store, must-revalidate', // Prevent caching
-      'Pragma': 'no-cache',
-      'Expires': '0',
     },
   });
 } 

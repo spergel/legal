@@ -16,8 +16,8 @@ generator client {
 
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./events.db"
 }
 
 model User {
@@ -67,15 +67,6 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-enum EventStatus {
-  PENDING
-  APPROVED
-  DENIED
-  FEATURED
-  CANCELLED
-  ARCHIVED
-}
-
 model Event {
   id          String      @id @default(cuid())
   externalId  String?     @unique
@@ -86,7 +77,7 @@ model Event {
   locationName String
   url         String?     @unique
   cleCredits  Float?      // Changed from Int? to Float? to match our scrapers
-  status      EventStatus @default(PENDING)
+  status      String      @default("PENDING") // PENDING, APPROVED, DENIED, FEATURED, CANCELLED, ARCHIVED
   submittedBy String      // Email of the submitter
   submittedAt DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -98,13 +89,15 @@ model Event {
   community   Community?  @relation(fields: [communityId], references: [id])
   starredBy   UserEvent[] // Many-to-many relationship with users
   
-  // New fields for categorization system
-  category    String[]    // Array of categories (e.g., ['CLE', 'Intellectual Property', 'Networking'])
-  tags        String[]    // Array of tags for additional metadata
+  // New fields for categorization system (stored as comma-separated strings for SQLite)
+  category    String?     // Comma-separated categories (e.g., 'CLE,Intellectual Property,Networking')
+  tags        String?     // Comma-separated tags for additional metadata
   eventType   String?     // Type of event (e.g., 'CLE', 'Networking', 'Annual Dinner', 'Pro Bono')
   image       String?     // URL to event image
-  price       Json?       // Price information as JSON (for complex pricing structures)
-  metadata    Json?       // Additional metadata as JSON
+  price       String?     // Price information as JSON string (for complex pricing structures)
+  metadata    String?     // Additional metadata as JSON string
+
+  @@unique([name, startDate, communityId], name: "unique_event_per_community")
 }
 
 model Location {
@@ -124,7 +117,7 @@ model Community {
   name        String
   description String?
   url         String?  // Website URL for the community
-  category    String[] // Array of categories/tags
+  category    String?  // Comma-separated categories/tags
   events      Event[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -148,7 +141,7 @@ model NewsletterSubscriber {
   email         String   @unique
   name          String?
   isActive      Boolean  @default(true)
-  preferences   Json?    // Store subscription preferences (categories, frequency, etc.)
+  preferences   String?  // Store subscription preferences as JSON string
   subscribedAt  DateTime @default(now())
   unsubscribedAt DateTime?
   createdAt     DateTime @default(now())
@@ -157,25 +150,17 @@ model NewsletterSubscriber {
 
 // Newsletter campaigns model
 model Newsletter {
-  id          String          @id @default(cuid())
+  id          String   @id @default(cuid())
   title       String
   subject     String
-  content     String          // HTML content
-  status      NewsletterStatus @default(DRAFT)
-  createdBy   String          // Email of creator
-  createdAt   DateTime        @default(now())
-  scheduledAt DateTime?       // When to send
-  sentAt      DateTime?       // When it was actually sent
-  recipients  Int?            // Number of recipients
-  opens       Int?            // Number of opens
-  clicks      Int?            // Number of clicks
-  metadata    Json?           // Additional metadata
-}
-
-enum NewsletterStatus {
-  DRAFT
-  SCHEDULED
-  SENDING
-  SENT
-  CANCELLED
+  content     String   // HTML content
+  status      String   @default("DRAFT") // DRAFT, SCHEDULED, SENDING, SENT, CANCELLED
+  createdBy   String   // Email of creator
+  createdAt   DateTime @default(now())
+  scheduledAt DateTime? // When to send
+  sentAt      DateTime? // When it was actually sent
+  recipients  Int?      // Number of recipients
+  opens       Int?      // Number of opens
+  clicks      Int?      // Number of clicks
+  metadata    String?   // Additional metadata as JSON string
 }

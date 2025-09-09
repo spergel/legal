@@ -1,5 +1,6 @@
 import requests
 import logging
+import hashlib
 from typing import List
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -69,7 +70,7 @@ class NAWLScraper(BaseScraper):
                         event_id = f"nawl_{event_id_match.group(1)}"
                     else:
                         # Fallback to using a hash of the URL if the ID is not found
-                        event_id = f"nawl_{hash(event_url)}"
+                        event_id = f"nawl_{hashlib.sha256(event_url.encode('utf-8')).hexdigest()[:10]}"
 
                     # Description and other details are not available in this JSON
                     description = "Details available on the event page."

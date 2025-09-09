@@ -12,6 +12,37 @@ function isUpcomingEvent(event: Event): boolean {
   return eventDate >= now;
 }
 
+// Helper function to deduplicate events using the same logic as cleanup API
+function deduplicateEvents(events: Event[]): Event[] {
+  const eventGroups = new Map();
+  
+  for (const event of events) {
+    // Use externalId if available, otherwise use name+startDate
+    const key = event.externalId || `${event.name}-${new Date(event.startDate).toISOString()}`;
+    
+    if (!eventGroups.has(key)) {
+      eventGroups.set(key, []);
+    }
+    eventGroups.get(key)!.push(event);
+  }
+  
+  // For each group, keep the event with the earliest submittedAt
+  const deduplicatedEvents: Event[] = [];
+  for (const [key, groupEvents] of eventGroups) {
+    if (groupEvents.length === 1) {
+      deduplicatedEvents.push(groupEvents[0]);
+    } else {
+      // Sort by submittedAt and keep the oldest
+      groupEvents.sort((a: Event, b: Event) => 
+        new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime()
+      );
+      deduplicatedEvents.push(groupEvents[0]);
+    }
+  }
+  
+  return deduplicatedEvents;
+}
+
 // Helper function to sanitize event data
 function sanitizeEvent(event: any): Event {
   return {
@@ -66,13 +97,15 @@ export async function getAllEvents(): Promise<Event[]> {
     
     console.log(`Found ${events.length} events in database`);
     
-    // Sanitize and filter events
+    // Sanitize, filter, and deduplicate events
     const sanitizedEvents = events
       .map(sanitizeEvent)
       .filter(isUpcomingEvent);
     
-    console.log(`${sanitizedEvents.length} events are upcoming`);
-    return sanitizedEvents;
+    const deduplicatedEvents = deduplicateEvents(sanitizedEvents);
+    
+    console.log(`${sanitizedEvents.length} events are upcoming, ${deduplicatedEvents.length} after deduplication`);
+    return deduplicatedEvents;
   } catch (error) {
     console.error('Error fetching events:', error);
     return [];

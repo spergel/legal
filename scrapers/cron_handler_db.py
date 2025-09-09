@@ -1,7 +1,7 @@
 import json
 import os
-import requests
 import argparse
+import hashlib
 from datetime import datetime, timezone
 from typing import List, Dict, Any
 from .models import Event
@@ -13,34 +13,20 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(PROJECT_ROOT)
 
-# Use VERCEL_URL for the API URL if available, otherwise default to localhost
-API_URL = os.environ.get("VERCEL_URL")
-if API_URL:
-    # Ensure the URL is properly formatted for Vercel
-    API_URL = f"https://{API_URL}"
-else:
-    API_URL = "http://localhost:3000"
+# Use SQLite directly
+import sqlite3
 
-SCRAPER_SECRET = os.environ.get("SCRAPER_SECRET")
-DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL = os.environ.get("DATABASE_URL", "file:./prisma/events.db")
+DB_PATH = DATABASE_URL.replace("file:", "")
 
-print(f"Cron handler using API URL: {API_URL}")
-print(f"VERCEL_URL environment variable: {os.environ.get('VERCEL_URL', 'NOT_SET')}")
-print(f"SCRAPER_SECRET set: {'YES' if SCRAPER_SECRET else 'NO'}")
+print(f"Using database: {DB_PATH}")
 
 class ScraperManagerDB:
-    """Manages all scrapers and sends their output to the database via API."""
+    """Manages all scrapers and saves directly to database."""
     
     def __init__(self):
         self.scrapers = {}
-        # Get the base URL, default to localhost for local dev
-        base_url = API_URL
-        
-        self.api_url = base_url
-        self.scraper_secret = SCRAPER_SECRET
-        
-        if not self.scraper_secret:
-            raise ValueError("SCRAPER_SECRET environment variable is required")
+        self.db_path = DB_PATH
 
         # Lazy import and instantiate scrapers
         scraper_configs = [
@@ -77,100 +63,133 @@ class ScraperManagerDB:
                 print(f"Error importing {class_name} from {module_name}: {e}")
                 continue
     
-    def send_events_to_api(self, events: List[Event], scraper_name: str) -> bool:
-        """Send events to the Vercel API endpoint."""
+    def save_events_to_db(self, events: List[Event], scraper_name: str) -> bool:
+        """Save events directly to database."""
         if not events:
-            print(f"No events to send for {scraper_name}")
+            print(f"No events to save for {scraper_name}")
             return True
             
-        api_endpoint = f"{self.api_url}/api/admin/upsert-events"
+        created_count = 0
+        updated_count = 0
         
-        # Helper: normalize date strings to ISO-8601 with timezone (Z) when missing
-        def _normalize_iso8601(dt_str: Any) -> Any:
-            if not isinstance(dt_str, str) or not dt_str:
-                return dt_str
-            s = dt_str.strip()
-            # Already ISO-8601 with offset or Z
-            if re.match(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,6})?)?([+-]\d{2}:?\d{2}|Z)$", s):
-                return s
-            # Date only -> midnight UTC
-            if re.match(r"^\d{4}-\d{2}-\d{2}$", s):
-                return f"{s}T00:00:00Z"
-            # "YYYY-MM-DD HH:MM(:SS)?" -> replace space, add seconds if needed, Z
-            m = re.match(r"^(\d{4}-\d{2}-\d{2})\s+(\d{2}):(\d{2})(?::(\d{2}))?$", s)
-            if m:
-                yyyy_mm_dd, hh, mm, ss = m.groups()
-                ss = ss or "00"
-                return f"{yyyy_mm_dd}T{hh}:{mm}:{ss}Z"
-            # "YYYY-MM-DDTHH:MM" -> add seconds + Z
-            if re.match(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$", s):
-                return f"{s}:00Z"
-            # "YYYY-MM-DDTHH:MM:SS" -> add Z
-            if re.match(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$", s):
-                return f"{s}Z"
-            # Fallback: return as-is (per-scraper should fix non-ISO like 'Mon, Sep 8, 2025 | 2-5 PM')
-            return s
-
-        # Convert events to the format expected by the API, with normalization
-        events_data = []
         for event in events:
             event_dict = event.to_dict()
-            # Normalize dates to strict ISO-8601 with timezone
-            event_dict['startDate'] = _normalize_iso8601(event_dict.get('startDate'))
-            event_dict['endDate'] = _normalize_iso8601(event_dict.get('endDate') or event_dict.get('startDate'))
-            # Ensure category is a list of strings
-            cat = event_dict.get('category')
-            if isinstance(cat, str):
-                event_dict['category'] = [cat] if cat else []
-            elif cat is None:
-                event_dict['category'] = []
-            # Ensure tags is a list
-            tags = event_dict.get('tags')
-            if isinstance(tags, str):
-                event_dict['tags'] = [tags] if tags else []
-            elif tags is None:
-                event_dict['tags'] = []
-            # Add scraper metadata (only scraper_name is processed by the API)
-            event_dict['scraper_name'] = scraper_name
-            # Note: scraped_at is not part of Prisma schema, so we don't include it
-            events_data.append(event_dict)
-        
-        payload = {
-            "events": events_data,
-            "secret": self.scraper_secret
-        }
-        
-        try:
-            response = requests.post(
-                api_endpoint,
-                json=payload,
-                headers={'Content-Type': 'application/json'},
-                timeout=30
-            )
             
-            if response.status_code == 200:
-                result = response.json()
-                print(f"Successfully sent {len(events)} events from {scraper_name} to API")
-                if 'created' in result:
-                    print(f"  - Created: {result['created']}")
-                if 'updated' in result:
-                    print(f"  - Updated: {result['updated']}")
+            # Convert arrays to comma-separated strings for SQLite
+            if event_dict.get('category') and isinstance(event_dict['category'], list):
+                event_dict['category'] = ','.join(event_dict['category'])
+            elif not event_dict.get('category'):
+                event_dict['category'] = None
                 
-                # Debug: print first few results if no events were created/updated
-                if result.get('created', 0) == 0 and result.get('updated', 0) == 0:
-                    print("  - Debugging first few results:")
-                    if 'results' in result:
-                        for i, r in enumerate(result['results'][:3]):
-                            print(f"    [{i}]: {r}")
+            if event_dict.get('tags') and isinstance(event_dict['tags'], list):
+                event_dict['tags'] = ','.join(event_dict['tags'])
+            elif not event_dict.get('tags'):
+                event_dict['tags'] = None
                 
-                return True
-            else:
-                print(f"Error sending events from {scraper_name}: {response.status_code} - {response.text}")
-                return False
+            if event_dict.get('price') and isinstance(event_dict['price'], dict):
+                event_dict['price'] = json.dumps(event_dict['price'])
+            elif not event_dict.get('price'):
+                event_dict['price'] = None
                 
-        except Exception as e:
-            print(f"Exception sending events from {scraper_name}: {e}")
-            return False
+            if event_dict.get('metadata') and isinstance(event_dict['metadata'], dict):
+                event_dict['metadata'] = json.dumps(event_dict['metadata'])
+            elif not event_dict.get('metadata'):
+                event_dict['metadata'] = None
+            
+            try:
+                conn = sqlite3.connect(self.db_path)
+                cursor = conn.cursor()
+                
+                # Check if event exists
+                cursor.execute("""
+                    SELECT id, updatedAt FROM Event 
+                    WHERE name = ? AND startDate = ? AND communityId = ?
+                """, (
+                    event_dict['name'],
+                    event_dict['startDate'],
+                    event_dict.get('communityId')
+                ))
+                
+                existing = cursor.fetchone()
+                now = datetime.now(timezone.utc).isoformat()
+                
+                if existing:
+                    # Update existing event
+                    cursor.execute("""
+                        UPDATE Event SET
+                            externalId = ?, description = ?, endDate = ?, locationName = ?,
+                            url = ?, cleCredits = ?, updatedAt = ?, updatedBy = ?,
+                            notes = ?, locationId = ?, communityId = ?, category = ?,
+                            tags = ?, eventType = ?, image = ?, price = ?, metadata = ?
+                        WHERE id = ?
+                    """, (
+                        event_dict.get('externalId'),
+                        event_dict.get('description', ''),
+                        event_dict.get('endDate'),
+                        event_dict.get('locationName', 'TBD'),
+                        event_dict.get('url'),
+                        event_dict.get('cleCredits'),
+                        now,
+                        scraper_name,
+                        event_dict.get('notes'),
+                        event_dict.get('locationId'),
+                        event_dict.get('communityId'),
+                        event_dict.get('category'),
+                        event_dict.get('tags'),
+                        event_dict.get('eventType'),
+                        event_dict.get('image'),
+                        event_dict.get('price'),
+                        event_dict.get('metadata'),
+                        existing[0]
+                    ))
+                    updated_count += 1
+                else:
+                    # Create new event
+                    cursor.execute("""
+                        INSERT INTO Event (
+                            id, externalId, name, description, startDate, endDate, locationName,
+                            url, cleCredits, status, submittedBy, submittedAt, updatedAt,
+                            updatedBy, notes, locationId, communityId, category, tags,
+                            eventType, image, price, metadata
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        f"evt_{hashlib.sha256((event_dict['name'] + event_dict['startDate'] + str(event_dict.get('communityId', ''))).encode()).hexdigest()[:12]}",
+                        event_dict.get('externalId'),
+                        event_dict['name'],
+                        event_dict.get('description', ''),
+                        event_dict['startDate'],
+                        event_dict.get('endDate'),
+                        event_dict.get('locationName', 'TBD'),
+                        event_dict.get('url'),
+                        event_dict.get('cleCredits'),
+                        'APPROVED',
+                        scraper_name,
+                        now,
+                        now,
+                        scraper_name,
+                        event_dict.get('notes'),
+                        event_dict.get('locationId'),
+                        event_dict.get('communityId'),
+                        event_dict.get('category'),
+                        event_dict.get('tags'),
+                        event_dict.get('eventType'),
+                        event_dict.get('image'),
+                        event_dict.get('price'),
+                        event_dict.get('metadata')
+                    ))
+                    created_count += 1
+                
+                conn.commit()
+                conn.close()
+                    
+            except Exception as e:
+                print(f"Error saving event '{event_dict['name']}': {e}")
+                continue
+        
+        print(f"Successfully saved {len(events)} events from {scraper_name}")
+        print(f"  - Created: {created_count}")
+        print(f"  - Updated: {updated_count}")
+        return True
     
     def run_scraper(self, name: str) -> List[Event]:
         """Run a single scraper and send results to API."""
@@ -184,12 +203,12 @@ class ScraperManagerDB:
             events = scraper.run()
             print(f"Found {len(events)} events from {name}")
             
-            # Send to API
-            success = self.send_events_to_api(events, name)
+            # Save to database
+            success = self.save_events_to_db(events, name)
             if success:
                 print(f"Successfully processed {name} scraper")
             else:
-                print(f"Failed to send events from {name} to API")
+                print(f"Failed to save events from {name} to database")
                 
             return events
         except Exception as e:

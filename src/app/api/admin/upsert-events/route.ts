@@ -23,41 +23,52 @@ export async function POST(req: Request) {
 
     for (const event of events) {
       const { scraper_name, ...eventData } = event; // Extract scraper_name
-      if (!eventData.externalId && !eventData.url) {
-        results.push({ error: 'Missing unique identifier', event: eventData });
-        continue;
+      
+      // Convert arrays to comma-separated strings for SQLite
+      if (eventData.category && Array.isArray(eventData.category)) {
+        eventData.category = eventData.category.join(',');
+      }
+      if (eventData.tags && Array.isArray(eventData.tags)) {
+        eventData.tags = eventData.tags.join(',');
+      }
+      if (eventData.price && typeof eventData.price === 'object') {
+        eventData.price = JSON.stringify(eventData.price);
+      }
+      if (eventData.metadata && typeof eventData.metadata === 'object') {
+        eventData.metadata = JSON.stringify(eventData.metadata);
       }
       
-      const where = eventData.externalId
-        ? { externalId: eventData.externalId }
-        : { url: eventData.url };
-        
       try {
-        const existing = await prisma.event.findFirst({ where });
-        if (existing) {
-          // Update existing event
-          await prisma.event.update({
-            where: { id: existing.id },
-            data: {
-              ...eventData,
-              updatedAt: new Date(),
-              updatedBy: scraper_name || 'scraper', // Use scraper_name
-            },
-          });
+        // Use upsert with the composite unique constraint
+        const upsertResult = await prisma.event.upsert({
+          where: {
+            unique_event_per_community: {
+              name: eventData.name,
+              startDate: new Date(eventData.startDate),
+              communityId: eventData.communityId || null
+            }
+          },
+          update: {
+            ...eventData,
+            updatedAt: new Date(),
+            updatedBy: scraper_name || 'scraper',
+          },
+          create: {
+            ...eventData,
+            submittedBy: scraper_name || 'scraper',
+            submittedAt: new Date(),
+            status: 'APPROVED',
+          },
+        });
+        
+        // Check if this was an update or create by looking at submittedAt vs updatedAt
+        const isUpdate = upsertResult.updatedAt.getTime() > upsertResult.submittedAt.getTime();
+        if (isUpdate) {
           updatedCount++;
-          results.push({ success: true, id: existing.id, action: 'updated' });
+          results.push({ success: true, id: upsertResult.id, action: 'updated' });
         } else {
-          // Create new event
-          const newEvent = await prisma.event.create({
-            data: {
-              ...eventData,
-              submittedBy: scraper_name || 'scraper', // Use scraper_name
-              submittedAt: new Date(),
-              status: 'APPROVED', 
-            },
-          });
           createdCount++;
-          results.push({ success: true, id: newEvent.id, action: 'created' });
+          results.push({ success: true, id: upsertResult.id, action: 'created' });
         }
       } catch (err) {
         results.push({ error: err instanceof Error ? err.message : String(err), event: eventData });

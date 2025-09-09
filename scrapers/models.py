@@ -37,8 +37,8 @@ class Event:
             "image": self.image,
             "price": self.price,
             "metadata": self.metadata,
-            "category": self.category or [],
-            "tags": self.tags or [],
+            "category": self.category or [],  # Will be converted to comma-separated string in API
+            "tags": self.tags or [],  # Will be converted to comma-separated string in API
             "eventType": self.event_type,  # Note: Prisma uses camelCase
             "cleCredits": self.cle_credits  # Note: Prisma uses camelCase
         }

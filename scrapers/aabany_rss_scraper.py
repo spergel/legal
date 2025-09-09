@@ -1,5 +1,6 @@
 import logging
 import re
+import hashlib
 from datetime import datetime, timezone
 from typing import List, Optional
 
@@ -255,7 +256,7 @@ class AabanyRssScraper(BaseScraper):
                     price_info = self.extract_price_info(description)
                     
                     # Create event ID
-                    event_id = guid if guid else f"aabany_{hash(title)}"
+                    event_id = guid if guid else f"aabany_{hashlib.sha256(title.encode('utf-8')).hexdigest()[:10]}"
                     
                     # Build metadata
                     metadata = {
