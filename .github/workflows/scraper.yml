@@ -52,4 +52,13 @@ jobs:
         curl -X POST "https://$VERCEL_URL/api/admin/cleanup" \
           -H "Content-Type: application/json" \
           -d '{"secret":"'$SCRAPER_SECRET'"}' \
+          --fail --show-error
+        
+    - name: Run duplicate cleanup via API
+      env:
+        VERCEL_URL: ${{ secrets.VERCEL_URL }}
+        SCRAPER_SECRET: ${{ secrets.SCRAPER_SECRET }}
+      run: |
+        curl -X POST "https://$VERCEL_URL/api/admin/cleanup-duplicates" \
+          -H "Authorization: Bearer $SCRAPER_SECRET" \
           --fail --show-error 
