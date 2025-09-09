@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     // Process each duplicate group
     for (const { key, events } of duplicates) {
       // Sort by submittedAt (keep the oldest)
-      events.sort((a, b) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime());
+      events.sort((a: any, b: any) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime());
       
       const keepEvent = events[0];
       const removeEvents = events.slice(1);
