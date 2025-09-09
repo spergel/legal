@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAllEvents, getEventById } from '@/lib/data-loader';
 import { Event } from '@/types';
+import { prisma } from '@/lib/prisma';
 
 function escapeICalText(text: string) {
   return text.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, '\\,').replace(/;/g, '\\;');
@@ -92,7 +93,22 @@ X-WR-TIMEZONE:America/New_York
 ${eventToICS(event)}
 END:VCALENDAR`;
   } else {
-    const events = await getAllEvents();
+    // Get all events directly from database (not just approved ones)
+    const events = await prisma.event.findMany({
+      where: {
+        status: {
+          in: ['APPROVED', 'FEATURED', 'PENDING']
+        }
+      },
+      include: {
+        location: true,
+        community: true,
+      },
+      orderBy: {
+        startDate: 'asc'
+      },
+      take: 1000
+    });
     
     const filteredEvents = filterEvents(events, { orgs, ids, cleOnly });
     
