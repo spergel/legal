@@ -46,6 +46,15 @@ class BrooklynBarScraper(BaseScraper):
             if cle_match:
                 details['cle_credits'] = float(cle_match.group(1))
             
+            # Extract location information
+            location_text = soup.get_text()
+            if 'Brooklyn Bar Association' in location_text:
+                details['location'] = 'Brooklyn Bar Association, 123 Remsen Street, Brooklyn, NY 11201'
+            elif '123 Remsen Street' in location_text:
+                details['location'] = 'Brooklyn Bar Association, 123 Remsen Street, Brooklyn, NY 11201'
+            elif 'BBA Building' in location_text:
+                details['location'] = 'BBA Building, 123 Remsen Street, Brooklyn, NY 11201'
+            
             # Extract registration status
             if 'registration for this event is closed' in soup.get_text().lower():
                 details['registration_status'] = 'closed'
@@ -228,6 +237,7 @@ class BrooklynBarScraper(BaseScraper):
                         startDate=startDate,
                         endDate=endDate,
                         locationId=None,
+                        locationName=details.get('location', 'TBD'),
                         communityId="com_brooklynbar",
                         image=None,
                         price=None,
