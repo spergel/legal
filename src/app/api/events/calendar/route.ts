@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       orderBy: {
         startDate: 'asc'
       },
-      take: 100
+      take: 1000
     });
 
     // Deduplicate events by externalId or name+startDate
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       return acc;
     }, new Map()).values();
     
-    const uniqueEvents = Array.from(deduplicatedEvents);
+    const uniqueEvents = Array.from(deduplicatedEvents).slice(0, 100);
 
     if (format === 'ics') {
       // Generate ICS (iCalendar) format
