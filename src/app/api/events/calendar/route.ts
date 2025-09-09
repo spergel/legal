@@ -57,6 +57,7 @@ export async function GET(request: NextRequest) {
         success: true,
         data: uniqueEvents.map(event => ({
           id: event.id,
+          externalId: event.externalId,
           title: event.name,
           description: event.description,
           start: event.startDate,
