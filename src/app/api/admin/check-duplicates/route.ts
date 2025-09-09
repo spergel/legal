@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       if (events.length > 1) {
         duplicates.push({ 
           key, 
-          events: events.map(e => ({
+          events: events.map((e: any) => ({
             id: e.id,
             name: e.name,
             startDate: e.startDate,
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       if (events.length > 1) {
         externalIdDuplicates.push({ 
           externalId, 
-          events: events.map(e => ({
+          events: events.map((e: any) => ({
             id: e.id,
             name: e.name,
             startDate: e.startDate,
