@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
       take: 1000
     });
 
-    // Deduplicate events by externalId or name+startDate
+    // Deduplicate events by name+startDate (more reliable than externalId)
     const deduplicatedEvents = events.reduce((acc, event) => {
-      const key = event.externalId || `${event.name}-${event.startDate.toISOString()}`;
+      const key = `${event.name}-${event.startDate.toISOString()}`;
       if (!acc.has(key)) {
         acc.set(key, event);
       }

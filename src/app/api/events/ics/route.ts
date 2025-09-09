@@ -96,9 +96,9 @@ END:VCALENDAR`;
     
     const filteredEvents = filterEvents(events, { orgs, ids, cleOnly });
     
-    // Deduplicate events by externalId or name+startDate
+    // Deduplicate events by name+startDate (more reliable than externalId)
     const deduplicatedEvents = filteredEvents.reduce((acc, event) => {
-      const key = event.externalId || `${event.name}-${new Date(event.startDate).toISOString()}`;
+      const key = `${event.name}-${new Date(event.startDate).toISOString()}`;
       if (!acc.has(key)) {
         acc.set(key, event);
       }
