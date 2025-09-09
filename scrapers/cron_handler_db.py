@@ -4,7 +4,7 @@ import argparse
 import hashlib
 from datetime import datetime, timezone
 from typing import List, Dict, Any
-from .models import Event
+from models import Event
 import sys
 import re
 
@@ -18,6 +18,9 @@ import sqlite3
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "file:./prisma/events.db")
 DB_PATH = DATABASE_URL.replace("file:", "")
+# Handle relative paths - if it starts with ./ then make it relative to project root
+if DB_PATH.startswith("./"):
+    DB_PATH = os.path.join(PROJECT_ROOT, DB_PATH[2:])
 
 print(f"Using database: {DB_PATH}")
 
