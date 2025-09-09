@@ -27,6 +27,7 @@ class ScraperManagerDB:
     def __init__(self):
         self.scrapers = {}
         self.db_path = DB_PATH
+        self.api_url = os.environ.get("VERCEL_URL", "https://lawyerevents.net")
 
         # Lazy import and instantiate scrapers
         scraper_configs = [
@@ -221,7 +222,6 @@ class ScraperManagerDB:
         total_events = 0
         
         print(f"Starting scraper run at {datetime.now(timezone.utc).isoformat()}")
-        print(f"API URL: {self.api_url}")
         
         for name, scraper in self.scrapers.items():
             try:
