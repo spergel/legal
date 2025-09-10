@@ -36,7 +36,9 @@ jobs:
       run: |
         npx prisma generate
         pip install prisma[cli]
-        python -m prisma generate
+        prisma generate --schema=./prisma/schema.prisma
+        echo "Checking if Python Prisma client was generated..."
+        find . -name "*.py" -path "*/prisma/*" | head -5
         
     - name: Run scrapers
       env:
