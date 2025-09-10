@@ -13,23 +13,24 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(PROJECT_ROOT)
 
-# Use SQLite directly
-import sqlite3
+# Use Prisma for database operations
+from prisma import Prisma
 
+# Check if we're in production (PostgreSQL) or local (SQLite)
 DATABASE_URL = os.environ.get("DATABASE_URL", "file:./prisma/events.db")
-DB_PATH = DATABASE_URL.replace("file:", "")
-# Handle relative paths - if it starts with ./ then make it relative to project root
-if DB_PATH.startswith("./"):
-    DB_PATH = os.path.join(PROJECT_ROOT, DB_PATH[2:])
+IS_PRODUCTION = DATABASE_URL.startswith("postgresql://") or DATABASE_URL.startswith("postgres://")
 
-print(f"Using database: {DB_PATH}")
+if IS_PRODUCTION:
+    print("Using production PostgreSQL database via Prisma")
+else:
+    print("Using local SQLite database via Prisma")
 
 class ScraperManagerDB:
     """Manages all scrapers and saves directly to database."""
     
     def __init__(self):
         self.scrapers = {}
-        self.db_path = DB_PATH
+        self.prisma = Prisma()
         self.api_url = os.environ.get("VERCEL_URL", "https://lawyerevents.net")
 
         # Lazy import and instantiate scrapers
@@ -67,8 +68,8 @@ class ScraperManagerDB:
                 print(f"Error importing {class_name} from {module_name}: {e}")
                 continue
     
-    def save_events_to_db(self, events: List[Event], scraper_name: str) -> bool:
-        """Save events directly to database."""
+    async def save_events_to_db(self, events: List[Event], scraper_name: str) -> bool:
+        """Save events directly to database using Prisma."""
         if not events:
             print(f"No events to save for {scraper_name}")
             return True
@@ -76,126 +77,94 @@ class ScraperManagerDB:
         created_count = 0
         updated_count = 0
         
-        for event in events:
-            event_dict = event.to_dict()
+        try:
+            await self.prisma.connect()
             
-            # Convert arrays to comma-separated strings for SQLite
-            if event_dict.get('category') and isinstance(event_dict['category'], list):
-                event_dict['category'] = ','.join(event_dict['category'])
-            elif not event_dict.get('category'):
-                event_dict['category'] = None
+            for event in events:
+                event_dict = event.to_dict()
                 
-            if event_dict.get('tags') and isinstance(event_dict['tags'], list):
-                event_dict['tags'] = ','.join(event_dict['tags'])
-            elif not event_dict.get('tags'):
-                event_dict['tags'] = None
-                
-            if event_dict.get('price') and isinstance(event_dict['price'], dict):
-                event_dict['price'] = json.dumps(event_dict['price'])
-            elif not event_dict.get('price'):
-                event_dict['price'] = None
-                
-            if event_dict.get('metadata') and isinstance(event_dict['metadata'], dict):
-                event_dict['metadata'] = json.dumps(event_dict['metadata'])
-            elif not event_dict.get('metadata'):
-                event_dict['metadata'] = None
-            
-            try:
-                conn = sqlite3.connect(self.db_path)
-                cursor = conn.cursor()
+                # Generate event ID
+                event_id = f"evt_{hashlib.sha256((event_dict['name'] + event_dict['startDate'] + str(event_dict.get('communityId', ''))).encode()).hexdigest()[:12]}"
                 
                 # Check if event exists
-                cursor.execute("""
-                    SELECT id, updatedAt FROM Event 
-                    WHERE name = ? AND startDate = ? AND communityId = ?
-                """, (
-                    event_dict['name'],
-                    event_dict['startDate'],
-                    event_dict.get('communityId')
-                ))
+                existing = await self.prisma.event.find_first(
+                    where={
+                        'name': event_dict['name'],
+                        'startDate': event_dict['startDate'],
+                        'communityId': event_dict.get('communityId')
+                    }
+                )
                 
-                existing = cursor.fetchone()
-                now = datetime.now(timezone.utc).isoformat()
+                now = datetime.now(timezone.utc)
                 
                 if existing:
                     # Update existing event
-                    cursor.execute("""
-                        UPDATE Event SET
-                            externalId = ?, description = ?, endDate = ?, locationName = ?,
-                            url = ?, cleCredits = ?, updatedAt = ?, updatedBy = ?,
-                            notes = ?, locationId = ?, communityId = ?, category = ?,
-                            tags = ?, eventType = ?, image = ?, price = ?, metadata = ?
-                        WHERE id = ?
-                    """, (
-                        event_dict.get('externalId'),
-                        event_dict.get('description', ''),
-                        event_dict.get('endDate'),
-                        event_dict.get('locationName', 'TBD'),
-                        event_dict.get('url'),
-                        event_dict.get('cleCredits'),
-                        now,
-                        scraper_name,
-                        event_dict.get('notes'),
-                        event_dict.get('locationId'),
-                        event_dict.get('communityId'),
-                        event_dict.get('category'),
-                        event_dict.get('tags'),
-                        event_dict.get('eventType'),
-                        event_dict.get('image'),
-                        event_dict.get('price'),
-                        event_dict.get('metadata'),
-                        existing[0]
-                    ))
+                    await self.prisma.event.update(
+                        where={'id': existing.id},
+                        data={
+                            'externalId': event_dict.get('externalId'),
+                            'description': event_dict.get('description', ''),
+                            'endDate': event_dict.get('endDate'),
+                            'locationName': event_dict.get('locationName', 'TBD'),
+                            'url': event_dict.get('url'),
+                            'cleCredits': event_dict.get('cleCredits'),
+                            'updatedAt': now,
+                            'updatedBy': scraper_name,
+                            'notes': event_dict.get('notes'),
+                            'locationId': event_dict.get('locationId'),
+                            'communityId': event_dict.get('communityId'),
+                            'category': event_dict.get('category', []),
+                            'tags': event_dict.get('tags', []),
+                            'eventType': event_dict.get('eventType'),
+                            'image': event_dict.get('image'),
+                            'price': event_dict.get('price'),
+                            'metadata': event_dict.get('metadata')
+                        }
+                    )
                     updated_count += 1
                 else:
                     # Create new event
-                    cursor.execute("""
-                        INSERT INTO Event (
-                            id, externalId, name, description, startDate, endDate, locationName,
-                            url, cleCredits, status, submittedBy, submittedAt, updatedAt,
-                            updatedBy, notes, locationId, communityId, category, tags,
-                            eventType, image, price, metadata
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """, (
-                        f"evt_{hashlib.sha256((event_dict['name'] + event_dict['startDate'] + str(event_dict.get('communityId', ''))).encode()).hexdigest()[:12]}",
-                        event_dict.get('externalId'),
-                        event_dict['name'],
-                        event_dict.get('description', ''),
-                        event_dict['startDate'],
-                        event_dict.get('endDate'),
-                        event_dict.get('locationName', 'TBD'),
-                        event_dict.get('url'),
-                        event_dict.get('cleCredits'),
-                        'APPROVED',
-                        scraper_name,
-                        now,
-                        now,
-                        scraper_name,
-                        event_dict.get('notes'),
-                        event_dict.get('locationId'),
-                        event_dict.get('communityId'),
-                        event_dict.get('category'),
-                        event_dict.get('tags'),
-                        event_dict.get('eventType'),
-                        event_dict.get('image'),
-                        event_dict.get('price'),
-                        event_dict.get('metadata')
-                    ))
+                    await self.prisma.event.create(
+                        data={
+                            'id': event_id,
+                            'externalId': event_dict.get('externalId'),
+                            'name': event_dict['name'],
+                            'description': event_dict.get('description', ''),
+                            'startDate': event_dict['startDate'],
+                            'endDate': event_dict.get('endDate'),
+                            'locationName': event_dict.get('locationName', 'TBD'),
+                            'url': event_dict.get('url'),
+                            'cleCredits': event_dict.get('cleCredits'),
+                            'status': 'APPROVED',
+                            'submittedBy': scraper_name,
+                            'submittedAt': now,
+                            'updatedAt': now,
+                            'updatedBy': scraper_name,
+                            'notes': event_dict.get('notes'),
+                            'locationId': event_dict.get('locationId'),
+                            'communityId': event_dict.get('communityId'),
+                            'category': event_dict.get('category', []),
+                            'tags': event_dict.get('tags', []),
+                            'eventType': event_dict.get('eventType'),
+                            'image': event_dict.get('image'),
+                            'price': event_dict.get('price'),
+                            'metadata': event_dict.get('metadata')
+                        }
+                    )
                     created_count += 1
-                
-                conn.commit()
-                conn.close()
                     
-            except Exception as e:
-                print(f"Error saving event '{event_dict['name']}': {e}")
-                continue
+        except Exception as e:
+            print(f"Error saving events from {scraper_name}: {e}")
+            return False
+        finally:
+            await self.prisma.disconnect()
         
         print(f"Successfully saved {len(events)} events from {scraper_name}")
         print(f"  - Created: {created_count}")
         print(f"  - Updated: {updated_count}")
         return True
     
-    def run_scraper(self, name: str) -> List[Event]:
+    async def run_scraper(self, name: str) -> List[Event]:
         """Run a single scraper and send results to API."""
         scraper = self.scrapers.get(name)
         if not scraper:
@@ -208,7 +177,7 @@ class ScraperManagerDB:
             print(f"Found {len(events)} events from {name}")
             
             # Save to database
-            success = self.save_events_to_db(events, name)
+            success = await self.save_events_to_db(events, name)
             if success:
                 print(f"Successfully processed {name} scraper")
             else:
@@ -219,7 +188,7 @@ class ScraperManagerDB:
             print(f"Error running {name} scraper: {e}")
             return []
     
-    def run_all(self) -> Dict[str, List[Event]]:
+    async def run_all(self) -> Dict[str, List[Event]]:
         """Run all scrapers and send results to API."""
         results = {}
         total_events = 0
@@ -228,7 +197,7 @@ class ScraperManagerDB:
         
         for name, scraper in self.scrapers.items():
             try:
-                events = self.run_scraper(name)
+                events = await self.run_scraper(name)
                 results[name] = events
                 total_events += len(events)
             except Exception as e:
@@ -238,24 +207,25 @@ class ScraperManagerDB:
         print(f"Scraper run completed. Total events processed: {total_events}")
         return results
     
-    def run(self, only_scraper: str = None) -> None:
+    async def run(self, only_scraper: str = None) -> None:
         """Run all scrapers or a single scraper."""
         if only_scraper:
-            self.run_scraper(only_scraper)
+            await self.run_scraper(only_scraper)
         else:
-            self.run_all()
+            await self.run_all()
 
-def main():
+async def main():
     parser = argparse.ArgumentParser(description="Run legal event scrapers and send to database.")
     parser.add_argument('--scraper', type=str, help='Name of a single scraper to run (e.g. nycbar, fordham, lawyers_alliance, nyiac, google_calendar, ics_calendar)')
     args = parser.parse_args()
     
     try:
         manager = ScraperManagerDB()
-        manager.run(only_scraper=args.scraper)
+        await manager.run(only_scraper=args.scraper)
     except Exception as e:
         print(f"Fatal error: {e}")
         exit(1)
 
 if __name__ == "__main__":
-    main() 
+    import asyncio
+    asyncio.run(main()) 
