@@ -33,7 +33,10 @@ jobs:
       run: npm install
         
     - name: Generate Prisma Clients
-      run: npx prisma generate
+      run: |
+        npx prisma generate
+        cd scrapers
+        python -m prisma generate
         
     - name: Run scrapers
       env:
