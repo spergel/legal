@@ -4,7 +4,7 @@ import argparse
 import hashlib
 from datetime import datetime, timezone
 from typing import List, Dict, Any
-from models import Event
+from .models import Event
 import sys
 import re
 
