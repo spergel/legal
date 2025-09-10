@@ -35,8 +35,7 @@ jobs:
     - name: Generate Prisma Clients
       run: |
         npx prisma generate
-        cd scrapers
-        python -m prisma generate
+        python -m prisma generate --schema=./prisma/schema.prisma
         
     - name: Run scrapers
       env:
