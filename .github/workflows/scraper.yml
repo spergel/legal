@@ -32,13 +32,9 @@ jobs:
     - name: Install root npm dependencies
       run: npm install
         
-    - name: Generate Prisma Clients
+    - name: Generate Prisma Client
       run: |
         npx prisma generate
-        pip install prisma[cli]
-        prisma generate --schema=./prisma/schema.prisma
-        echo "Checking if Python Prisma client was generated..."
-        find . -name "*.py" -path "*/prisma/*" | head -5
         
     - name: Run scrapers
       env:

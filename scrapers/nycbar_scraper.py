@@ -53,7 +53,11 @@ class NYCBarScraper(BaseScraper):
             soup = BeautifulSoup(article_html, 'html.parser')
             # Extract event details
             eyebrow = soup.find('div', class_='event-eyebrow').text.strip()
-            date, time, event_type = [x.strip() for x in eyebrow.split('|')]
+            parts = [x.strip() for x in eyebrow.split('|')]
+            if len(parts) >= 3:
+                date, time, event_type = parts[0], parts[1], parts[2]
+            else:
+                date, time, event_type = parts[0] if len(parts) > 0 else "", parts[1] if len(parts) > 1 else "", parts[2] if len(parts) > 2 else ""
             title = soup.find('h3').text.strip()
             register_link = soup.find('a', class_='register')
             registration_url = register_link['href']
@@ -89,14 +93,78 @@ class NYCBarScraper(BaseScraper):
                             price['details'] = price_details_match.group(1).strip()
                     except ValueError:
                         pass
-            # Parse date and time
+            # Parse date and time - handle various formats
             try:
-                date_obj = datetime.strptime(f"{date} {time}", '%B %d, %Y %I:%M %p')
-                start_date = date_obj.isoformat()
-                # Assume 1 hour duration if not specified
-                end_date = (date_obj.replace(hour=date_obj.hour + 1)).isoformat()
-            except ValueError as e:
-                logger.error(f"Error parsing date/time: {e}")
+                # Try different date formats that might be used
+                date_formats = [
+                    '%B %d, %Y',  # "September 26, 2025"
+                    '%a, %b %d, %Y',  # "Fri, Sep 26, 2025"
+                    '%Y-%m-%d',  # "2025-09-26"
+                ]
+
+                date_obj = None
+                for fmt in date_formats:
+                    try:
+                        date_obj = datetime.strptime(date, fmt)
+                        break
+                    except ValueError:
+                        continue
+
+                if date_obj is None:
+                    logger.error(f"Could not parse date: {date}")
+                    return None
+
+                # Parse time range (e.g., "9 AM-5 PM")
+                if '-' in time:
+                    start_time_str, end_time_str = time.split('-')
+                    start_time_str = start_time_str.strip()
+                    end_time_str = end_time_str.strip()
+
+                    # Parse start time
+                    try:
+                        if 'AM' in start_time_str or 'PM' in start_time_str:
+                            start_time = datetime.strptime(start_time_str, '%I %p')
+                        else:
+                            start_time = datetime.strptime(start_time_str, '%H:%M')
+
+                        date_obj = date_obj.replace(hour=start_time.hour, minute=start_time.minute)
+                        start_date = date_obj.isoformat()
+
+                        # Parse end time
+                        if 'AM' in end_time_str or 'PM' in end_time_str:
+                            end_time = datetime.strptime(end_time_str, '%I %p')
+                        else:
+                            end_time = datetime.strptime(end_time_str, '%H:%M')
+
+                        end_date_obj = date_obj.replace(hour=end_time.hour, minute=end_time.minute)
+                        # Handle case where end time is next day
+                        if end_time.hour < start_time.hour:
+                            end_date_obj = end_date_obj.replace(day=end_date_obj.day + 1)
+                        end_date = end_date_obj.isoformat()
+
+                    except ValueError as e:
+                        logger.error(f"Error parsing time range '{time}': {e}")
+                        # Fallback: assume 1 hour duration
+                        start_date = date_obj.isoformat()
+                        end_date = (date_obj.replace(hour=date_obj.hour + 1)).isoformat()
+                else:
+                    # Single time (assume 1 hour duration)
+                    try:
+                        if 'AM' in time or 'PM' in time:
+                            time_obj = datetime.strptime(time, '%I %p')
+                        else:
+                            time_obj = datetime.strptime(time, '%H:%M')
+
+                        date_obj = date_obj.replace(hour=time_obj.hour, minute=time_obj.minute)
+                        start_date = date_obj.isoformat()
+                        end_date = (date_obj.replace(hour=date_obj.hour + 1)).isoformat()
+                    except ValueError as e:
+                        logger.error(f"Error parsing single time '{time}': {e}")
+                        start_date = date_obj.isoformat()
+                        end_date = (date_obj.replace(hour=date_obj.hour + 1)).isoformat()
+
+            except Exception as e:
+                logger.error(f"Error parsing date/time '{date}' / '{time}': {e}")
                 return None
             # Determine event type and categories using helper
             event_type = self._determine_event_type(title, description)
@@ -172,35 +240,47 @@ class NYCBarScraper(BaseScraper):
                                     break
                                 except ValueError:
                                     continue
-                            # Parse time range like "2-5:05 PM" or "5:45-9 PM"
+                            # Parse time range like "2-5:05 PM" or "5:45-9 PM" or "9 AM-5 PM"
                             if dt_date and time_part:
                                 import re as _re
-                                m = _re.search(r"^(\d{1,2})(?::(\d{2}))?\s*-\s*(\d{1,2})(?::(\d{2}))?\s*(AM|PM)$", time_part, _re.IGNORECASE)
+                                # Updated regex to handle formats like "9 AM-5 PM"
+                                m = _re.search(r"^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?\s*-\s*(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$", time_part, _re.IGNORECASE)
                                 if m:
-                                    sh, sm, eh, em, ampm = m.groups()
+                                    sh, sm, sh_ampm, eh, em, eh_ampm = m.groups()
                                     sh = int(sh)
                                     eh = int(eh)
                                     sm = int(sm) if sm else 0
                                     em = int(em) if em else 0
-                                    ampm = ampm.upper()
-                                    # Apply AM/PM to both
-                                    if ampm == 'PM' and sh != 12:
-                                        sh += 12
-                                    if ampm == 'AM' and sh == 12:
-                                        sh = 0
-                                    if ampm == 'PM' and eh != 12:
-                                        eh += 12
-                                    if ampm == 'AM' and eh == 12:
-                                        eh = 0
+
+                                    # Apply AM/PM conversion for start time
+                                    if sh_ampm:
+                                        if sh_ampm.upper() == 'PM' and sh != 12:
+                                            sh += 12
+                                        elif sh_ampm.upper() == 'AM' and sh == 12:
+                                            sh = 0
+
+                                    # Apply AM/PM conversion for end time
+                                    if eh_ampm:
+                                        if eh_ampm.upper() == 'PM' and eh != 12:
+                                            eh += 12
+                                        elif eh_ampm.upper() == 'AM' and eh == 12:
+                                            eh = 0
+                                    # If no AM/PM specified for end time but specified for start, use same
+                                    elif sh_ampm:
+                                        if sh_ampm.upper() == 'PM' and eh != 12:
+                                            eh += 12
+                                        elif sh_ampm.upper() == 'AM' and eh == 12:
+                                            eh = 0
+
                                     start_dt = dt_date.replace(hour=sh, minute=sm, second=0, microsecond=0)
                                     end_dt = dt_date.replace(hour=eh, minute=em, second=0, microsecond=0)
                                     start_iso = start_dt.isoformat()
                                     end_iso = end_dt.isoformat()
                                 else:
-                                    # Fallback: single time like "2:00 PM"
-                                    for t_fmt in ['%I:%M %p', '%I %p']:
+                                    # Fallback: single time like "2:00 PM" or "9 AM"
+                                    for t_fmt in ['%I:%M %p', '%I %p', '%I%p']:
                                         try:
-                                            t = datetime.strptime(time_part, t_fmt)
+                                            t = datetime.strptime(time_part.strip(), t_fmt)
                                             start_dt = dt_date.replace(hour=t.hour, minute=t.minute, second=0, microsecond=0)
                                             start_iso = start_dt.isoformat()
                                             end_iso = None

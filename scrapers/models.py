@@ -58,8 +58,3 @@ class Event:
         """Convert a raw event from any scraper to the standardized format."""
         # This will be implemented by each scraper
         raise NotImplementedError("Each scraper must implement this method") 
-    @classmethod
-    def from_raw_event(cls, raw_event: dict, community_id: str) -> 'Event':
-        """Convert a raw event from any scraper to the standardized format."""
-        # This will be implemented by each scraper
-        raise NotImplementedError("Each scraper must implement this method") 
