@@ -264,7 +264,8 @@ class ScraperManagerDB:
             events_data = [event.to_dict() for event in events]
             data = {
                 'events': events_data,
-                'scraper': scraper_name
+                'scraper': scraper_name,
+                'secret': self.secret
             }
 
             response = requests.post(url, json=data, headers=headers)
