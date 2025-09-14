@@ -13,9 +13,9 @@ generator client {
   // output   = "../src/generated/prisma" // removed for default output
 }
 
-generator python {
-  provider = "prisma-client-py"
-}
+// generator python {
+//   provider = "prisma-client-py"
+// }
 
 
 
