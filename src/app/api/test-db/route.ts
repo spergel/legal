@@ -16,7 +16,7 @@ export async function GET() {
 
     // Get a sample event
     const sampleEvent = await prisma.event.findFirst({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { submittedAt: 'desc' }
     });
 
     return NextResponse.json({
@@ -30,7 +30,7 @@ export async function GET() {
         name: sampleEvent.name,
         status: sampleEvent.status,
         startDate: sampleEvent.startDate,
-        createdAt: sampleEvent.createdAt
+        submittedAt: sampleEvent.submittedAt
       } : null,
       databaseUrl: process.env.DATABASE_URL ? 'SET (encrypted)' : 'NOT SET'
     });
