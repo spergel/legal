@@ -33,6 +33,28 @@ export async function POST(req: Request) {
           continue;
         }
 
+        // Sanitize and validate data to prevent PostgreSQL errors
+        const sanitizeString = (value: any): string | null => {
+          if (value === null || value === undefined) return null;
+          if (typeof value === 'string') return value.slice(0, 10000); // Limit length
+          if (typeof value === 'object') return JSON.stringify(value).slice(0, 10000);
+          return String(value).slice(0, 10000);
+        };
+
+        const sanitizeJsonString = (value: any): string | null => {
+          if (value === null || value === undefined) return null;
+          try {
+            if (typeof value === 'string') {
+              // Try to parse and re-stringify to ensure valid JSON
+              JSON.parse(value);
+              return value.slice(0, 10000);
+            }
+            return JSON.stringify(value).slice(0, 10000);
+          } catch {
+            return null;
+          }
+        };
+
         // Parse dates
         const startDate = new Date(eventData.startDate);
         const endDate = eventData.endDate ? new Date(eventData.endDate) : startDate;
@@ -71,23 +93,23 @@ export async function POST(req: Request) {
           await prisma.event.update({
             where: { id: existingEvent.id },
             data: {
-              externalId: eventData.externalId || existingEvent.externalId,
-              description: eventData.description || '',
+              externalId: sanitizeString(eventData.externalId) || existingEvent.externalId,
+              description: sanitizeString(eventData.description) || '',
               endDate: endDate,
-              locationName: eventData.locationName || 'TBD',
-              url: eventData.url,
+              locationName: sanitizeString(eventData.locationName) || 'TBD',
+              url: sanitizeString(eventData.url),
               cleCredits: eventData.cleCredits,
               updatedAt: now,
-              updatedBy: scraper || 'scraper',
-              notes: eventData.notes,
-              locationId: eventData.locationId,
-              communityId: eventData.communityId,
-              category: eventData.category ? (Array.isArray(eventData.category) ? eventData.category.join(',') : eventData.category) : null,
-              tags: eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.join(',') : eventData.tags) : null,
-              eventType: eventData.eventType,
-              image: eventData.image,
-              price: eventData.price ? JSON.stringify(eventData.price) : null,
-              metadata: eventData.metadata ? JSON.stringify(eventData.metadata) : null
+              updatedBy: sanitizeString(scraper) || 'scraper',
+              notes: sanitizeString(eventData.notes),
+              locationId: sanitizeString(eventData.locationId),
+              communityId: sanitizeString(eventData.communityId),
+              category: sanitizeString(eventData.category ? (Array.isArray(eventData.category) ? eventData.category.join(',') : eventData.category) : null),
+              tags: sanitizeString(eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.join(',') : eventData.tags) : null),
+              eventType: sanitizeString(eventData.eventType),
+              image: sanitizeString(eventData.image),
+              price: sanitizeJsonString(eventData.price),
+              metadata: sanitizeJsonString(eventData.metadata)
             }
           });
           results.updated++;
@@ -96,28 +118,28 @@ export async function POST(req: Request) {
           await prisma.event.create({
             data: {
               id: eventId,
-              externalId: eventData.externalId,
-              name: eventData.name,
-              description: eventData.description || '',
+              externalId: sanitizeString(eventData.externalId),
+              name: sanitizeString(eventData.name) || 'Untitled Event',
+              description: sanitizeString(eventData.description) || '',
               startDate: startDate,
               endDate: endDate,
-              locationName: eventData.locationName || 'TBD',
-              url: eventData.url,
+              locationName: sanitizeString(eventData.locationName) || 'TBD',
+              url: sanitizeString(eventData.url),
               cleCredits: eventData.cleCredits,
               status: 'APPROVED',
-              submittedBy: scraper || 'scraper',
+              submittedBy: sanitizeString(scraper) || 'scraper',
               submittedAt: now,
               updatedAt: now,
-              updatedBy: scraper || 'scraper',
-              notes: eventData.notes,
-              locationId: eventData.locationId,
-              communityId: eventData.communityId,
-              category: eventData.category ? (Array.isArray(eventData.category) ? eventData.category.join(',') : eventData.category) : null,
-              tags: eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.join(',') : eventData.tags) : null,
-              eventType: eventData.eventType,
-              image: eventData.image,
-              price: eventData.price ? JSON.stringify(eventData.price) : null,
-              metadata: eventData.metadata ? JSON.stringify(eventData.metadata) : null
+              updatedBy: sanitizeString(scraper) || 'scraper',
+              notes: sanitizeString(eventData.notes),
+              locationId: sanitizeString(eventData.locationId),
+              communityId: sanitizeString(eventData.communityId),
+              category: sanitizeString(eventData.category ? (Array.isArray(eventData.category) ? eventData.category.join(',') : eventData.category) : null),
+              tags: sanitizeString(eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.join(',') : eventData.tags) : null),
+              eventType: sanitizeString(eventData.eventType),
+              image: sanitizeString(eventData.image),
+              price: sanitizeJsonString(eventData.price),
+              metadata: sanitizeJsonString(eventData.metadata)
             }
           });
           results.created++;
