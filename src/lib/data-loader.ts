@@ -79,7 +79,15 @@ function sanitizeEvent(event: any): Event {
 
 export async function getAllEvents(): Promise<Event[]> {
   try {
-    console.log('Fetching events from database...');
+    console.log('🔍 [getAllEvents] Starting event fetch...');
+    console.log('🔍 [getAllEvents] DATABASE_URL exists:', !!process.env.DATABASE_URL);
+
+    console.log('🔍 [getAllEvents] Connecting to database...');
+    // Test connection
+    await prisma.$connect();
+    console.log('✅ [getAllEvents] Database connection successful');
+
+    console.log('🔍 [getAllEvents] Executing query for APPROVED/FEATURED events...');
     const events = await prisma.event.findMany({
       where: {
         status: {
@@ -94,20 +102,43 @@ export async function getAllEvents(): Promise<Event[]> {
         community: true
       }
     });
-    
-    console.log(`Found ${events.length} events in database`);
-    
+
+    console.log(`📊 [getAllEvents] Raw query returned ${events.length} events`);
+    console.log('🔍 [getAllEvents] Sample events:', events.slice(0, 3).map(e => ({
+      id: e.id,
+      name: e.name,
+      status: e.status,
+      startDate: e.startDate
+    })));
+
     // Sanitize, filter, and deduplicate events
-    const sanitizedEvents = events
-      .map(sanitizeEvent)
-      .filter(isUpcomingEvent);
-    
-    const deduplicatedEvents = deduplicateEvents(sanitizedEvents);
-    
-    console.log(`${sanitizedEvents.length} events are upcoming, ${deduplicatedEvents.length} after deduplication`);
+    console.log('🔍 [getAllEvents] Sanitizing events...');
+    const sanitizedEvents = events.map(sanitizeEvent);
+
+    console.log('🔍 [getAllEvents] Filtering for upcoming events...');
+    const upcomingEvents = sanitizedEvents.filter(isUpcomingEvent);
+
+    console.log(`📊 [getAllEvents] ${sanitizedEvents.length} total sanitized, ${upcomingEvents.length} upcoming`);
+
+    console.log('🔍 [getAllEvents] Deduplicating events...');
+    const deduplicatedEvents = deduplicateEvents(upcomingEvents);
+
+    console.log(`✅ [getAllEvents] Final result: ${deduplicatedEvents.length} events`);
+    console.log('🔍 [getAllEvents] Sample final events:', deduplicatedEvents.slice(0, 2).map(e => ({
+      id: e.id,
+      name: e.name,
+      status: e.status,
+      startDate: e.startDate
+    })));
+
+    await prisma.$disconnect();
     return deduplicatedEvents;
   } catch (error) {
-    console.error('Error fetching events:', error);
+    console.error('❌ [getAllEvents] Error fetching events:', error);
+    console.error('❌ [getAllEvents] Error details:', {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
+    });
     return [];
   }
 }

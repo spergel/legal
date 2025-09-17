@@ -24,12 +24,19 @@ function escapeXml(unsafe: string) {
 }
 
 export async function GET(req: Request) {
+  console.log('🔍 [RSS] RSS feed requested');
+
   const url = new URL(req.url);
   const orgs = url.searchParams.getAll('org').flatMap(o => o.split(','));
   const ids = url.searchParams.getAll('id').flatMap(i => i.split(','));
 
+  console.log('🔍 [RSS] Filters - orgs:', orgs, 'ids:', ids);
+
   let events = await getAllEvents();
+  console.log(`📊 [RSS] getAllEvents returned ${events.length} events`);
+
   events = filterEvents(events, { orgs, ids });
+  console.log(`📊 [RSS] After filtering: ${events.length} events`);
 
   const rss = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -53,6 +60,7 @@ export async function GET(req: Request) {
   </channel>
 </rss>`;
 
+  console.log(`📊 [RSS] Generated RSS with ${events.length} items`);
   return new NextResponse(rss, {
     status: 200,
     headers: {
