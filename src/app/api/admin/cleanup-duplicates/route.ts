@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     // Get all events
     const allEvents = await prisma.event.findMany({
       orderBy: {
-        submittedAt: 'asc' // Keep the oldest version
+        createdAt: 'asc' // Keep the oldest version
       }
     });
     

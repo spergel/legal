@@ -42,25 +42,14 @@ export interface Event {
   description: string;
   startDate: Date;
   endDate: Date;
-  locationName: string;
+  locationText: string;
+  communityText: string;
   url?: string | null;
+  hasCLE: boolean;
   cleCredits?: number | null;
   status: string;
-  submittedBy: string;
-  submittedAt: Date;
+  createdAt: Date;
   updatedAt: Date;
-  updatedBy?: string | null;
-  notes?: string | null;
-  locationId?: string | null;
-  location?: Location | null;
-  communityId?: string | null;
-  community?: Community | null;
-  category?: string[];
-  tags?: string[];
-  eventType?: string | null;
-  image?: string | null;
-  price?: Record<string, any> | null;
-  metadata?: Record<string, any> | null;
 }
 
 export interface Location {
