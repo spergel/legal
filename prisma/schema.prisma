@@ -17,7 +17,6 @@ model User {
   role          String      @default("user")
   accounts      Account[]
   sessions      Session[]
-  starredEvents UserEvent[]
 }
 
 model Account {
@@ -55,67 +54,23 @@ model VerificationToken {
 }
 
 model Event {
-  id           String      @id @default(cuid())
-  name         String
-  description  String
-  startDate    DateTime
-  endDate      DateTime
-  locationName String
-  url          String?     @unique
-  cleCredits   Float?
-  status       EventStatus @default(PENDING)
-  submittedBy  String
-  submittedAt  DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  updatedBy    String?
-  notes        String?
-  locationId   String?
-  communityId  String?
-  externalId   String?     @unique
-  category     String[]
-  eventType    String?
-  image        String?
-  metadata     Json?
-  price        Json?
-  tags         String[]
-  community    Community?  @relation(fields: [communityId], references: [id])
-  location     Location?   @relation(fields: [locationId], references: [id])
-  starredBy    UserEvent[]
+  id            String   @id @default(cuid())
+  externalId    String?  @unique
+  name          String
+  description   String   @default("")
+  startDate     DateTime
+  endDate       DateTime
+  locationText  String   @default("TBD")
+  communityText String   @default("Unknown")
+  url           String?
+  hasCLE        Boolean  @default(false)
+  cleCredits    Float?
+  status        String   @default("APPROVED")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
-model Location {
-  id        String   @id @default(cuid())
-  name      String
-  address   String
-  city      String
-  state     String
-  zip       String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  events    Event[]
-}
-
-model Community {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  category    String[]
-  url         String?
-  events      Event[]
-}
-
-model UserEvent {
-  id        String   @id @default(cuid())
-  userId    String
-  eventId   String
-  starredAt DateTime @default(now())
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, eventId])
-}
+// Simplified - removed complex relations
 
 model NewsletterSubscriber {
   id             String    @id @default(cuid())
@@ -145,14 +100,7 @@ model Newsletter {
   metadata    Json?
 }
 
-enum EventStatus {
-  PENDING
-  APPROVED
-  DENIED
-  FEATURED
-  CANCELLED
-  ARCHIVED
-}
+// Removed EventStatus enum - using simple strings
 
 enum NewsletterStatus {
   DRAFT

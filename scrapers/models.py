@@ -24,49 +24,26 @@ class Event:
     cle_credits: Optional[float] = None  # Will be stored as cleCredits Float in Prisma
 
     def to_dict(self) -> Dict[str, Any]:
-        """Convert the event to a dictionary compatible with Prisma schema."""
-        def safe_str(value: Any) -> Optional[str]:
+        """Convert the event to a dictionary compatible with simplified Prisma schema."""
+        def safe_str(value: Any) -> str:
             """Safely convert value to string, handling None and objects."""
             if value is None:
-                return None
+                return ""
             if isinstance(value, str):
-                return value[:10000]  # Limit string length
-            return str(value)[:10000]
-        
-        def safe_list(value: Any) -> List[str]:
-            """Safely convert value to list of strings."""
-            if value is None:
-                return []
-            if isinstance(value, list):
-                return [str(item)[:1000] for item in value if item is not None]
-            if isinstance(value, str):
-                return [value[:1000]]
-            return [str(value)[:1000]]
-        
-        def safe_dict(value: Any) -> Optional[Dict[str, Any]]:
-            """Safely handle dictionary values."""
-            if value is None:
-                return None
-            if isinstance(value, dict):
-                return {str(k)[:100]: v for k, v in value.items() if k is not None}
-            return None
+                # Remove null characters and limit length
+                clean_str = value.replace('\0', '').replace('\n', ' ').replace('\r', ' ')
+                return clean_str[:1000]
+            return str(value)[:1000]
         
         return {
-            "externalId": safe_str(self.id),  # Use externalId for API compatibility
+            "externalId": safe_str(self.id),
             "name": safe_str(self.name) or "Untitled Event",
-            "description": safe_str(self.description) or "",
+            "description": safe_str(self.description),
             "startDate": safe_str(self.startDate),
-            "endDate": safe_str(self.endDate) or safe_str(self.startDate),  # Use startDate as endDate if no endDate provided
-            "locationName": safe_str(self.locationName) or "TBD",  # Required field
-            "url": safe_str(self.url),
-            # Note: locationId and communityId are handled as relations in Prisma, not direct fields
-            "image": safe_str(self.image),
-            "price": None,  # Temporarily disable complex fields
-            "metadata": None,  # Temporarily disable complex fields
-            "category": [],  # Temporarily disable to isolate issue
-            "tags": [],  # Temporarily disable to isolate issue
-            "eventType": safe_str(self.event_type),  # Note: Prisma uses camelCase
-            "cleCredits": self.cle_credits if isinstance(self.cle_credits, (int, float)) else None  # Note: Prisma uses camelCase
+            "endDate": safe_str(self.endDate) or safe_str(self.startDate),
+            "locationName": safe_str(self.locationName) or "TBD",
+            "url": safe_str(self.url) if self.url else None,
+            "cleCredits": self.cle_credits if isinstance(self.cle_credits, (int, float)) else None
         }
 
     @classmethod
