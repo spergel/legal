@@ -1,17 +1,16 @@
 const { PrismaClient } = require('@prisma/client');
 
-async function testMinimalEvent() {
+async function testArrayEvent() {
   const prisma = new PrismaClient();
 
   try {
-    console.log('Testing minimal event creation...');
+    console.log('Testing event creation with arrays...');
     
-    // Try to create the simplest possible event
     const result = await prisma.event.create({
       data: {
-        id: 'test_minimal_' + Date.now(),
-        name: 'Test Event',
-        description: 'Simple test',
+        id: 'test_array_' + Date.now(),
+        name: 'Test Event with Arrays',
+        description: 'Testing categories and tags',
         startDate: new Date('2025-09-18T12:00:00Z'),
         endDate: new Date('2025-09-18T13:00:00Z'),
         locationName: 'Test Location',
@@ -19,7 +18,6 @@ async function testMinimalEvent() {
         submittedBy: 'test',
         submittedAt: new Date(),
         updatedAt: new Date(),
-        // All other fields as null or defaults - only use simple fields
         externalId: null,
         url: null,
         cleCredits: null,
@@ -29,19 +27,23 @@ async function testMinimalEvent() {
         image: null,
         price: null,
         metadata: null,
+        // Test the array fields
+        category: ['CLE', 'Networking'],
+        tags: ['test', 'legal', 'event'],
       }
     });
     
-    console.log('✅ SUCCESS: Created minimal event:', result.id);
+    console.log('✅ SUCCESS: Created event with arrays:', result.id);
+    console.log('Categories:', result.category);
+    console.log('Tags:', result.tags);
     return true;
     
   } catch (error) {
-    console.error('❌ ERROR creating minimal event:', error.message);
-    console.error('Full error:', error);
+    console.error('❌ ERROR creating event with arrays:', error.message);
     return false;
   } finally {
     await prisma.$disconnect();
   }
 }
 
-testMinimalEvent();
+testArrayEvent();

@@ -102,8 +102,7 @@ export async function POST(req: Request) {
               updatedAt: now,
               updatedBy: sanitizeString(scraper) || 'scraper',
               notes: sanitizeString(eventData.notes),
-              locationId: sanitizeString(eventData.locationId),
-              communityId: sanitizeString(eventData.communityId),
+              // locationId and communityId are handled as relations, not direct fields
               category: eventData.category ? (Array.isArray(eventData.category) ? eventData.category.filter(c => c && c.trim()).map(c => sanitizeString(c)).filter(Boolean) : [sanitizeString(eventData.category)].filter(Boolean)) : [],
               tags: eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.filter(t => t && t.trim()).map(t => sanitizeString(t)).filter(Boolean) : [sanitizeString(eventData.tags)].filter(Boolean)) : [],
               eventType: sanitizeString(eventData.eventType),
@@ -132,8 +131,7 @@ export async function POST(req: Request) {
               updatedAt: now,
               updatedBy: sanitizeString(scraper) || 'scraper',
               notes: sanitizeString(eventData.notes),
-              locationId: sanitizeString(eventData.locationId),
-              communityId: sanitizeString(eventData.communityId),
+              // locationId and communityId are handled as relations, not direct fields
               category: eventData.category ? (Array.isArray(eventData.category) ? eventData.category.filter(c => c && c.trim()).map(c => sanitizeString(c)).filter(Boolean) : [sanitizeString(eventData.category)].filter(Boolean)) : [],
               tags: eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.filter(t => t && t.trim()).map(t => sanitizeString(t)).filter(Boolean) : [sanitizeString(eventData.tags)].filter(Boolean)) : [],
               eventType: sanitizeString(eventData.eventType),
