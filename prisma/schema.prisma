@@ -1,22 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-// This Prisma schema is for NextAuth.js with a user role field
-// Docs: https://authjs.dev/reference/adapter/prisma#schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
-
-// generator python {
-//   provider = "prisma-client-py"
-// }
-
-
 
 datasource db {
   provider = "postgresql"
@@ -24,32 +9,31 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?  @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
-  role          String   @default("user") // 'user' or 'admin'
+  role          String      @default("user")
   accounts      Account[]
   sessions      Session[]
-  starredEvents UserEvent[] // Many-to-many relationship with events
-  // Add any other fields you want
+  starredEvents UserEvent[]
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -65,106 +49,115 @@ model Session {
 model VerificationToken {
   identifier String
   token      String   @unique
-  expires   DateTime
+  expires    DateTime
 
   @@unique([identifier, token])
 }
 
 model Event {
-  id          String      @id @default(cuid())
-  externalId  String?     @unique
-  name        String
-  description String
-  startDate   DateTime
-  endDate     DateTime
+  id           String      @id @default(cuid())
+  name         String
+  description  String
+  startDate    DateTime
+  endDate      DateTime
   locationName String
-  url         String?     @unique
-  cleCredits  Float?      // Changed from Int? to Float? to match our scrapers
-  status      String      @default("PENDING") // PENDING, APPROVED, DENIED, FEATURED, CANCELLED, ARCHIVED
-  submittedBy String      // Email of the submitter
-  submittedAt DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  updatedBy   String?     // Email of the last updater
-  notes       String?     // For admin notes/reason for status changes
-  locationId  String?     // Optional reference to a Location
-  location    Location?   @relation(fields: [locationId], references: [id])
-  communityId String?     // Optional reference to a Community
-  community   Community?  @relation(fields: [communityId], references: [id])
-  starredBy   UserEvent[] // Many-to-many relationship with users
-  
-  // New fields for categorization system (stored as comma-separated strings for SQLite)
-  category    String?     // Comma-separated categories (e.g., 'CLE,Intellectual Property,Networking')
-  tags        String?     // Comma-separated tags for additional metadata
-  eventType   String?     // Type of event (e.g., 'CLE', 'Networking', 'Annual Dinner', 'Pro Bono')
-  image       String?     // URL to event image
-  price       String?     // Price information as JSON string (for complex pricing structures)
-  metadata    String?     // Additional metadata as JSON string
-
-  // Temporarily removed unique constraint to avoid migration conflicts
-  // @@unique([name, startDate, communityId], name: "unique_event_per_community")
+  url          String?     @unique
+  cleCredits   Float?
+  status       EventStatus @default(PENDING)
+  submittedBy  String
+  submittedAt  DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  updatedBy    String?
+  notes        String?
+  locationId   String?
+  communityId  String?
+  externalId   String?     @unique
+  category     String[]
+  eventType    String?
+  image        String?
+  metadata     Json?
+  price        Json?
+  tags         String[]
+  community    Community?  @relation(fields: [communityId], references: [id])
+  location     Location?   @relation(fields: [locationId], references: [id])
+  starredBy    UserEvent[]
 }
 
 model Location {
-  id          String   @id @default(cuid())
-  name        String
-  address     String
-  city        String
-  state       String
-  zip         String
-  events      Event[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  city      String
+  state     String
+  zip       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  events    Event[]
 }
 
 model Community {
   id          String   @id @default(cuid())
   name        String
   description String?
-  url         String?  // Website URL for the community
-  category    String?  // Comma-separated categories/tags
-  events      Event[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  category    String[]
+  url         String?
+  events      Event[]
 }
 
-// Junction table for user starred events
 model UserEvent {
   id        String   @id @default(cuid())
   userId    String
   eventId   String
   starredAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, eventId]) // Prevent duplicate starrings
+  @@unique([userId, eventId])
 }
 
-// Newsletter subscription model
 model NewsletterSubscriber {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  name          String?
-  isActive      Boolean  @default(true)
-  preferences   String?  // Store subscription preferences as JSON string
-  subscribedAt  DateTime @default(now())
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String?
+  isActive       Boolean   @default(true)
+  preferences    Json?
+  subscribedAt   DateTime  @default(now())
   unsubscribedAt DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
-// Newsletter campaigns model
 model Newsletter {
-  id          String   @id @default(cuid())
+  id          String           @id @default(cuid())
   title       String
   subject     String
-  content     String   // HTML content
-  status      String   @default("DRAFT") // DRAFT, SCHEDULED, SENDING, SENT, CANCELLED
-  createdBy   String   // Email of creator
-  createdAt   DateTime @default(now())
-  scheduledAt DateTime? // When to send
-  sentAt      DateTime? // When it was actually sent
-  recipients  Int?      // Number of recipients
-  opens       Int?      // Number of opens
-  clicks      Int?      // Number of clicks
-  metadata    String?   // Additional metadata as JSON string
+  content     String
+  status      NewsletterStatus @default(DRAFT)
+  createdBy   String
+  createdAt   DateTime         @default(now())
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  recipients  Int?
+  opens       Int?
+  clicks      Int?
+  metadata    Json?
+}
+
+enum EventStatus {
+  PENDING
+  APPROVED
+  DENIED
+  FEATURED
+  CANCELLED
+  ARCHIVED
+}
+
+enum NewsletterStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  CANCELLED
 }

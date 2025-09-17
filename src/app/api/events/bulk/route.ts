@@ -104,8 +104,8 @@ export async function POST(req: Request) {
               notes: sanitizeString(eventData.notes),
               locationId: sanitizeString(eventData.locationId),
               communityId: sanitizeString(eventData.communityId),
-              category: sanitizeString(eventData.category ? (Array.isArray(eventData.category) ? eventData.category.join(',') : eventData.category) : null),
-              tags: sanitizeString(eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.join(',') : eventData.tags) : null),
+              category: eventData.category ? (Array.isArray(eventData.category) ? eventData.category.filter(c => c && c.trim()).map(c => sanitizeString(c)).filter(Boolean) : [sanitizeString(eventData.category)].filter(Boolean)) : [],
+              tags: eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.filter(t => t && t.trim()).map(t => sanitizeString(t)).filter(Boolean) : [sanitizeString(eventData.tags)].filter(Boolean)) : [],
               eventType: sanitizeString(eventData.eventType),
               image: sanitizeString(eventData.image),
               price: null, // Temporarily disable complex JSON fields
@@ -134,8 +134,8 @@ export async function POST(req: Request) {
               notes: sanitizeString(eventData.notes),
               locationId: sanitizeString(eventData.locationId),
               communityId: sanitizeString(eventData.communityId),
-              category: sanitizeString(eventData.category ? (Array.isArray(eventData.category) ? eventData.category.join(',') : eventData.category) : null),
-              tags: sanitizeString(eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.join(',') : eventData.tags) : null),
+              category: eventData.category ? (Array.isArray(eventData.category) ? eventData.category.filter(c => c && c.trim()).map(c => sanitizeString(c)).filter(Boolean) : [sanitizeString(eventData.category)].filter(Boolean)) : [],
+              tags: eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.filter(t => t && t.trim()).map(t => sanitizeString(t)).filter(Boolean) : [sanitizeString(eventData.tags)].filter(Boolean)) : [],
               eventType: sanitizeString(eventData.eventType),
               image: sanitizeString(eventData.image),
               price: null, // Temporarily disable complex JSON fields

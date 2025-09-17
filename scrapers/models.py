@@ -63,8 +63,8 @@ class Event:
             "image": safe_str(self.image),
             "price": None,  # Temporarily disable complex fields
             "metadata": None,  # Temporarily disable complex fields
-            "category": safe_list(self.category),  # Will be converted to comma-separated string in API
-            "tags": safe_list(self.tags),  # Will be converted to comma-separated string in API
+            "category": safe_list(self.category),  # Will be sent as array to API
+            "tags": safe_list(self.tags),  # Will be sent as array to API
             "eventType": safe_str(self.event_type),  # Note: Prisma uses camelCase
             "cleCredits": self.cle_credits if isinstance(self.cle_credits, (int, float)) else None  # Note: Prisma uses camelCase
         }
