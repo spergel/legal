@@ -15,7 +15,7 @@ from .nycbar_scraper import NYCBarScraper
 from .nyiac_scraper import NYIACScraper
 from .nysba_scraper import NYSBAScraper
 from .wbasny_scraper import WBASNYScraper
-from .aabany_rss_scraper import AabanyRssScraper
+# from .aabany_rss_scraper import AabanyRssScraper
 # from .fedbar_ics_scraper import FBAICSScraper
 # from .hnba_ics_scraper import HNBAICSScraper
 from .barkergilmore_scraper import BarkerGilmoreScraper
@@ -26,7 +26,7 @@ from .acc_scraper import AccScraper
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 __all__ = [
-    'AabanyRssScraper',
+    # 'AabanyRssScraper',
     'BarkerGilmoreScraper',
     'BrooklynBarScraper',
     'ChIPsNetworkScraper',
