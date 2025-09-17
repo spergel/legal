@@ -54,14 +54,14 @@ export async function POST(request: NextRequest) {
     
     // Process each duplicate group
     for (const { key, events } of duplicates) {
-      // Sort by submittedAt (keep the oldest)
-      events.sort((a: any, b: any) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime());
+      // Sort by createdAt (keep the oldest)
+      events.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
       
       const keepEvent = events[0];
       const removeEvents = events.slice(1);
       
       console.log(`\n📝 Processing: "${keepEvent.name}"`);
-      console.log(`   Keeping: ${keepEvent.id} (submitted: ${keepEvent.submittedAt})`);
+      console.log(`   Keeping: ${keepEvent.id} (created: ${keepEvent.createdAt})`);
       console.log(`   Removing: ${removeEvents.length} duplicates`);
       
       // Remove duplicates
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
           removedEvents.push({
             id: eventToRemove.id,
             name: eventToRemove.name,
-            submittedAt: eventToRemove.submittedAt
+            createdAt: eventToRemove.createdAt
           });
           console.log(`   ✅ Removed: ${eventToRemove.id}`);
         } catch (error) {

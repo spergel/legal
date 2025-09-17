@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
             startDate: e.startDate,
             externalId: e.externalId,
             status: e.status,
-            submittedAt: e.submittedAt
+            createdAt: e.createdAt
           }))
         });
       }

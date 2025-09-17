@@ -96,9 +96,7 @@ export async function POST(req: Request) {
           },
           data: {
             status: 'ARCHIVED',
-            updatedAt: new Date(),
-            updatedBy: 'system@cleanup-api',
-            notes: 'Auto-archived old denied event via API cleanup'
+            updatedAt: new Date()
           }
         });
         

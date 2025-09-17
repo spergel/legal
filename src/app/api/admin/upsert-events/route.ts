@@ -56,7 +56,6 @@ export async function POST(req: Request) {
             data: {
               ...eventData,
               updatedAt: new Date(),
-              updatedBy: scraper_name || 'scraper',
             }
           });
           updatedCount++;
@@ -66,10 +65,8 @@ export async function POST(req: Request) {
           result = await prisma.event.create({
             data: {
               ...eventData,
-              submittedBy: scraper_name || 'scraper',
-              submittedAt: new Date(),
+              createdAt: new Date(),
               updatedAt: new Date(),
-              updatedBy: scraper_name || 'scraper',
               status: 'APPROVED',
             }
           });
