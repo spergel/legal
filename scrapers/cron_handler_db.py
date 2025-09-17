@@ -264,7 +264,7 @@ class ScraperManagerDB:
         import requests
 
         try:
-            url = f"https://{self.api_url}/api/events/bulk"
+            url = f"{self.api_url}/api/events/bulk"
             headers = {
                 'Content-Type': 'application/json',
                 'Authorization': f'Bearer {self.secret}'
