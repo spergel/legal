@@ -100,7 +100,8 @@ model Event {
   price       String?     // Price information as JSON string (for complex pricing structures)
   metadata    String?     // Additional metadata as JSON string
 
-  @@unique([name, startDate, communityId], name: "unique_event_per_community")
+  // Temporarily removed unique constraint to avoid migration conflicts
+  // @@unique([name, startDate, communityId], name: "unique_event_per_community")
 }
 
 model Location {
