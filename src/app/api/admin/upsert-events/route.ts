@@ -39,36 +39,42 @@ export async function POST(req: Request) {
       }
       
       try {
-        // Use upsert with the composite unique constraint
-        const upsertResult = await prisma.event.upsert({
+        // Check if event exists by name, startDate, and communityId
+        const existingEvent = await prisma.event.findFirst({
           where: {
-            unique_event_per_community: {
-              name: eventData.name,
-              startDate: new Date(eventData.startDate),
-              communityId: eventData.communityId || null
-            }
-          },
-          update: {
-            ...eventData,
-            updatedAt: new Date(),
-            updatedBy: scraper_name || 'scraper',
-          },
-          create: {
-            ...eventData,
-            submittedBy: scraper_name || 'scraper',
-            submittedAt: new Date(),
-            status: 'APPROVED',
-          },
+            name: eventData.name,
+            startDate: new Date(eventData.startDate),
+            communityId: eventData.communityId || null
+          }
         });
-        
-        // Check if this was an update or create by looking at submittedAt vs updatedAt
-        const isUpdate = upsertResult.updatedAt.getTime() > upsertResult.submittedAt.getTime();
-        if (isUpdate) {
+
+        let result;
+        if (existingEvent) {
+          // Update existing event
+          result = await prisma.event.update({
+            where: { id: existingEvent.id },
+            data: {
+              ...eventData,
+              updatedAt: new Date(),
+              updatedBy: scraper_name || 'scraper',
+            }
+          });
           updatedCount++;
-          results.push({ success: true, id: upsertResult.id, action: 'updated' });
+          results.push({ success: true, id: result.id, action: 'updated' });
         } else {
+          // Create new event
+          result = await prisma.event.create({
+            data: {
+              ...eventData,
+              submittedBy: scraper_name || 'scraper',
+              submittedAt: new Date(),
+              updatedAt: new Date(),
+              updatedBy: scraper_name || 'scraper',
+              status: 'APPROVED',
+            }
+          });
           createdCount++;
-          results.push({ success: true, id: upsertResult.id, action: 'created' });
+          results.push({ success: true, id: result.id, action: 'created' });
         }
       } catch (err) {
         results.push({ error: err instanceof Error ? err.message : String(err), event: eventData });
