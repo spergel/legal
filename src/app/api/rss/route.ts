@@ -4,7 +4,7 @@ import { Event } from '@/types';
 
 function filterEvents(events: Event[], { orgs, ids }: { orgs: string[]; ids: string[] }): Event[] {
   return events.filter((event: Event) => {
-    const orgMatch = !orgs.length || (event.communityId && orgs.includes(event.communityId));
+    const orgMatch = !orgs.length || (event.communityText && orgs.includes(event.communityText));
     const idMatch = !ids.length || ids.includes(event.id);
     return orgMatch && idMatch;
   });
@@ -53,9 +53,9 @@ export async function GET(req: Request) {
       <description>${escapeXml(event.description || '')}</description>
       <pubDate>${new Date(event.startDate).toUTCString()}</pubDate>
       <guid isPermaLink="false">${event.id}</guid>
-      ${event.locationName ? `<location>${escapeXml(event.locationName)}</location>` : ''}
+      ${event.locationText ? `<location>${escapeXml(event.locationText)}</location>` : ''}
       ${event.cleCredits ? `<cleCredits>${escapeXml(String(event.cleCredits))}</cleCredits>` : ''}
-      ${event.community ? `<community>${escapeXml(event.community.name)}</community>` : ''}
+      ${event.communityText ? `<community>${escapeXml(event.communityText)}</community>` : ''}
     </item>`).join('\n    ')}
   </channel>
 </rss>`;

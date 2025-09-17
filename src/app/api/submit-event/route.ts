@@ -61,7 +61,7 @@ export async function POST(req: Request) {
         ...event,
         startDate: event.startDate.toISOString(),
         endDate: event.endDate.toISOString(),
-        submittedAt: event.submittedAt.toISOString(),
+        createdAt: event.createdAt.toISOString(),
         updatedAt: event.updatedAt.toISOString(),
       }
     });

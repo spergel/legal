@@ -32,9 +32,9 @@ function deduplicateEvents(events: Event[]): Event[] {
     if (groupEvents.length === 1) {
       deduplicatedEvents.push(groupEvents[0]);
     } else {
-      // Sort by submittedAt and keep the oldest
-      groupEvents.sort((a: Event, b: Event) => 
-        new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime()
+      // Sort by createdAt and keep the oldest
+      groupEvents.sort((a: Event, b: Event) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       );
       deduplicatedEvents.push(groupEvents[0]);
     }
@@ -97,10 +97,7 @@ export async function getAllEvents(): Promise<Event[]> {
       orderBy: {
         startDate: 'asc'
       },
-      include: {
-        location: true,
-        community: true
-      }
+      // includes removed for simplified schema
     });
 
     console.log(`📊 [getAllEvents] Raw query returned ${events.length} events`);
@@ -149,10 +146,7 @@ export async function getAllEventsForAdmin(): Promise<Event[]> {
       orderBy: {
         startDate: 'asc'
       },
-      include: {
-        location: true,
-        community: true
-      }
+      // includes removed for simplified schema
     });
     
     return events.map(sanitizeEvent);
@@ -166,10 +160,7 @@ export async function getEventById(id: string): Promise<Event | null> {
   try {
     const event = await prisma.event.findUnique({
       where: { id },
-      include: {
-        location: true,
-        community: true
-      }
+      // includes removed for simplified schema
     });
     
     return event ? sanitizeEvent(event) : null;
@@ -186,12 +177,9 @@ export async function getPendingEvents(): Promise<Event[]> {
         status: 'PENDING'
       },
       orderBy: {
-        submittedAt: 'desc'
+        createdAt: 'desc'
       },
-      include: {
-        location: true,
-        community: true
-      }
+      // includes removed for simplified schema
     });
     
     return events.map(sanitizeEvent);
@@ -212,14 +200,9 @@ export async function updateEventStatus(
       where: { id: eventId },
       data: {
         status: { set: status },
-        updatedBy,
-        notes,
         updatedAt: new Date()
       },
-      include: {
-        location: true,
-        community: true
-      }
+      // includes removed for simplified schema
     });
     
     return sanitizeEvent(event);
@@ -230,67 +213,23 @@ export async function updateEventStatus(
 }
 
 export async function getAllLocations(): Promise<Location[]> {
-  try {
-    return await prisma.location.findMany({
-      orderBy: {
-        name: 'asc'
-      }
-    });
-  } catch (error) {
-    console.error('Error fetching locations:', error);
-    return [];
-  }
+  // TODO: Restore after schema simplification
+  return [];
 }
 
 export async function getLocationById(id: string): Promise<Location | null> {
-  try {
-    return await prisma.location.findUnique({
-      where: { id }
-    });
-  } catch (error) {
-    console.error('Error fetching location by ID:', error);
-    return null;
-  }
+  // TODO: Restore after schema simplification
+  return null;
 }
 
 export async function getAllCommunities(): Promise<Community[]> {
-  try {
-    const communities = await prisma.community.findMany({
-      orderBy: {
-        name: 'asc'
-      }
-    });
-    
-    // Transform to ensure category is always an array
-    return communities.map(community => ({
-      ...community,
-      category: Array.isArray(community.category) ? community.category : []
-    }));
-  } catch (error) {
-    console.error('Error fetching communities:', error);
-    return [];
-  }
+  // TODO: Restore after schema simplification
+  return [];
 }
 
 export async function getCommunityById(id: string): Promise<Community | null> {
-  try {
-    const community = await prisma.community.findUnique({
-      where: { id }
-    });
-    
-    if (!community) {
-      return null;
-    }
-    
-    // Transform to ensure category is always an array
-    return {
-      ...community,
-      category: Array.isArray(community.category) ? community.category : []
-    };
-  } catch (error) {
-    console.error('Error fetching community by ID:', error);
-    return null;
-  }
+  // TODO: Restore after schema simplification
+  return null;
 }
 
 // Helper function to format date strings
@@ -363,9 +302,7 @@ export async function cleanupOldEvents(): Promise<{ deleted: number; errors: str
       },
       data: {
         status: 'ARCHIVED',
-        updatedAt: new Date(),
-        updatedBy: 'system@cleanup',
-        notes: 'Auto-archived old denied event'
+        updatedAt: new Date()
       }
     });
     

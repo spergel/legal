@@ -36,49 +36,20 @@ export default function CategorizationStats({ events, className = '' }: Categori
   };
 
   events.forEach(event => {
-    // Count event types
-    if (event.eventType) {
-      stats.eventTypes[event.eventType] = (stats.eventTypes[event.eventType] || 0) + 1;
-    }
-
-    // Count practice areas
-    if (event.category && Array.isArray(event.category)) {
-      event.category.forEach(category => {
-        if ([
-          'Intellectual Property', 'Criminal Law', 'Immigration', 'Civil Rights',
-          'Employment Law', 'Family Law', 'Real Estate', 'Bankruptcy',
-          'Entertainment Law', 'International Law', 'Litigation', 'Mediation',
-          'Disability Law', 'Water', 'Environmental'
-        ].includes(category)) {
-          stats.practiceAreas[category] = (stats.practiceAreas[category] || 0) + 1;
-        }
-      });
-    }
-
-    // Count organization types
-    if (event.category && Array.isArray(event.category)) {
-      event.category.forEach(category => {
-        if ([
-          'Bar Association', 'Legal Events', 'CLE Provider', 'Law School', 'Legal Organization'
-        ].includes(category)) {
-          stats.organizationTypes[category] = (stats.organizationTypes[category] || 0) + 1;
-        }
-      });
-    }
-
-    // Count specialty groups
-    if (event.category && Array.isArray(event.category)) {
-      event.category.forEach(category => {
-        if ([
-          'Asian American', 'Hispanic', 'LGBTQ+', 'Women in Law', 'Young Lawyers', 'Solo/Small Firm'
-        ].includes(category)) {
-          stats.specialtyGroups[category] = (stats.specialtyGroups[category] || 0) + 1;
-        }
-      });
-    }
-
     // Count CLE events
-    if (event.eventType === 'CLE' || (event.category && Array.isArray(event.category) && event.category.includes('CLE'))) {
+    if (event.hasCLE) {
+      stats.eventTypes['CLE'] = (stats.eventTypes['CLE'] || 0) + 1;
+    } else {
+      stats.eventTypes['Non-CLE'] = (stats.eventTypes['Non-CLE'] || 0) + 1;
+    }
+
+    // TODO: Count practice areas after restoring category field
+    // Simplified for now - just count by community
+    if (event.communityText) {
+      stats.practiceAreas[event.communityText] = (stats.practiceAreas[event.communityText] || 0) + 1;
+    }
+    // Count CLE events (simplified)
+    if (event.hasCLE) {
       stats.cleEvents++;
     }
 

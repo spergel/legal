@@ -14,7 +14,7 @@ export default function CalendarSubscribeWidget() {
   useEffect(() => {
     async function fetchData() {
       const events = await getAllEvents();
-      const allTags = Array.from(new Set(events.flatMap(e => e.tags || [])));
+      const allTags: string[] = []; // TODO: Implement tags after schema simplification
       setTags(allTags);
       const comms = await getAllCommunities();
       setCommunities(comms);

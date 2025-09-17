@@ -25,10 +25,10 @@ function eventToICS(event: Event) {
   const dtend = endDate ? formatICSDate(endDate) : '';
   
   // Get location information
-  const location = event.location?.name || event.locationName || 'Location TBD';
-  
+  const location = event.locationText || 'Location TBD';
+
   // Get community information for context
-  const community = event.community?.name || '';
+  const community = event.communityText || '';
   const communityInfo = community ? `\n\nHosted by: ${community}` : '';
   
   // Enhanced description with community info
@@ -56,14 +56,14 @@ function filterEvents(events: Event[], { orgs = [], ids = [], cleOnly }: FilterP
     // If specific orgs or event ids are requested, we use 'OR' logic
     let idMatch = true;
     if (orgs.length > 0 || ids.length > 0) {
-      const orgMatch = orgs.length > 0 && !!event.communityId && orgs.includes(event.communityId);
+      const orgMatch = orgs.length > 0 && !!event.communityText && orgs.includes(event.communityText);
       const eventIdMatch = ids.length > 0 && ids.includes(event.id);
       idMatch = orgMatch || eventIdMatch;
     }
 
     let cleMatch = true;
     if (cleOnly) {
-      cleMatch = (event.eventType === 'CLE' || (event.category || []).includes('CLE'));
+      cleMatch = event.hasCLE;
     }
 
     return idMatch && cleMatch;
@@ -100,10 +100,6 @@ END:VCALENDAR`;
           in: ['APPROVED', 'FEATURED', 'PENDING']
         }
       },
-      include: {
-        location: true,
-        community: true,
-      },
       orderBy: {
         startDate: 'asc'
       },
@@ -128,9 +124,9 @@ END:VCALENDAR`;
       if (groupEvents.length === 1) {
         uniqueEvents.push(groupEvents[0]);
       } else {
-        // Sort by submittedAt and keep the oldest
-        groupEvents.sort((a: Event, b: Event) => 
-          new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime()
+        // Sort by createdAt and keep the oldest
+        groupEvents.sort((a: Event, b: Event) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
         uniqueEvents.push(groupEvents[0]);
       }

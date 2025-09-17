@@ -22,7 +22,7 @@ export default function CommunityDialog({ communityId, onClose }: CommunityDialo
       setCommunity(communityData);
 
       const allEvents = await getAllEvents();
-      const communityEvents = allEvents.filter(event => event.communityId === communityId);
+      const communityEvents = allEvents.filter(event => event.communityText === communityData.name);
       setEvents(communityEvents);
     }
 

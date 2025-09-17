@@ -78,32 +78,25 @@ export default function EventCategories({
   showTags = false, 
   maxCategories = 5 
 }: EventCategoriesProps) {
-  if (!event.category || !Array.isArray(event.category) || event.category.length === 0) {
+  // TODO: Restore category functionality after schema update
+  // For now, show community as a category
+  if (!event.communityText) {
     return null;
   }
+  const categories = [event.communityText];
 
-  // Sort categories by priority
-  const sortedCategories = [...event.category].sort((a, b) => {
-    const aIndex = categoryPriority.indexOf(a);
-    const bIndex = categoryPriority.indexOf(b);
-    if (aIndex === -1 && bIndex === -1) return 0;
-    if (aIndex === -1) return 1;
-    if (bIndex === -1) return -1;
-    return aIndex - bIndex;
-  });
-
-  // Limit the number of categories shown
-  const displayCategories = sortedCategories.slice(0, maxCategories);
-  const remainingCount = sortedCategories.length - maxCategories;
+  // Simplified - just use community as category
+  const displayCategories = categories.slice(0, maxCategories);
+  const remainingCount = Math.max(0, categories.length - maxCategories);
 
   return (
     <div className={`flex flex-wrap gap-2 ${className}`}>
-      {/* Event Type Badge (if present) */}
-      {event.eventType && (
+      {/* CLE Badge (if present) */}
+      {event.hasCLE && (
         <Badge 
-          className={`${categoryColors[event.eventType] || categoryColors.default} font-semibold`}
+          className={`${categoryColors['CLE'] || categoryColors.default} font-semibold`}
         >
-          {event.eventType}
+          CLE
         </Badge>
       )}
       
@@ -131,24 +124,7 @@ export default function EventCategories({
         </Badge>
       )}
       
-      {/* Tags (if enabled) */}
-      {showTags && event.tags && Array.isArray(event.tags) && event.tags.length > 0 && (
-        <>
-          {event.tags.slice(0, 3).map((tag, index) => (
-            <Badge 
-              key={`tag-${tag}-${index}`}
-              className="bg-gray-50 text-gray-600 border-gray-200 text-xs"
-            >
-              #{tag}
-            </Badge>
-          ))}
-          {event.tags.length > 3 && (
-            <Badge className="bg-gray-50 text-gray-600 border-gray-200 text-xs">
-              +{event.tags.length - 3} tags
-            </Badge>
-          )}
-        </>
-      )}
+      {/* TODO: Restore tags functionality after schema update */}
     </div>
   );
 } 

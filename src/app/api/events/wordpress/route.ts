@@ -43,10 +43,6 @@ export async function GET(request: NextRequest) {
 
     const events = await prisma.event.findMany({
       where: whereClause,
-      include: {
-        location: true,
-        community: true,
-      },
       orderBy: {
         startDate: 'asc'
       },
@@ -63,22 +59,15 @@ export async function GET(request: NextRequest) {
       status: event.status,
       start_date: event.startDate,
       end_date: event.endDate,
-      created_at: event.submittedAt,
+      created_at: event.createdAt,
       updated_at: event.updatedAt,
-      location: event.location ? {
-        id: event.location.id,
-        name: event.location.name,
-        address: event.location.address,
-        city: event.location.city,
-        state: event.location.state,
-        zip: event.location.zip
-      } : null,
-      community: event.community ? {
-        id: event.community.id,
-        name: event.community.name,
-        url: event.community.url
-      } : null,
-      photo: event.image,
+      location: {
+        name: event.locationText || 'TBD'
+      },
+      community: {
+        name: event.communityText || 'Unknown'
+      },
+      photo: null,
       url: `https://lawyerevents.net/events/${event.id}`,
       featured: event.status === 'FEATURED'
     }));
@@ -106,7 +95,13 @@ export async function GET(request: NextRequest) {
 }
 
 // POST endpoint for external CMS (WordPress/Squarespace) to submit events back
+// TODO: Reimplement after schema simplification
 export async function POST(request: NextRequest) {
+  return NextResponse.json(
+    { error: 'WordPress submission temporarily disabled during schema simplification' },
+    { status: 501 }
+  );
+  /*
   try {
     const body = await request.json();
     const { 
@@ -189,11 +184,7 @@ export async function POST(request: NextRequest) {
         status: 'PENDING', // WordPress submissions start as pending
         // wordpressId: wordpress_id // Store WordPress reference (temporarily disabled)
       },
-      include: {
-        location: true,
-        community: true,
-      }
-    });
+      });
 
     return NextResponse.json({
       success: true,
@@ -212,4 +203,6 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+  */
 }
+

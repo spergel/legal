@@ -214,7 +214,7 @@ export default function EventsList({ events: initialEvents, communities, showSta
                     
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-gray-400" />
-                      <span>{event.locationName || 'Online/TBD'}</span>
+                      <span>{event.locationText || 'Online/TBD'}</span>
                     </div>
                   </div>
                   

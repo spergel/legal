@@ -18,10 +18,6 @@ export async function GET(request: NextRequest) {
 
     const events = await prisma.event.findMany({
       where: whereClause,
-      include: {
-        location: true,
-        community: true,
-      },
       orderBy: {
         startDate: 'asc'
       },
@@ -62,10 +58,10 @@ export async function GET(request: NextRequest) {
           description: event.description,
           start: event.startDate,
           end: event.endDate,
-          location: event.location?.name || event.locationName || 'Location TBD',
+          location: event.locationText || 'Location TBD',
           url: `https://lawyerevents.net/events/${event.id}`,
           status: event.status,
-          community: event.community?.name || ''
+          community: event.communityText || ''
         }))
       });
     }
@@ -110,7 +106,7 @@ function generateICS(events: any[]): string {
       `DTEND:${endStr}`,
       `SUMMARY:${event.name}`,
       `DESCRIPTION:${event.description?.replace(/\n/g, '\\n') || ''}`,
-      `LOCATION:${event.location?.name || event.locationName || 'Location TBD'}`,
+      `LOCATION:${event.locationText || 'Location TBD'}`,
       `URL:https://lawyerevents.net/events/${event.id}`,
       `STATUS:CONFIRMED`,
       'END:VEVENT'

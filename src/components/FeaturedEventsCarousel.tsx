@@ -86,16 +86,7 @@ export default function FeaturedEventsCarousel() {
 
   return (
     <div className="relative w-full h-96 bg-gradient-to-r from-amber-100 to-orange-100 rounded-xl overflow-hidden shadow-xl">
-      {/* Background Image */}
-      {currentEvent.image && (
-        <div className="absolute inset-0">
-          <img 
-            src={currentEvent.image} 
-            alt={currentEvent.name}
-            className="w-full h-full object-cover opacity-20"
-          />
-        </div>
-      )}
+      {/* TODO: Restore background image after schema update */}
       
       {/* Content Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-amber-900/80 to-orange-900/80 flex items-center">
@@ -125,14 +116,10 @@ export default function FeaturedEventsCarousel() {
                   minute: '2-digit'
                 })}
               </p>
-              {currentEvent.metadata?.cle_credits && (
-                <p className="text-lg">🎓 CLE Credits: {currentEvent.metadata.cle_credits}</p>
+              {currentEvent.cleCredits && (
+                <p className="text-lg">🎓 CLE Credits: {currentEvent.cleCredits}</p>
               )}
-              {currentEvent.price && (currentEvent.price.type?.toLowerCase() === 'free' || currentEvent.price.amount === 0) ? (
-                <p className="text-lg text-green-300 font-semibold">💰 FREE</p>
-              ) : currentEvent.price && currentEvent.price.amount != null && (
-                <p className="text-lg">💰 {currentEvent.price.currency}{currentEvent.price.amount.toFixed(2)}</p>
-              )}
+              {/* TODO: Restore price functionality after schema update */}
             </div>
             
             {/* Action Buttons */}

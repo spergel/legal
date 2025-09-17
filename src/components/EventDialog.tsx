@@ -109,16 +109,16 @@ export default function EventDialog({ eventId, onClose }: EventDialogProps) {
                 {formattedEndDate && <> - {formattedEndDate}</>}
               </p>
               <p className="text-amber-800">
-                <span className="font-semibold">Location:</span> {eventData.locationName || 'Online/TBD'}
+                <span className="font-semibold">Location:</span> {eventData.locationText || 'Online/TBD'}
               </p>
               {eventData.cleCredits && eventData.cleCredits > 0 && (
                 <p className="text-amber-800">
                   <span className="font-semibold">CLE Credits:</span> {eventData.cleCredits}
                 </p>
               )}
-              {eventData.community && (
+              {eventData.communityText && (
                 <p className="text-amber-800">
-                  <span className="font-semibold">Community:</span> {eventData.community.name}
+                  <span className="font-semibold">Community:</span> {eventData.communityText}
                 </p>
               )}
             </div>

@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     params.set('dates', `${start}/${end}`);
   }
   if (event.description) params.set('details', event.description);
-  if (event.locationName) params.set('location', event.locationName);
+  if (event.locationText) params.set('location', event.locationText);
   if (event.url) params.set('sprop', `website:${event.url}`);
 
   const gcalUrl = `https://calendar.google.com/calendar/render?${params.toString()}`;

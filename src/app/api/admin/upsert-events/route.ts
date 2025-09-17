@@ -39,13 +39,14 @@ export async function POST(req: Request) {
       }
       
       try {
-        // Check if event exists by name, startDate, and communityId
+        // Check if event exists by externalId or name+startDate
         const existingEvent = await prisma.event.findFirst({
-          where: {
-            name: eventData.name,
-            startDate: new Date(eventData.startDate),
-            communityId: eventData.communityId || null
-          }
+          where: eventData.externalId ? 
+            { externalId: eventData.externalId } :
+            {
+              name: eventData.name,
+              startDate: new Date(eventData.startDate)
+            }
         });
 
         let result;

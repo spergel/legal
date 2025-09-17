@@ -92,11 +92,11 @@ export default function EventsFilter({ events, onFilteredEvents, className = '',
     { id: 'cle-not', label: 'Not CLE Events', value: 'not-cle' },
   ];
 
-  // Derive available options for advanced filters from events
-  const eventTypes = useMemo(() => allEventTypes.filter(type => (events || []).some(event => event.eventType === type || (event.category || []).includes(type))), [events]);
-  const practiceAreas = useMemo(() => allPracticeAreas.filter(area => (events || []).some(event => (event.category || []).includes(area))), [events]);
-  const organizationTypes = useMemo(() => allOrganizationTypes.filter(type => (events || []).some(event => (event.category || []).includes(type))), [events]);
-  const specialtyGroups = useMemo(() => allSpecialtyGroups.filter(group => (events || []).some(event => (event.category || []).includes(group))), [events]);
+  // Simplified filter options during schema update
+  const eventTypes = useMemo(() => ['CLE', 'Non-CLE'], []);
+  const practiceAreas = useMemo(() => [], []);
+  const organizationTypes = useMemo(() => [], []);
+  const specialtyGroups = useMemo(() => [], []);
 
   const starredOptions: FilterOption[] = [
     { id: 'all-events', label: 'All Events', value: 'all' },
@@ -183,7 +183,7 @@ export default function EventsFilter({ events, onFilteredEvents, className = '',
     // Apply CLE filter
     if (filters.cle !== 'all') {
       filteredEvents = filteredEvents.filter(event => {
-        const isCle = event.eventType === 'CLE' || (event.category || []).includes('CLE');
+        const isCle = event.hasCLE;
         if (filters.cle === 'cle') return isCle;
         if (filters.cle === 'cle-with-credits') return event.cleCredits && event.cleCredits > 0;
         if (filters.cle === 'not-cle') return !isCle;
@@ -201,35 +201,22 @@ export default function EventsFilter({ events, onFilteredEvents, className = '',
       if (filters.communityId.startsWith('cat-')) {
         const category = filters.communityId.replace('cat-', '');
         const communityIds = (communities || []).filter(c => (c.category || []).includes(category)).map(c => c.id);
-        filteredEvents = filteredEvents.filter(event => event.communityId && communityIds.includes(event.communityId));
+        filteredEvents = filteredEvents.filter(event => event.communityText && communityIds.includes(event.communityText));
       } else {
-        filteredEvents = filteredEvents.filter(event => event.communityId === filters.communityId);
+        filteredEvents = filteredEvents.filter(event => event.communityText === filters.communityId);
       }
     }
     
-    // Apply advanced multi-select filters
+    // Apply simplified advanced filters (TODO: Restore after schema update)
     if (filters.eventTypes.length > 0) {
       filteredEvents = filteredEvents.filter(event => 
         filters.eventTypes.some(type => 
-          event.eventType === type || (event.category || []).includes(type)
+          (type === 'CLE' && event.hasCLE) || (type === 'Non-CLE' && !event.hasCLE)
         )
       );
     }
-    if (filters.practiceAreas.length > 0) {
-      filteredEvents = filteredEvents.filter(event => 
-        filters.practiceAreas.some(area => (event.category || []).includes(area))
-      );
-    }
-    if (filters.organizationTypes.length > 0) {
-      filteredEvents = filteredEvents.filter(event => 
-        filters.organizationTypes.some(type => (event.category || []).includes(type))
-      );
-    }
-    if (filters.specialtyGroups.length > 0) {
-      filteredEvents = filteredEvents.filter(event => 
-        filters.specialtyGroups.some(group => (event.category || []).includes(group))
-      );
-    }
+    // Other advanced filters temporarily disabled
+    // TODO: Restore practiceAreas, organizationTypes, specialtyGroups after schema update
 
     onFilteredEvents(filteredEvents);
   }, [filters, events, onFilteredEvents, starredEventIds, showStarredOnly, communities]);

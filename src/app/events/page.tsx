@@ -39,7 +39,7 @@ export default async function Events() {
           ...event,
           startDate: event.startDate.toISOString(),
           endDate: event.endDate ? event.endDate.toISOString() : null,
-          submittedAt: event.submittedAt.toISOString(),
+          createdAt: event.createdAt.toISOString(),
           updatedAt: event.updatedAt.toISOString(),
           formattedStartDate: await formatDate(event.startDate.toISOString()),
           formattedEndDate: event.endDate ? await formatDate(event.endDate.toISOString()) : null,

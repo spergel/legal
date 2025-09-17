@@ -28,10 +28,6 @@ export async function GET(request: NextRequest) {
 
     const allEvents = await prisma.event.findMany({
       where: whereClause,
-      include: {
-        location: true,
-        community: true,
-      },
       orderBy: {
         startDate: 'asc'
       },
@@ -111,3 +107,4 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+

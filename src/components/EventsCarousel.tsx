@@ -79,13 +79,7 @@ export default function EventsCarousel() {
       }`}
       onClick={() => setSelectedEventId(event.id)}
     >
-      {event.image && (
-        <img 
-          src={event.image} 
-          alt={event.name} 
-          className="w-full h-48 object-cover rounded-lg mb-4"
-        />
-      )}
+      {/* TODO: Restore image functionality after schema update */}
       {isFeatured && (
         <div className="mb-2">
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
@@ -103,22 +97,14 @@ export default function EventsCarousel() {
       }`}>
         {new Date(event.startDate).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
       </p>
-      {event.metadata?.cle_credits && (
+      {event.cleCredits && (
         <p className={`text-sm mb-2 ${
           isFeatured ? 'text-orange-700' : 'text-amber-700'
         }`}>
-          CLE Credits: {event.metadata.cle_credits}
+          CLE Credits: {event.cleCredits}
         </p>
       )}
-      {event.price && (event.price.type?.toLowerCase() === 'free' || event.price.amount === 0) ? (
-        <span className="text-green-700 font-semibold">FREE</span>
-      ) : event.price && event.price.amount != null && (
-        <span className={`font-semibold ${
-          isFeatured ? 'text-orange-800' : 'text-amber-800'
-        }`}>
-          {event.price.currency}{event.price.amount.toFixed(2)}
-        </span>
-      )}
+      {/* TODO: Restore price functionality after schema update */}
     </div>
   );
 

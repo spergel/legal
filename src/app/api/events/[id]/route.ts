@@ -32,10 +32,6 @@ export async function PATCH(
     const updatedEvent = await prisma.event.update({
       where: { id },
       data: { status },
-      include: {
-        location: true,
-        community: true,
-      },
     });
 
     console.log(`✅ Event ${id} updated successfully to status: ${status}`);
@@ -75,10 +71,6 @@ export async function GET(
 
     const event = await prisma.event.findUnique({
       where: { id },
-      include: {
-        location: true,
-        community: true,
-      },
     });
 
     if (!event) {

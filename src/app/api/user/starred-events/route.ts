@@ -6,6 +6,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function GET() {
+  return NextResponse.json({ 
+    error: 'Starred events functionality temporarily disabled during schema simplification',
+    events: [] 
+  }, { status: 501 });
+  /*
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.email) {
     return NextResponse.json({ events: [] });
@@ -52,4 +57,5 @@ export async function GET() {
     console.error('Error fetching starred events:', error);
     return NextResponse.json({ events: [] });
   }
+  */
 } 

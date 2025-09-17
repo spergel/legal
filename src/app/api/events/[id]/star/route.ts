@@ -24,53 +24,20 @@ export async function POST(
   try {
     const eventId = params.id;
     
-    // Get user and check if already starred in a single query
+    // Get user
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      include: {
-        starredEvents: {
-          where: { eventId: eventId },
-          take: 1
-        }
-      }
     });
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const isAlreadyStarred = user.starredEvents.length > 0;
-
-    if (isAlreadyStarred) {
-      // Unstar the event
-      await prisma.userEvent.delete({
-        where: {
-          userId_eventId: {
-            userId: user.id,
-            eventId: eventId
-          }
-        }
-      });
-
-      return NextResponse.json({ starred: false });
-    } else {
-      // Star the event - use upsert to handle race conditions
-      await prisma.userEvent.upsert({
-        where: {
-          userId_eventId: {
-            userId: user.id,
-            eventId: eventId
-          }
-        },
-        update: {},
-        create: {
-          userId: user.id,
-          eventId: eventId
-        }
-      });
-
-      return NextResponse.json({ starred: true });
-    }
+    // TODO: Implement starring system after restoring UserEvent model
+    return NextResponse.json({ 
+      error: 'Starring functionality temporarily disabled during schema simplification',
+      starred: false 
+    }, { status: 501 });
   } catch (error) {
     console.error('Error toggling star:', error);
     return NextResponse.json(
@@ -92,22 +59,17 @@ export async function GET(
   try {
     const eventId = params.id;
     
-    // Get user and check star status in a single query
+    // Get user
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
-      include: {
-        starredEvents: {
-          where: { eventId: eventId },
-          take: 1
-        }
-      }
     });
 
     if (!user) {
       return NextResponse.json({ starred: false });
     }
 
-    return NextResponse.json({ starred: user.starredEvents.length > 0 });
+    // TODO: Implement starring system after restoring UserEvent model
+    return NextResponse.json({ starred: false });
   } catch (error) {
     console.error('Error checking star status:', error);
     return NextResponse.json({ starred: false });
