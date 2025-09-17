@@ -108,8 +108,8 @@ export async function POST(req: Request) {
               tags: sanitizeString(eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.join(',') : eventData.tags) : null),
               eventType: sanitizeString(eventData.eventType),
               image: sanitizeString(eventData.image),
-              price: sanitizeJsonString(eventData.price),
-              metadata: sanitizeJsonString(eventData.metadata)
+              price: null, // Temporarily disable complex JSON fields
+              metadata: null // Temporarily disable complex JSON fields
             }
           });
           results.updated++;
@@ -138,8 +138,8 @@ export async function POST(req: Request) {
               tags: sanitizeString(eventData.tags ? (Array.isArray(eventData.tags) ? eventData.tags.join(',') : eventData.tags) : null),
               eventType: sanitizeString(eventData.eventType),
               image: sanitizeString(eventData.image),
-              price: sanitizeJsonString(eventData.price),
-              metadata: sanitizeJsonString(eventData.metadata)
+              price: null, // Temporarily disable complex JSON fields
+              metadata: null // Temporarily disable complex JSON fields
             }
           });
           results.created++;

@@ -61,8 +61,8 @@ class Event:
             "url": safe_str(self.url),
             # Note: locationId and communityId are handled as relations in Prisma, not direct fields
             "image": safe_str(self.image),
-            "price": safe_dict(self.price),
-            "metadata": safe_dict(self.metadata),
+            "price": None,  # Temporarily disable complex fields
+            "metadata": None,  # Temporarily disable complex fields
             "category": safe_list(self.category),  # Will be converted to comma-separated string in API
             "tags": safe_list(self.tags),  # Will be converted to comma-separated string in API
             "eventType": safe_str(self.event_type),  # Note: Prisma uses camelCase
