@@ -5,6 +5,9 @@ const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   try {
+    // Test database connection first
+    await prisma.$connect();
+    
     const { events, scraper, secret } = await request.json();
 
     // Validate secret
