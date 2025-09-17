@@ -5,7 +5,6 @@ import hashlib
 import sqlite3
 from datetime import datetime, timezone
 from typing import List, Dict, Any
-from .models import Event
 import sys
 import re
 
@@ -13,6 +12,12 @@ import re
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(PROJECT_ROOT)
+
+# Import models
+try:
+    from .models import Event
+except ImportError:
+    from models import Event
 
 # Check if we're in production (PostgreSQL) or local (SQLite)
 DATABASE_URL = os.environ.get("DATABASE_URL", "file:./prisma/events.db")
@@ -29,7 +34,7 @@ class ScraperManagerDB:
     def __init__(self):
         self.scrapers = {}
         self.db_path = os.path.join(PROJECT_ROOT, "prisma", "events.db") if not IS_PRODUCTION else None
-        self.api_url = os.environ.get("VERCEL_URL", "https://lawyerevents.net")
+        self.api_url = os.environ.get("VERCEL_URL", "https://legal.somethingtodo.nyc")
         self.secret = os.environ.get("SCRAPER_SECRET")
 
         # Lazy import and instantiate scrapers
@@ -57,8 +62,12 @@ class ScraperManagerDB:
                     # Try relative import first (when running as module)
                     module = importlib.import_module(f".{module_name}", package="scrapers")
                 except ImportError:
-                    # Fall back to absolute import
-                    module = importlib.import_module(f"scrapers.{module_name}")
+                    try:
+                        # Fall back to absolute import
+                        module = importlib.import_module(f"scrapers.{module_name}")
+                    except ImportError:
+                        # Final fallback - direct import
+                        module = importlib.import_module(module_name)
                 
                 klass = getattr(module, class_name)
                 self.scrapers[name] = klass(community_id)
@@ -268,9 +277,13 @@ class ScraperManagerDB:
                 'secret': self.secret
             }
 
-            response = requests.post(url, json=data, headers=headers)
+            response = requests.post(url, json=data, headers=headers, timeout=30)
             if response.status_code == 200:
+                result = response.json()
                 print(f"Successfully saved {len(events)} events from {scraper_name} via API")
+                print(f"  - API Response: Created {result.get('created', 0)}, Updated {result.get('updated', 0)}")
+                if result.get('errors'):
+                    print(f"  - API Errors: {result['errors']}")
                 return True
             else:
                 print(f"Failed to save events via API: {response.status_code} - {response.text}")
