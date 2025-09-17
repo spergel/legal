@@ -36,9 +36,17 @@ export async function POST(req: Request) {
         // Sanitize and validate data to prevent PostgreSQL errors
         const sanitizeString = (value: any): string | null => {
           if (value === null || value === undefined) return null;
-          if (typeof value === 'string') return value.slice(0, 10000); // Limit length
-          if (typeof value === 'object') return JSON.stringify(value).slice(0, 10000);
-          return String(value).slice(0, 10000);
+          let str: string;
+          if (typeof value === 'string') {
+            str = value;
+          } else if (typeof value === 'object') {
+            str = JSON.stringify(value);
+          } else {
+            str = String(value);
+          }
+          // Remove null characters and other problematic characters
+          str = str.replace(/\0/g, '').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+          return str.slice(0, 10000);
         };
 
         const sanitizeJsonString = (value: any): string | null => {
