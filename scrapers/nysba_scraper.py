@@ -62,14 +62,39 @@ class NYSBAScraper(BaseScraper):
                         logger.warning(f"Skipping event with missing data: {event_data}")
                         continue
 
+                    # Build description
+                    description = f"Event at {event_data.get('region', 'N/A')}"
+                    
+                    # Use categorization helper
+                    base_categories = ['Bar Association', 'Legal Events', 'NYSBA']
+                    categories = EventCategorizer.categorize_event(name, description, base_categories)
+                    
+                    # Extract tags and event type
+                    tags = EventCategorizer.get_tags(name, description)
+                    event_type = EventCategorizer.get_event_type(name, description)
+                    
+                    # Check for CLE
+                    is_cle = EventCategorizer.is_cle_event(name, description)
+                    cle_credits = None
+                    if is_cle:
+                        # Try to extract CLE credits from description
+                        cle_match = re.search(r'(\d+(?:\.\d+)?)\s*(?:cle|credit)', description.lower())
+                        if cle_match:
+                            cle_credits = float(cle_match.group(1))
+
                     event = Event(
                         id=event_id,
                         name=name,
                         startDate=start_date.isoformat(),
+                        endDate=start_date.isoformat(),  # Assume same day if no end date
                         url=event_url,
-                        communityId=self.community_id,
-                        description=f"Event at {event_data.get('region', 'N/A')}",
-                        event_type=event_data.get('className')[0] if event_data.get('className') else 'Unknown'
+                        communityId="NYSBA",
+                        locationName=event_data.get('region', 'TBD'),
+                        description=description,
+                        event_type=event_type,
+                        category=categories,
+                        tags=tags,
+                        cle_credits=cle_credits
                     )
                     events.append(event)
                 except Exception as e:

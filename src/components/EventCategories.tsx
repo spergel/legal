@@ -78,16 +78,44 @@ export default function EventCategories({
   showTags = false, 
   maxCategories = 5 
 }: EventCategoriesProps) {
-  // TODO: Restore category functionality after schema update
-  // For now, show community as a category
-  if (!event.communityText) {
-    return null;
+  // Collect all categories for display
+  const allCategories: string[] = [];
+  
+  // Add event categories
+  if (event.category && event.category.length > 0) {
+    allCategories.push(...event.category);
   }
-  const categories = [event.communityText];
-
-  // Simplified - just use community as category
-  const displayCategories = categories.slice(0, maxCategories);
-  const remainingCount = Math.max(0, categories.length - maxCategories);
+  
+  // Add event type if present
+  if (event.eventType && !allCategories.includes(event.eventType)) {
+    allCategories.push(event.eventType);
+  }
+  
+  // Add community if not already in categories
+  if (event.communityText && !allCategories.includes(event.communityText)) {
+    allCategories.push(event.communityText);
+  }
+  
+  // Sort categories by priority
+  const sortedCategories = allCategories.sort((a, b) => {
+    const priorityA = categoryPriority.indexOf(a);
+    const priorityB = categoryPriority.indexOf(b);
+    
+    // If both have priority, sort by priority
+    if (priorityA !== -1 && priorityB !== -1) {
+      return priorityA - priorityB;
+    }
+    
+    // If only one has priority, prioritize it
+    if (priorityA !== -1) return -1;
+    if (priorityB !== -1) return 1;
+    
+    // If neither has priority, sort alphabetically
+    return a.localeCompare(b);
+  });
+  
+  const displayCategories = sortedCategories.slice(0, maxCategories);
+  const remainingCount = Math.max(0, sortedCategories.length - maxCategories);
 
   return (
     <div className={`flex flex-wrap gap-2 ${className}`}>
@@ -124,7 +152,15 @@ export default function EventCategories({
         </Badge>
       )}
       
-      {/* TODO: Restore tags functionality after schema update */}
+      {/* Tags (if showTags is enabled) */}
+      {showTags && event.tags && event.tags.length > 0 && event.tags.map((tag, index) => (
+        <Badge 
+          key={`tag-${tag}-${index}`}
+          className="bg-gray-50 text-gray-600 border-gray-200 text-xs font-normal"
+        >
+          #{tag}
+        </Badge>
+      ))}
     </div>
   );
 } 

@@ -24,7 +24,7 @@ class Event:
     cle_credits: Optional[float] = None  # Will be stored as cleCredits Float in Prisma
 
     def to_dict(self) -> Dict[str, Any]:
-        """Convert the event to a dictionary compatible with simplified Prisma schema."""
+        """Convert the event to a dictionary compatible with Prisma schema."""
         def safe_str(value: Any) -> str:
             """Safely convert value to string, handling None and objects."""
             if value is None:
@@ -35,15 +35,45 @@ class Event:
                 return clean_str[:1000]
             return str(value)[:1000]
         
+        def safe_list(value: Any) -> List[str]:
+            """Safely convert value to list of strings."""
+            if value is None:
+                return []
+            if isinstance(value, list):
+                return [safe_str(item) for item in value if item]
+            if isinstance(value, str):
+                return [safe_str(value)] if value.strip() else []
+            return []
+        
+        def safe_dict(value: Any) -> Dict[str, Any]:
+            """Safely convert value to dictionary."""
+            if value is None:
+                return {}
+            if isinstance(value, dict):
+                return value
+            return {}
+        
         return {
             "externalId": safe_str(self.id),
             "name": safe_str(self.name) or "Untitled Event",
             "description": safe_str(self.description),
             "startDate": safe_str(self.startDate),
             "endDate": safe_str(self.endDate) or safe_str(self.startDate),
-            "locationName": safe_str(self.locationName) or "TBD",
+            "locationText": safe_str(self.locationName) or "TBD",
+            "communityText": safe_str(self.communityId) or "Unknown",
             "url": safe_str(self.url) if self.url else None,
-            "cleCredits": self.cle_credits if isinstance(self.cle_credits, (int, float)) else None
+            "hasCLE": bool(self.cle_credits and self.cle_credits > 0),
+            "cleCredits": self.cle_credits if isinstance(self.cle_credits, (int, float)) else None,
+            
+            # Categorization fields
+            "category": safe_list(self.category),
+            "tags": safe_list(self.tags),
+            "eventType": safe_str(self.event_type) if self.event_type else None,
+            
+            # Additional fields
+            "image": safe_str(self.image) if self.image else None,
+            "price": safe_dict(self.price),
+            "metadata": safe_dict(self.metadata)
         }
 
     @classmethod

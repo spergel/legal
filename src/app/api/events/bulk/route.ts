@@ -72,6 +72,24 @@ export async function POST(request: NextRequest) {
           });
         }
 
+        // Helper function for safe array handling
+        const sanitizeArray = (value: any): string[] => {
+          if (Array.isArray(value)) {
+            return value.filter(item => item && typeof item === 'string').map(item => sanitizeString(item)).filter(Boolean);
+          }
+          if (typeof value === 'string' && value.trim()) {
+            return [sanitizeString(value)];
+          }
+          return [];
+        };
+
+        // Helper function for safe JSON handling
+        const sanitizeJson = (value: any): any => {
+          if (value === null || value === undefined) return null;
+          if (typeof value === 'object') return value;
+          return null;
+        };
+
         // Prepare clean event data
         const cleanEventData = {
           externalId: sanitizeString(eventData.externalId) || null,
@@ -79,12 +97,23 @@ export async function POST(request: NextRequest) {
           description: sanitizeString(eventData.description),
           startDate: startDate,
           endDate: endDate,
-          locationText: sanitizeString(eventData.locationName || eventData.location) || 'TBD',
-          communityText: sanitizeString(eventData.communityName || scraper) || 'Unknown',
+          locationText: sanitizeString(eventData.locationText || eventData.locationName || eventData.location) || 'TBD',
+          communityText: sanitizeString(eventData.communityText || eventData.communityName || scraper) || 'Unknown',
           url: sanitizeString(eventData.url) || null,
-          hasCLE: Boolean(eventData.cleCredits && eventData.cleCredits > 0),
+          hasCLE: Boolean(eventData.hasCLE || (eventData.cleCredits && eventData.cleCredits > 0)),
           cleCredits: typeof eventData.cleCredits === 'number' ? eventData.cleCredits : null,
           status: 'APPROVED',
+          
+          // Categorization fields
+          category: sanitizeArray(eventData.category),
+          tags: sanitizeArray(eventData.tags),
+          eventType: sanitizeString(eventData.eventType) || null,
+          
+          // Additional fields
+          image: sanitizeString(eventData.image) || null,
+          price: sanitizeJson(eventData.price),
+          metadata: sanitizeJson(eventData.metadata),
+          
           updatedAt: new Date()
         };
 

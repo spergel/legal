@@ -48,6 +48,17 @@ export interface Event {
   hasCLE: boolean;
   cleCredits?: number | null;
   status: string;
+  
+  // Re-added categorization fields
+  category: string[];
+  tags: string[];
+  eventType?: string | null;
+  
+  // Additional useful fields
+  image?: string | null;
+  price?: any;
+  metadata?: any;
+  
   createdAt: Date;
   updatedAt: Date;
 }

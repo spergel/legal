@@ -66,6 +66,17 @@ model Event {
   hasCLE        Boolean  @default(false)
   cleCredits    Float?
   status        String   @default("APPROVED")
+  
+  // Re-added categorization fields
+  category      String[] @default([])
+  tags          String[] @default([])
+  eventType     String?
+  
+  // Additional useful fields
+  image         String?
+  price         Json?
+  metadata      Json?
+  
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
