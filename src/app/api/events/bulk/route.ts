@@ -90,8 +90,8 @@ export async function POST(request: NextRequest) {
           return null;
         };
 
-        // Prepare clean event data
-        const cleanEventData = {
+        // Base event data (always present fields)
+        let cleanEventData: any = {
           externalId: sanitizeString(eventData.externalId) || null,
           name: sanitizeString(eventData.name),
           description: sanitizeString(eventData.description),
@@ -103,19 +103,32 @@ export async function POST(request: NextRequest) {
           hasCLE: Boolean(eventData.hasCLE || (eventData.cleCredits && eventData.cleCredits > 0)),
           cleCredits: typeof eventData.cleCredits === 'number' ? eventData.cleCredits : null,
           status: 'APPROVED',
-          
-          // Categorization fields
-          category: sanitizeArray(eventData.category),
-          tags: sanitizeArray(eventData.tags),
-          eventType: sanitizeString(eventData.eventType) || null,
-          
-          // Additional fields
-          image: sanitizeString(eventData.image) || null,
-          price: sanitizeJson(eventData.price),
-          metadata: sanitizeJson(eventData.metadata),
-          
           updatedAt: new Date()
         };
+
+        // Add categorization fields if they exist in the database schema
+        // This allows gradual migration without breaking existing functionality
+        try {
+          // Test if categorization columns exist by attempting a small query
+          await prisma.event.findFirst({
+            select: { category: true, tags: true, eventType: true },
+            take: 1
+          });
+          
+          // If successful, add categorization fields
+          cleanEventData = {
+            ...cleanEventData,
+            category: sanitizeArray(eventData.category),
+            tags: sanitizeArray(eventData.tags),
+            eventType: sanitizeString(eventData.eventType) || null,
+            image: sanitizeString(eventData.image) || null,
+            price: sanitizeJson(eventData.price),
+            metadata: sanitizeJson(eventData.metadata)
+          };
+        } catch (error) {
+          // Categorization columns don't exist yet, skip them
+          console.log('Categorization columns not yet available, using basic schema');
+        }
 
         if (existingEvent) {
           // Update existing event
